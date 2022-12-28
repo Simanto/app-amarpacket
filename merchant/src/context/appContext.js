@@ -188,7 +188,7 @@ const AppProvider = ({children}) => {
     const registerMerchant = async (currentUser) =>{
         dispatch({type:"BEGIN"})
         try {
-            const res = await axios.post("/auth/merchant/register", currentUser);
+            const res = await axiosFetch.post("/api/v1/auth/merchant/register", currentUser);
             const token = res.data.token;
             const user =  res.data.user;
 
@@ -217,7 +217,7 @@ const AppProvider = ({children}) => {
     const login = async (currentUser) =>{
         dispatch({type:"BEGIN"})
         try {
-            const res = await axios.post("/api/v1/auth/login", currentUser);
+            const res = await axiosFetch.post("/api/v1/auth/login", currentUser);
             const token = res.data.token;
             const user =  res.data.user;
             
