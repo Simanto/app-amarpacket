@@ -259,10 +259,10 @@ const AppProvider = ({children}) => {
             setTimeout(() => {
                 dispatch({type:"CLEAR_ALERT"})
             }, 1000);
-
             return
         } catch (err) {
-            logOut();
+            console.log(err);
+            // logOut();
         }
     }
 
