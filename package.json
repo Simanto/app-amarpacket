@@ -7,7 +7,7 @@
   "scripts": {
     "build": "cd merchant && npm run build",
     "server": "nodemon server --ignore merchant",
-    "merchant": "npm start --prefix merchant",
+    "merchant": "cd merchant && npm start --prefix merchant",
     "start": "concurrently --kill-others-on-fail \" npm run server\" \" npm run merchant\""
   },
   "keywords": [],
