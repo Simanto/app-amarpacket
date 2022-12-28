@@ -1,0 +1,53 @@
+.btn{
+    &-primary{
+        &:hover{
+            background: $primary-hover-color;
+        }
+    }
+
+    &:focus{
+        box-shadow: none;
+    }
+}
+
+
+.action{
+    padding: 2px 8px;
+    border-radius: 4px;
+
+    .icon{
+        height: 20px;
+        width: 20px;
+    }
+
+    &-view{
+        background: $blue-light;
+        color: $blue;
+        border: 1px solid $blue;
+
+
+        &:hover{
+            color: $blue;
+        }
+    }
+
+    &-edit{
+        background-color: rgba($success,0.1);
+        color: $success;
+        border: 1px solid $success;
+
+        &:hover{
+            color: $success;
+        }
+    }
+
+    &-update{
+        background-color: rgba($primary,0.1);
+        color: $primary;
+        border: 1px solid $primary;
+
+        &:hover{
+            color: $primary;
+        }
+    }
+}

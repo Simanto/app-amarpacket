@@ -1,0 +1,44 @@
+// Form Label
+.form{
+    &-label{
+        margin-bottom: 4px;
+    }
+
+    &-control{
+        &:focus{
+            box-shadow: none;
+            border-color: $input-border-color;
+        }
+    }
+}
+
+// Textual addons
+//
+// Serves as a catch-all element for any text or radio/checkbox input you wish
+// to prepend or append to an input.
+.input{
+    &-group{
+        &-text {
+            color: $input-group-addon-color;
+            border: $input-border-width solid $input-group-addon-border-color;
+            border-right: none;
+            @include border-radius($input-border-radius);
+
+            svg{
+                fill: $body-color;
+            }
+        }
+        input{
+            border-left: none;
+
+            // &:focus{
+            //     outline: none;
+            //     box-shadow: none;
+            //     border-color: $input-border-color;
+            // }
+        }
+    }
+}
+
+
+// Select 

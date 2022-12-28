@@ -1,0 +1,25 @@
+.icon{
+    width: 24px;
+    max-height: 24px;
+
+    &-white{
+        fill: $white;
+    }
+
+    svg{
+        width: 24px;
+        height: 24px;
+    }
+
+    &-20{
+        svg{
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    &-20{
+        width: 20px;
+        height: 20px;
+    }
+}

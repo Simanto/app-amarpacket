@@ -1,0 +1,55 @@
+// Font Library
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap');
+
+
+$font-family-sans-serif: 'Poppins', sans-serif;
+
+// Colors
+$white:                    #fff;
+$yellow:                   #FFCC2F;
+$yellow-100:               #FFFDF6;
+$yellow-200:               #E9BB2C;
+
+$gray-600:                 #76746D;
+$gray-900:                 #282210;
+$gray-100:                 #F8F6EF;
+$blue:                     #61ABFF;
+$blue-light:               #E6F2FF;
+
+
+// Theme Colors
+$primary:                  $yellow;
+$primary-hover-color:      $yellow-200;
+
+// Body 
+$body-bg:                  $yellow-100;
+
+
+// Typography
+$font-weight-medium:       500;
+$body-color:               $gray-600;
+$headings-color:           $gray-900;
+$form-label-color:         $gray-900;
+
+
+// Links
+//
+// Style anchor elements.
+
+$link-color:               $body-color;
+$link-decoration:          none;
+$link-hover-color:         $primary-hover-color;
+
+// Form 
+$input-btn-padding-y:         .75rem;
+$input-btn-padding-x:         .75rem;
+
+$input-bg:                     $gray-100;
+$input-group-addon-bg:         $input-bg;
+
+
+// Table
+$table-header-bg:               $yellow-100;
+
+// Card
+$card-cap-bg:                   transparent;

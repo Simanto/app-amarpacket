@@ -1,0 +1,13 @@
+.user{
+    &-info{
+        &:hover{
+            cursor: pointer;
+        }
+        &_name{
+            max-width: 150px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+}

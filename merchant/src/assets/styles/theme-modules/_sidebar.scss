@@ -1,0 +1,14 @@
+.app{
+    &-sidebar{
+        z-index: $zindex-fixed;
+
+        &_navbar{
+            width: 260px;
+            background: #45370D;
+        }
+
+        &_registration{
+            width: 450px;
+        }
+    }
+}

@@ -1,0 +1,9 @@
+// Illustration Backgrounds
+.illustration{
+    &-delivery{
+        &_truck{
+            background: url(../../images/illustration-delivery_truck.svg);
+            background-size: cover;
+        }
+    }
+}
