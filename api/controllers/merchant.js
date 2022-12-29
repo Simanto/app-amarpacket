@@ -163,7 +163,6 @@ export const getMerchant = async (req, res, next) => {
     try {
       const merchant = await User.findById(req.user.id);
       const merchantProfile = await Merchant.findById(merchant.merchantProfileID)
-      // const [{address}] = merchantProfile.pickup_location;
       
       // construct data
       const user = {
