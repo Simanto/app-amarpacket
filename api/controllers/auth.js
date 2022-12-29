@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import Merchant from "../models/Merchant.js";
+import UserProfile from "../models/UserProfile.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
