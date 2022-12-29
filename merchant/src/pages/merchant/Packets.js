@@ -2,6 +2,7 @@ import { useState } from "react";
 import classnames from "classnames";
 import { Button, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap"
 import { AllPackets, TableMerchantDelivered, TableMerchantOutForDelivery, TableMerchantReturned } from "../../modules";
+import { Link } from "react-router-dom";
 
 const Packets = () =>{
 
@@ -21,7 +22,7 @@ const Packets = () =>{
                     <h4>Packets</h4>
                 </div>
                 <div className='app-header_date d-flex justify-content-center align-items-center'>
-                    <Button href='add-packet' color='primary text-uppercase fw-medium mb-2'> Add Packet</Button>
+                    <Link to={'add-packet'} className='btn btn-primary text-uppercase fw-medium mb-2'> Add Packet</Link>
                 </div>
             </div>
             {/* End */}
