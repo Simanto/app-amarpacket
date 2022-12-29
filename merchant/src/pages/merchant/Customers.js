@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Button, Row } from "reactstrap"
 import { useAppContext } from "../../context/appContext"
 import { Loading } from "../../elements";
@@ -21,7 +22,7 @@ const Customers = () =>{
                     <h4>All Customers</h4>
                 </div>
                 <div className='app-header_date d-flex justify-content-center align-items-center'>
-                    <Button href='add-packet' color='primary text-uppercase fw-medium mb-2'> Add Packet</Button>
+                    <Link to={'/add-packet'} className='btn btn-primary text-uppercase fw-medium mb-2'> Add Packet</Link>
                 </div>
             </div>
 
