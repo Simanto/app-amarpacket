@@ -36,7 +36,7 @@ const corsOptions ={
     optionSuccessStatus:200,
  }
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
+// const __dirname = dirname(fileURLToPath(import.meta.url))
 
 // Uncoment Only For Deployment
 // app.use(express.static(path.resolve(__dirname, './merchant/build')))
