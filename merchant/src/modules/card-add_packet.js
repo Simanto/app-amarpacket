@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Button } from 'reactstrap';
 import {IllustationMap} from '../assets/images'
 
@@ -18,7 +19,7 @@ const CardAddPacket = () => {
 
                 {/* cta */}
                 <div className='text-center pb-4'>
-                    <Button href='add-packet' color='primary text-uppercase fw-medium mb-2'> Add Packet</Button>
+                    <Link to={"/add-packet"} className='btn btn-primary text-uppercase fw-medium mb-2'> Add Packet</Link>
                 </div>
                 
                 {/* end */}
