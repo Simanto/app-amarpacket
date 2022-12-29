@@ -39,7 +39,9 @@ const PageRoutes = () => {
           }>
               {/* Main Pages */}
               <Route path={"dashboard"} element={<Dashboard />}> </Route>
-              <Route path={"packets"} element={<Packets />}> </Route>
+              <Route path={"packets"} element={<Packets />}>
+                
+              </Route>
               <Route path={"customers"} element={<Customers />}> </Route>
               <Route path={"payments"} element={<Payments />}> </Route>
               <Route path={"payment/:id"} element={<PaymentsSingle />}></Route>

@@ -18,7 +18,7 @@ const CardAddPacket = () => {
 
                 {/* cta */}
                 <div className='text-center pb-4'>
-                    <Button href='add-packet' color='primary text-uppercase fw-medium mb-2'> Add Packet</Button>
+                    <Button href='packets/add-packet' color='primary text-uppercase fw-medium mb-2'> Add Packet</Button>
                 </div>
                 
                 {/* end */}
