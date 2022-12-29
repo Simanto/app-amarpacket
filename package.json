@@ -4,7 +4,6 @@
   "description": "",
   "main": "server.js",
   "type": "module",
-  "homepage": "/",
   "scripts": {
     "build": "cd merchant && npm run build",
     "server": "nodemon server --ignore merchant",
