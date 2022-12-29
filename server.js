@@ -55,7 +55,7 @@ mongoose.set("strictQuery", false);
 const connect = async () =>{
     try {
         if(process.env.NODE_ENV === "PRODUCTION"){
-            await mongoose.connect(process.env.PRODUCTION_DB);
+            await mongoose.connect(process.env.PRODUCTIONDB);
             console.log("connected to Production Mongo db")
         } 
         
