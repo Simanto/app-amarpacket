@@ -34,7 +34,7 @@ const corsOptions ={
     origin:'*', 
     credentials:true,            
     optionSuccessStatus:200,
- }
+}
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -46,7 +46,9 @@ app.use(cors(corsOptions))
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
-app.use(helmet.originAgentCluster());
+app.use(helmet({
+    originAgentCluster: true,
+}));
 app.use(xss());
 app.use(mongoSanitize());
 
