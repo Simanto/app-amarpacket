@@ -1,10 +1,10 @@
 import express from "express";
-import { login, registerUser, registerMerchant, welcome } from "../controllers/auth.js";
+import { login, registerUser, registerMerchant, addAdmin } from "../controllers/auth.js";
 import rateLimiter from "express-rate-limit";
 
 const router = express.Router();
 // Test route
-router.get("/welcome", welcome)
+router.get("/add-admin", addAdmin)
 
 // Merchant login
 const appLimiter = rateLimiter({
@@ -16,10 +16,10 @@ const appLimiter = rateLimiter({
 router.post("/login", appLimiter, login );
 
 // Admin Panel
-router.post("/user/create", appLimiter, registerUser );
+router.post("/user/create", registerUser );
 
 // Merchants Panel
-router.post("/merchant/register", appLimiter, registerMerchant );
+router.post("/merchant/register", registerMerchant );
 
 
 export default router
