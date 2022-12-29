@@ -46,7 +46,7 @@ app.use(cors(corsOptions))
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
-app.use(helmet());
+app.use(helmet.originAgentCluster());
 app.use(xss());
 app.use(mongoSanitize());
 
