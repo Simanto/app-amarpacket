@@ -39,7 +39,7 @@ const corsOptions ={
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 // Uncoment Only For Deployment
-app.use(express.static(path.resolve(__dirname, './merchant/build')))
+// app.use(express.static(path.resolve(__dirname, './merchant/build')))
  
 // Middlewares
 app.use(cors(corsOptions))
@@ -110,9 +110,9 @@ app.use("/api/v1/admin", verifyAdmin, statusRoute);
 app.use("/api/v1/admin", verifyAdmin, invoiceRoute);
 
 
-app.get("*", (req,res)=>{
-    res.sendFile(path.resolve(__dirname, './merchant/build', 'index.html'))
-})
+// app.get("*", (req,res)=>{
+//     res.sendFile(path.resolve(__dirname, './merchant/build', 'index.html'))
+// })
 
 app.use((err,req,res,next) => {
     const errorStatus = err.status || 500
