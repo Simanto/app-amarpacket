@@ -3,7 +3,7 @@
 # dependencies
 node_modules
 /node_modules
-/build
+merchant/build
 /.pnp
 .pnp.js
 
