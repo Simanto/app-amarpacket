@@ -1,5 +1,4 @@
 import {
-  BrowserRouter,
   Routes,
   Route,
 } from "react-router-dom";
@@ -23,8 +22,9 @@ const PageRoutes = () => {
         <Routes>
           {/* Eror */}
           <Route path={"*"} element={<Error />}></Route>
+          
           {/* Before Authertication */}
-          <Route path={"/"} element={<Login />}> </Route>
+          <Route path={"/login"} element={<Login />}> </Route>
           <Route path={"/create-account"} element={<Register />}> </Route>
           <Route path={"/forgot-password"} element={<ForgotPass />}> </Route>
           <Route path={"/reset-password"} element={<ResetPass />}> </Route>
@@ -77,17 +77,17 @@ const PageRoutes = () => {
               </Route>
 
           </Route>
-              {/* Agent Routes */}
-              <Route path={"agent"} element={
-                <ProtectedRoutes>
-                  <AgentLayout />
-                </ProtectedRoutes>
-              }>
-                <Route path={"dashboard"} element={<AgentDashboard />} />
-                <Route path={"pickup"} element={<AgentPickup />} />
-                <Route path={"deliveries"} element={<AgentDeliveries />} />
-                <Route path={"profile"} element={<AgentProfile />} />
-              </Route>
+          {/* Agent Routes */}
+          <Route path={"agent"} element={
+            <ProtectedRoutes>
+              <AgentLayout />
+            </ProtectedRoutes>
+          }>
+            <Route path={"dashboard"} element={<AgentDashboard />} />
+            <Route path={"pickup"} element={<AgentPickup />} />
+            <Route path={"deliveries"} element={<AgentDeliveries />} />
+            <Route path={"profile"} element={<AgentProfile />} />
+          </Route>
         </Routes>
     );
 }

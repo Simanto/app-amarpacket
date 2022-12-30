@@ -1,5 +1,4 @@
 import moment from "moment";
-import { DefaultDelimiter } from "react-papaparse";
 import { useAppContext } from "../context/appContext";
 import { Loading } from "../elements";
 
@@ -23,20 +22,20 @@ const CardInvoices = () => {
                             <Loading />
                             :
                             <>
-                            {last_invoices.map((item,index)=>
-                                {return(
-                                    <>
-                                    {index < 5 ?
-                                        <div key={index} className="card-body_item d-flex justify-content-between border-top pt-3 pb-3">
-                                            <p className="mb-0">{moment(item.invoice_createdAt).utc().format("MMM DD, YYYY")}</p>
-                                            <p className="mb-0 fw-medium text-dark"><span>৳</span> {item.invoice_total_payables}</p>
-                                        </div>
-                                    :
-                                    null
-                                    }
-                                    </>
+                                {last_invoices.map((item,index)=>
+                                    {return(
+                                        <>
+                                        {index < 5 ?
+                                            <div key={index} className="card-body_item d-flex justify-content-between border-top pt-3 pb-3">
+                                                <p className="mb-0">{moment(item.invoice_createdAt).utc().format("MMM DD, YYYY")}</p>
+                                                <p className="mb-0 fw-medium text-dark"><span>৳</span> {item.invoice_total_payables}</p>
+                                            </div>
+                                        :
+                                        null
+                                        }
+                                        </>
+                                    )}
                                 )}
-                            )}
                             </>
                         }
                     </>
