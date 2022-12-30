@@ -1,13 +1,13 @@
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import './assets/styles/style.scss';
 import PageRoutes from './pages/Routes.js';
 
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <PageRoutes />
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
