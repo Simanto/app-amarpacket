@@ -39,9 +39,7 @@ const PageRoutes = () => {
           }>
               {/* Main Pages */}
               <Route path={"dashboard"} element={<Dashboard />}> </Route>
-              <Route path={"packets"} element={<Packets />}>
-                
-              </Route>
+              <Route path={"packets"} element={<Packets />}></Route>
               <Route path={"customers"} element={<Customers />}> </Route>
               <Route path={"payments"} element={<Payments />}> </Route>
               <Route path={"payment/:id"} element={<PaymentsSingle />}></Route>
@@ -57,10 +55,8 @@ const PageRoutes = () => {
 
               {/* Admin routes */}
               <Route path={"admin"}>
-                <Route path={"dashboard"} element="Admin Dashboard">
-                </Route>
-                <Route path={"users"} element={<AdminUsers />}>
-                </Route>
+                <Route path={"dashboard"} element="Admin Dashboard"></Route>
+                <Route path={"users"} element={<AdminUsers />}></Route>
 
                 <Route path={"user"}>
                   <Route path={"new"} element={<AdminUserAdd />}></Route>
