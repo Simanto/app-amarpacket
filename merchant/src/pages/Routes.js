@@ -20,7 +20,6 @@ import Error from "./Error.js";
 const PageRoutes = () => {
     return (
       // Routes
-      <BrowserRouter>
         <Routes>
           {/* Eror */}
           <Route path={"*"} element={<Error />}></Route>
@@ -90,7 +89,6 @@ const PageRoutes = () => {
                 <Route path={"profile"} element={<AgentProfile />} />
               </Route>
         </Routes>
-      </BrowserRouter>
     );
 }
 
