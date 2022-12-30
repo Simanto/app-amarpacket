@@ -1,6 +1,5 @@
-import { Link } from "react-router-dom"
-import { Button } from "reactstrap"
-import {TableAllUsers } from "../../modules"
+import { Link } from "react-router-dom";
+import {TableAllUsers } from "../../modules";
 
 const AdminUsers = () =>{
     return(

@@ -1,17 +1,14 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Button, Row } from "reactstrap"
 import { useAppContext } from "../../context/appContext"
 import { Loading } from "../../elements";
-import { CardCustomer, TableMerchantAllCustomer } from "../../modules";
+import { TableMerchantAllCustomer } from "../../modules";
 
 const Customers = () =>{
-    const {isLoading,allCustomer, getAllCustomers} = useAppContext();
+    const {isLoading, getAllCustomers} = useAppContext();
 
     useEffect(() => {
-
         getAllCustomers();
-
     }, [])
     
 
