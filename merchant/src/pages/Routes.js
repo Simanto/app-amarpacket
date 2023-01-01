@@ -24,7 +24,7 @@ const PageRoutes = () => {
           <Route path={"*"} element={<Error />}></Route>
           
           {/* Before Authertication */}
-          <Route path={"/login"} element={<Login />}> </Route>
+          <Route exact path={"/login"} element={<Login />}> </Route>
           <Route path={"/create-account"} element={<Register />}> </Route>
           <Route path={"/forgot-password"} element={<ForgotPass />}> </Route>
           <Route path={"/reset-password"} element={<ResetPass />}> </Route>
