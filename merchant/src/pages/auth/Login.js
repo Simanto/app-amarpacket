@@ -23,8 +23,8 @@ const Login = () =>{
               <LoginForm />
 
               <div className='d-flex justify-content-between pt-4'>
-                <Link to="forgot-password">Forgot Password?</Link>
-                <Link to="create-account" className="fw-semibold">Create Account</Link>
+                <Link to="/forgot-password">Forgot Password?</Link>
+                <Link to="/create-account" className="fw-semibold">Create Account</Link>
               </div>
             </div>
 
