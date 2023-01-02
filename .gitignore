@@ -2,6 +2,9 @@
 
 # dependencies
 node_modules
+/node_modules
+merchant/build
+/.pnp
 merchant/node_modules
 merchant/.pnp
 .pnp.js

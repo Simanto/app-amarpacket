@@ -7,6 +7,9 @@ import helmet from "helmet";
 import xss from "xss-clean";
 import mongoSanitize from "express-mongo-sanitize";
 import morgan from "morgan";
+
+// CSP Header fix
+import { expressCspHeader, INLINE, NONE, SELF } from 'express-csp-header';
 // Link react dir
 import { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -31,10 +34,10 @@ dotenv.config();
 
 // Prevent CORS Error
 const corsOptions ={
-    origin:'*', 
+    origin:'http://localhost:9000/', 
     credentials:true,            
     optionSuccessStatus:200,
- }
+}
 
 // const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -46,11 +49,24 @@ app.use(cors(corsOptions))
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
-app.use(helmet());
+app.use(helmet({
+    originAgentCluster: true,
+}));
 app.use(xss());
 app.use(mongoSanitize());
 
 mongoose.set("strictQuery", false);
+
+app.use(expressCspHeader({
+    directives: {
+        'default-src': [SELF, 'fonts.googleapis.com', 'fonts.gstatic.com'],
+        'script-src': [SELF, INLINE],
+        'style-src': [SELF, INLINE, 'fonts.googleapis.com', 'fonts.gstatic.com'],
+        'img-src': [SELF, INLINE],
+        'worker-src': [NONE],
+        'block-all-mixed-content': true
+    }
+}));
 
 const connect = async () =>{
     try {
@@ -78,18 +94,9 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 }
 
 
-
-
-
-
 // ****************************
 // Routes
 //  ****************************
-
-// Test Connection
-app.get('/', (req, res) => {
-    res.send('Congratulation! Connected with Express')
-})
 
 // Login and Registration
 app.use("/api/v1/auth", authRoute);
@@ -110,9 +117,9 @@ app.use("/api/v1/admin", verifyAdmin, statusRoute);
 app.use("/api/v1/admin", verifyAdmin, invoiceRoute);
 
 
-// app.get("*", (req,res)=>{
-//     res.sendFile(path.resolve(__dirname, './merchant/build', 'index.html'))
-// })
+app.get("*", (req,res)=>{
+    res.sendFile(path.resolve(__dirname, './merchant/build', 'index.html'))
+})
 
 app.use((err,req,res,next) => {
     const errorStatus = err.status || 500

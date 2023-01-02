@@ -1,6 +1,6 @@
 import {
-    Routes,
-    Route,
+  Routes,
+  Route,
 } from "react-router-dom";
 
 // Import Pages
@@ -9,10 +9,7 @@ import {Dashboard,Packets,Customers,Payments,Profile,SharedLayout, AddPacket, Pa
 import {AdminMerchantEdit, AdminMerchantProfile, AdminMerchants,AdminPackets, AdminPayments, AdminUserAdd, AdminUsers, PaymentsSingle} from "./admin/";
 import ProtectedRoutes from "./ProtectedRoutes.js";
 import AgentLayout from "./AgentLayout.js";
-import AgentDashboard from "./Agent/Dashboard.js";
-import AgentPickup from "./Agent/Pickup.js";
-import AgentDeliveries from "./Agent/Deliveries.js";
-import AgentProfile from "./Agent/Profile.js";
+import {AgentDashboard, AgentPickup, AgentDeliveries, AgentProfile} from "./Agent";
 import TestConnection from "./auth/TestConnection.js";
 import Error from "./Error.js";
 
@@ -22,8 +19,9 @@ const PageRoutes = () => {
         <Routes>
           {/* Eror */}
           <Route path={"*"} element={<Error />}></Route>
+          
           {/* Before Authertication */}
-          <Route path={"/"} element={<Login />}> </Route>
+          <Route exact path={"/login"} element={<Login />}> </Route>
           <Route path={"/create-account"} element={<Register />}> </Route>
           <Route path={"/forgot-password"} element={<ForgotPass />}> </Route>
           <Route path={"/reset-password"} element={<ResetPass />}> </Route>
@@ -39,7 +37,7 @@ const PageRoutes = () => {
           }>
               {/* Main Pages */}
               <Route path={"dashboard"} element={<Dashboard />}> </Route>
-              <Route path={"packets"} element={<Packets />}> </Route>
+              <Route path={"packets"} element={<Packets />}></Route>
               <Route path={"customers"} element={<Customers />}> </Route>
               <Route path={"payments"} element={<Payments />}> </Route>
               <Route path={"payment/:id"} element={<PaymentsSingle />}></Route>
@@ -55,10 +53,8 @@ const PageRoutes = () => {
 
               {/* Admin routes */}
               <Route path={"admin"}>
-                <Route path={"dashboard"} element="Admin Dashboard">
-                </Route>
-                <Route path={"users"} element={<AdminUsers />}>
-                </Route>
+                <Route path={"dashboard"} element="Admin Dashboard"></Route>
+                <Route path={"users"} element={<AdminUsers />}></Route>
 
                 <Route path={"user"}>
                   <Route path={"new"} element={<AdminUserAdd />}></Route>
@@ -78,17 +74,17 @@ const PageRoutes = () => {
               </Route>
 
           </Route>
-              {/* Agent Routes */}
-              <Route path={"agent"} element={
-                <ProtectedRoutes>
-                  <AgentLayout />
-                </ProtectedRoutes>
-              }>
-                <Route path={"dashboard"} element={<AgentDashboard />} />
-                <Route path={"pickup"} element={<AgentPickup />} />
-                <Route path={"deliveries"} element={<AgentDeliveries />} />
-                <Route path={"profile"} element={<AgentProfile />} />
-              </Route>
+          {/* Agent Routes */}
+          <Route path={"agent"} element={
+            <ProtectedRoutes>
+              <AgentLayout />
+            </ProtectedRoutes>
+          }>
+            <Route path={"dashboard"} element={<AgentDashboard />} />
+            <Route path={"pickup"} element={<AgentPickup />} />
+            <Route path={"deliveries"} element={<AgentDeliveries />} />
+            <Route path={"profile"} element={<AgentProfile />} />
+          </Route>
         </Routes>
     );
 }

@@ -1,5 +1,5 @@
-import { Button } from "reactstrap"
-import {TableAllUsers } from "../../modules"
+import { Link } from "react-router-dom";
+import {TableAllUsers } from "../../modules";
 
 const AdminUsers = () =>{
     return(
@@ -10,7 +10,7 @@ const AdminUsers = () =>{
                     <h4>All Users</h4>
                 </div>
                 <div className='app-header_date d-flex justify-content-center align-items-center'>
-                    <Button href='user/new' color='primary text-uppercase fw-medium mb-2'> Add User</Button>
+                    <Link to={'/user/new'} className='btn btn-primary text-uppercase fw-medium mb-2'> Add User</Link>
                 </div>
             </div>
             {/* End */}

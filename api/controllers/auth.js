@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import Merchant from "../models/Merchant.js";
+import UserProfile from "../models/UserProfile.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -8,9 +9,75 @@ import { createError } from "../utils/error.js";
 
 
 // Test Connection
-export const welcome = async (req,res,next)=>{
+export const addAdmin = async (req,res,next)=>{
+    const creatAdmin = {
+        user_fullname: "Ashiqul Islam",
+        user_email: "ashiqul@amarpacketbd.com",
+        user_phone: "01682828591",
+        user_area: "East Merul Badda",
+        user_password: "Ashiqul*2022_admin",
+        user_role: "admin",
+        user_designation: "founder",
+        user_address: "Niketon",
+        user_blood_group: "O+",
+        user_employee_id: "03",
+        user_isActive: true,
+        user_emergency_contact_name: "Aminul Islam",
+        user_emergency_contact_phone: "01682828591",
+        user_emergency_contact_relation: "father",
+        user_emergency_contact_area: "East Merul Badda",
+        user_emergency_contact_address: "Badda"
+    }
+
+    var salt = bcrypt.genSaltSync(10);
+    var hash = bcrypt.hashSync(creatAdmin.user_password, salt);
+
+
+    const newUser =  new User({
+        name: creatAdmin.user_fullname,
+        email: creatAdmin.user_email,
+        password: hash,
+        role: creatAdmin.user_role,
+        isVerified: true,
+    });
+
+    const newUserProfile = new UserProfile({
+        phone: creatAdmin.user_phone,
+        designation: creatAdmin.user_designation,
+        blood_group: creatAdmin.user_blood_group,
+        employeeID: creatAdmin.user_employee_id,
+        isActive: creatAdmin.user_isActive,
+        area: creatAdmin.user_area,
+        address: creatAdmin.user_address,
+        emergency_conatact:{
+            name: creatAdmin.user_emergency_contact_name,
+            phone: creatAdmin.user_emergency_contact_phone,
+            relation: creatAdmin.user_emergency_contact_relation,
+            area: creatAdmin.user_emergency_contact_area,
+            address: creatAdmin.user_emergency_contact_address,
+        } 
+    });
+    
     try {
-        res.status(200).send("Congratulation! Connected to api server")
+        const hasEmail = await User.findOne({email:creatAdmin.user_email})
+        if(hasEmail) return next(createError(409, "An account with this email already exists. Please try login"));
+
+        const hasPhone = await UserProfile.findOne({phone:creatAdmin.user_phone})
+        if(hasPhone) return next(createError(409, "An account with this phone number already exists. Please try login"));
+
+        const addedUser = await newUser.save();
+        const addedUserProfile = await newUserProfile.save();
+
+        try {
+            await User.findByIdAndUpdate(addedUser._id,{
+                userProfileID: addedUserProfile._id
+            })
+        } catch (err) {
+            next(err)
+        }
+
+        res.status(200).json("User Created");
+
     } catch (err) {
         next(err)
     }
