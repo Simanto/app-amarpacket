@@ -50,11 +50,11 @@ const LoginForm = () => {
             }
 
             if(user.role === "admin"){
-                navigate("admin/dashboard")
+                navigate("/admin/dashboard")
             }
 
             if(user.role === "agent"){
-                navigate("agent/dashboard")
+                navigate("/agent/dashboard")
             }
         }
     },[user, token, navigate]);
