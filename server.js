@@ -39,7 +39,7 @@ const corsOptions ={
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 // Uncoment Only For Deployment
-app.use(express.static(path.join(__dirname, './merchant/build')))
+app.use(express.static(path.resolve(__dirname, './merchant/build')))
  
 // Middlewares
 app.use(cors(corsOptions))
@@ -84,11 +84,6 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 // Routes
 //  ****************************
 
-// Test Connection
-app.get('/', (req, res) => {
-    res.send('Congratulation! Connected with Express')
-})
-
 // Login and Registration
 app.use("/api/v1/auth", authRoute);
 
@@ -109,7 +104,7 @@ app.use("/api/v1/admin", verifyAdmin, invoiceRoute);
 
 
 app.get("/*", (req,res)=>{
-    res.sendFile(path.join(__dirname, './merchant/build', 'index.html'))
+    res.sendFile(path.resolve(__dirname, './merchant/build', 'index.html'))
 })
 
 app.use((err,req,res,next) => {
