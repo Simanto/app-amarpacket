@@ -7,6 +7,9 @@ import helmet from "helmet";
 import xss from "xss-clean";
 import mongoSanitize from "express-mongo-sanitize";
 import morgan from "morgan";
+
+// CSP Header fix
+import { expressCspHeader, INLINE, NONE, SELF } from 'express-csp-header';
 // Link react dir
 import { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -31,7 +34,7 @@ dotenv.config();
 
 // Prevent CORS Error
 const corsOptions ={
-    origin:'*', 
+    origin:'http://localhost:9000/', 
     credentials:true,            
     optionSuccessStatus:200,
 }
@@ -53,6 +56,17 @@ app.use(xss());
 app.use(mongoSanitize());
 
 mongoose.set("strictQuery", false);
+
+app.use(expressCspHeader({
+    directives: {
+        'default-src': [SELF, 'fonts.googleapis.com', 'fonts.gstatic.com'],
+        'script-src': [SELF, INLINE],
+        'style-src': [SELF, INLINE, 'fonts.googleapis.com', 'fonts.gstatic.com'],
+        // 'img-src': ['data:'],
+        'worker-src': [NONE],
+        'block-all-mixed-content': true
+    }
+}));
 
 const connect = async () =>{
     try {
