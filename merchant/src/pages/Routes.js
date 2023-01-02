@@ -9,10 +9,7 @@ import {Dashboard,Packets,Customers,Payments,Profile,SharedLayout, AddPacket, Pa
 import {AdminMerchantEdit, AdminMerchantProfile, AdminMerchants,AdminPackets, AdminPayments, AdminUserAdd, AdminUsers, PaymentsSingle} from "./admin/";
 import ProtectedRoutes from "./ProtectedRoutes.js";
 import AgentLayout from "./AgentLayout.js";
-import AgentDashboard from "./Agent/Dashboard.js";
-import AgentPickup from "./Agent/Pickup.js";
-import AgentDeliveries from "./Agent/Deliveries.js";
-import AgentProfile from "./Agent/Profile.js";
+import {AgentDashboard, AgentPickup, AgentDeliveries, AgentProfile} from "./Agent";
 import TestConnection from "./auth/TestConnection.js";
 import Error from "./Error.js";
 
