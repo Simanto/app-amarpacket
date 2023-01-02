@@ -103,7 +103,7 @@ app.use("/api/v1/admin", verifyAdmin, statusRoute);
 app.use("/api/v1/admin", verifyAdmin, invoiceRoute);
 
 
-app.get("/*", (req,res)=>{
+app.get("*", (req,res)=>{
     res.sendFile(path.resolve(__dirname, './merchant/build', 'index.html'))
 })
 
