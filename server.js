@@ -104,7 +104,11 @@ app.use("/api/v1/admin", verifyAdmin, invoiceRoute);
 
 
 app.get("*", (req,res)=>{
-    res.sendFile(path.resolve(__dirname, './merchant/build', 'index.html'))
+    res.sendFile(path.resolve(__dirname, './merchant/build', 'index.html'), function(err) {
+        if (err) {
+          res.status(500).send(err)
+        }
+      })
 })
 
 app.use((err,req,res,next) => {
