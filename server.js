@@ -62,7 +62,7 @@ app.use(expressCspHeader({
         'default-src': [SELF, 'fonts.googleapis.com', 'fonts.gstatic.com'],
         'script-src': [SELF, INLINE],
         'style-src': [SELF, INLINE, 'fonts.googleapis.com', 'fonts.gstatic.com'],
-        // 'img-src': ['data:'],
+        'img-src': [SELF, INLINE],
         'worker-src': [NONE],
         'block-all-mixed-content': true
     }
