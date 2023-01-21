@@ -22,7 +22,7 @@ const Packets = () =>{
                     <h4>Packets</h4>
                 </div>
                 <div className='app-header_date d-flex justify-content-center align-items-center'>
-                    <Link to={'add-packet'} className='btn btn-primary text-uppercase fw-medium mb-2'> Add Packet</Link>
+                    <Link to={'/add-packet'} className='btn btn-primary text-uppercase fw-medium mb-2'> Add Packet</Link>
                 </div>
             </div>
             {/* End */}

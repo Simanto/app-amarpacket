@@ -1,4 +1,5 @@
 import React,{useReducer,useContext} from "react";
+import { redirect, useNavigate } from "react-router-dom";
 import { useCookies } from 'react-cookie';
 import reducer from "./reducers";
 import axios from "axios";
@@ -7,7 +8,6 @@ import ListArea from "../assets/doc/area.csv";
 
 const token = localStorage.getItem("token");
 const user = localStorage.getItem("user");
-
 
 
 const initialState = {
@@ -374,12 +374,6 @@ const AppProvider = ({children}) => {
             });
             dispatch({type:"ADD_PACKET_SUCCESS"});
             dispatch({type:"CLEAR_VALUES"});
-            setTimeout(() => {
-                dispatch({type:"CLEAR_ALERT"})
-                window.location.reload();
-            }, 1000);
-
-            return
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
         }

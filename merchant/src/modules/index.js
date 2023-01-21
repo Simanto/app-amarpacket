@@ -31,6 +31,8 @@ import TableMerchantReturned from './table-packets_returned.js';
 import FormMerchantProfile from './form-edit_profile.js';
 import FormPassword from './form-merchant_password_change.js';
 import NavBarBottom from './nav-bar_bottom.js';
+import CardAgentPickup from './card-agent_pickup.js';
+import CardAgentDelivery from './card-agent_delivery.js';
 
 export{
     // Forms
@@ -61,6 +63,8 @@ export{
     CardStatPayments,
     CardInvoices,
     CardAddPacket,
+    CardAgentPickup,
+    CardAgentDelivery,
     
     // Table
     AllPackets,

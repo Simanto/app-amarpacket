@@ -55,7 +55,7 @@ const AddPacket = () =>{
             <Row>
                 <Col md="8">
                     {/* Header */}
-                    <div className='app-header pt-4 '>
+                    <div className='app-header pt-4 pb-3'>
                         <div className="app-header_back pb-5">
                             <Link to="/packets" className="icon"> 
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="me-2"><path fill="none" d="M0 0h24v24H0z"/><path d="M7.828 11H20v2H7.828l5.364 5.364-1.414 1.414L4 12l7.778-7.778 1.414 1.414z" fill="currentColor"/></svg>
@@ -78,7 +78,10 @@ const AddPacket = () =>{
                 
                 {/* Floating Card */}
                 <Col md="4" className="ps-4 mt-5 pt-5">
-                    <div className="bg-light mt-5">
+                    <div className='app-header_date d-flex justify-content-end align-items-end'>
+                        <Link to={'/add-packet'} className='btn btn-primary text-uppercase fw-medium mb-2'> Add New Packet</Link>
+                    </div>
+                    <div className="bg-light mt-2">
                         <div className="header p-5 pb-4 border-bottom">
                             <h5 className="mb-3">
                             {isEditing ? 

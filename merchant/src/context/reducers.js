@@ -393,8 +393,10 @@ const reducer = (state,action) => {
             
 
         case CLEAR_VALUES:
+            console.log("clear value triggered")
             const initialState  = {
                 idEditing: false,
+                
                 // Packet Data
                 editPacketID: "",
                 packet_trackingID:"",
