@@ -10,5 +10,12 @@
         &_registration{
             width: 450px;
         }
+
+        &_sm{
+            height: 50px;
+            .menu-wrapper{
+                display: block;
+            }
+        }
     }
 }
