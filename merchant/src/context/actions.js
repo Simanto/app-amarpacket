@@ -26,6 +26,8 @@ export const CLEAR_PACKET = "CLEAR_PACKET";
 
 export const HANDLE_CHANGE = "HANDLE_CHANGE";
 export const CLEAR_VALUES = "CLEAR_VALUES";
+export const CLEAR_PACKET_VALUES = "CLEAR_PACKET_VALUES";
+export const CLEAR_USER_VALUES = "CLEAR_USER_VALUES";
 
 export const SET_AREA_BEGIN = "SET_AREA_BEGIN";
 export const SET_AREA = "SET_AREA";

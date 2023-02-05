@@ -187,7 +187,7 @@ const FormMerchantProfile = () => {
 
 
 
-                    <Button disabled={isLoading} className="text-uppercase fw-medium" color="primary" block onClick={handleClick}>Save</Button>
+                    <Button className="text-uppercase fw-medium" color="primary" block onClick={handleClick}>Save</Button>
                 </Form>
             </Row>
             

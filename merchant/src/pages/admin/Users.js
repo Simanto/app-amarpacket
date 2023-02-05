@@ -1,7 +1,15 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useAppContext } from "../../context/appContext";
 import {TableAllUsers } from "../../modules";
 
 const AdminUsers = () =>{
+    const {dispatch} = useAppContext();
+    
+    useEffect(() => {
+      dispatch({type: "CLEAR_USER_VALUES"});
+    }, [])
+    
     return(
         <>
             {/* Header */}

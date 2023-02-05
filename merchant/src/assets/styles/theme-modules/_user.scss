@@ -11,3 +11,12 @@
         }
     }
 }
+@include media-breakpoint-down(sm){
+    .profile{
+        &-info{
+            .w-25{
+                min-width: 130px !important;
+            }
+        }
+    }
+}

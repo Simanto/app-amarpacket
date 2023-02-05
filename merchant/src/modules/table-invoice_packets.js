@@ -22,7 +22,7 @@ const TableInvoicePackets = () => {
             Header: "Packets ID",
             accessor: "invoice_packet_trackingID",
             Filter: TableColumnFilter,
-            Cell: ({ row }) =>  <span className='text-uppercase'>{row.values.invoice_packet_trackingID} </span>,
+            Cell: ({ row }) =>  (<><p className="mb-1 d-block d-sm-none text-secondary">Invoice ID</p><span className="text-uppercase fw-medium"> {row.values.invoice_packet_trackingID} </span></>),
           },
           {
             Header: "Customer Name",
@@ -38,19 +38,19 @@ const TableInvoicePackets = () => {
             Header: "Amount Collected",
             accessor: "invoice_packet_collection_amount",
             Filter: TableColumnFilter,
-            Cell: ({ row }) =>  <span className='text-uppercase'>TK. {row.values.invoice_packet_collection_amount} </span>,
+            Cell: ({ row }) => (<><p className="mb-1 d-block d-sm-none text-secondary">Collected</p><span className='fw-medium text-secondary'>TK. {row.values.invoice_packet_collection_amount}</span></>),
           },
           {
             Header: "Delivery Charge",
             accessor: "invoice_packet_delivery_charge",
             Filter: TableColumnFilter,
-            Cell: ({ row }) =>  <span className='text-uppercase'>TK. {row.values.invoice_packet_delivery_charge} </span>,
+            Cell: ({ row }) => (<><p className="mb-1 d-block d-sm-none text-danger">Cahrges</p><span className='fw-medium text-danger'>TK. {row.values.invoice_packet_delivery_charge}</span></>),
           },
           {
             Header: "Amount Paid",
             accessor: "invoice_packet_payables",
             Filter: TableColumnFilter,
-            Cell: ({ row }) =>  <span className='text-uppercase'>TK. {row.values.invoice_packet_payables} </span>,
+            Cell: ({ row }) =>  (<><p className="mb-1 d-block d-sm-none text-success">Recieved</p><span className='fw-medium text-success'>TK. {row.values.invoice_packet_payables}</span></>),
             Footer: (info) => {
                 const total = useMemo(
                   () => info.rows.reduce(

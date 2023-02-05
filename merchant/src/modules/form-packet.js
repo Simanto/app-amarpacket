@@ -23,6 +23,7 @@ const FormPacket = () =>{
         editPacket,
 
         // Packet Data
+        packet_trackingID,
         packet_customerName, 
         packet_customerPhone, 
         packet_customerArea, 
@@ -31,9 +32,7 @@ const FormPacket = () =>{
         packet_collectionAmount,
         packet_costPrice,
         packet_weight,
-        packet_delivery_charge,
         packet_specialInstruction,
-        packet_base_charge
     } = useAppContext();
     
     
@@ -41,25 +40,6 @@ const FormPacket = () =>{
     const handleInput = (e) =>{
         const { name, value } = e.target;
         handleChange({name, value})
-
-        if(e.target.name === "packet_collectionAmount" || e.target.name === "packet_weight"){
-            let weightCharge = 0;
-            let charge = parseInt(packet_base_charge);
-
-            if(!packet_weight){
-                weightCharge = 10;
-            }
-
-            if( packet_weight < 1 || packet_weight < 3){
-                weightCharge = (packet_weight * 10);
-            }
-
-            if(packet_weight>=3){
-                weightCharge = 30+((packet_weight-3)* 20);
-            }
-
-            const calcdelivercharge = charge+weightCharge;
-        }
     };
     
     
@@ -144,7 +124,7 @@ const FormPacket = () =>{
             dispatch({type:"CLEAR_ALERT"})
         }
 
-        if(isEditing){
+        if(isEditing && packet_trackingID){
             editPacket();
         } else {
             addPakcet();
@@ -157,29 +137,6 @@ const FormPacket = () =>{
             if(item.label === packet_customerArea){
                 setSelectedArea(item);
             }
-        })
-
-        // Calc Delivery Charge
-        let charge =  parseInt(packet_base_charge);
-        let weightCharge = 0;
-
-        if(!packet_weight){
-            weightCharge = 10;
-        }
-
-        if( packet_weight < 1 || packet_weight < 3){
-            weightCharge = (packet_weight * 10);
-        }
-
-        if(packet_weight>=3){
-            weightCharge = 30+((packet_weight-3)* 20);
-        }
-
-        const calcdeliverycharge = charge+weightCharge;
-
-        handleChange({
-            name: "packet_delivery_charge",
-            value: calcdeliverycharge
         })
 
     },[areaList])
@@ -209,7 +166,7 @@ const FormPacket = () =>{
                         {/* Card: End */}
 
                         <Row className="mt-3">
-                            <Col>
+                            <Col sm="12" md="6">
                                 <FormGroup>
                                     <Label for="customerName" className="fw-medium">
                                         Customer Name
@@ -300,7 +257,7 @@ const FormPacket = () =>{
                         {/* Card: End */}
                         {/* Weight and Order ID */}
                         <Row className="mt-3">
-                            <Col>
+                            <Col sm="12" md="6">
                                 <FormGroup>
                                     <Label for="Invoice ID" className="fw-medium">
                                         Order ID
@@ -326,7 +283,7 @@ const FormPacket = () =>{
                                 </FormGroup>
                             </Col>
 
-                            <Col>
+                            <Col sm="12" md="6">
                                 <FormGroup>
                                     <Label for="Amount to collect" className="fw-medium">
                                         Weight
@@ -354,7 +311,7 @@ const FormPacket = () =>{
 
                         {/* Product Price */}
                         <Row className="mt-3">
-                            <Col>
+                            <Col sm="12" md="6">
                                 <FormGroup>
                                     <Label for="Amount to collect" className="fw-medium">
                                         Amount to collect
@@ -381,7 +338,7 @@ const FormPacket = () =>{
                                 </FormGroup>
                             </Col>
 
-                            <Col>
+                            <Col sm="12" md="6">
                                 <FormGroup>
                                     <Label for="Invoice ID" className="fw-medium">
                                         Product Cost Price
@@ -431,8 +388,8 @@ const FormPacket = () =>{
 
                     {/* Button */}
                     <div className="mt-4">
-                        <Button disabled={isLoading} className="text-uppercase fw-medium" color="primary" block onClick={handleClick}>
-                            {isEditing ? 
+                        <Button   className="text-uppercase fw-medium" color="primary" block onClick={handleClick}>
+                            {isEditing && packet_trackingID ? 
                                "Update Packet"
                             : 
                                 "Add Packet"

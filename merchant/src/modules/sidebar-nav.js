@@ -18,7 +18,7 @@ const SideBarNav = () =>{
     return(
         <Fragment>
         {isMerchant ?  
-            <Nav vertical>
+            <Nav>
                 <NavItem> 
                     <NavLink
                         className="nav-link"
@@ -35,7 +35,7 @@ const SideBarNav = () =>{
                         to="/packets"
                         >
                         <div className="nav-icon nav-icon_packets"></div>
-                        Packets
+                        <span className="nav-label">Packets</span>
                     </NavLink>
                     
                 </NavItem>
@@ -47,7 +47,7 @@ const SideBarNav = () =>{
                         to="/customers"
                         >
                         <div className="nav-icon nav-icon_customers"></div>
-                        Customers
+                        <span className="nav-label">Customers</span>
                     </NavLink>
                     
                 </NavItem>
@@ -57,12 +57,21 @@ const SideBarNav = () =>{
                         to="/payments"
                         >
                         <div className="nav-icon nav-icon_payments"></div>
-                        Payments
+                        <span className="nav-label">Payments</span>
+                    </NavLink>
+                </NavItem>
+                <NavItem className="d-flex d-sm-none">
+                    <NavLink
+                        className="nav-link"
+                        to="/profile"
+                        >
+                        <div className="nav-icon nav-icon_settings"></div>
+                        <span className="nav-label">Settings</span>
                     </NavLink>
                 </NavItem>
             </Nav>
             :
-            <Nav vertical>
+            <Nav>
                 <NavItem> 
                     <NavLink
                         className="nav-link"
@@ -80,7 +89,7 @@ const SideBarNav = () =>{
                         to="admin/merchants"
                         >
                         <div className="nav-icon nav-icon_customers"></div>
-                        Merchants
+                        <span className="nav-label">Merchants</span>
                     </NavLink>
                     
                 </NavItem>
@@ -90,7 +99,7 @@ const SideBarNav = () =>{
                         to="admin/packets"
                         >
                         <div className="nav-icon nav-icon_packets"></div>
-                        Packets
+                        <span className="nav-label">Packets</span>
                     </NavLink>
                 </NavItem>
 
@@ -100,7 +109,16 @@ const SideBarNav = () =>{
                         to="admin/payments"
                         >
                         <div className="nav-icon nav-icon_payments"></div>
-                        Payments
+                        <span className="nav-label">Payments</span>
+                    </NavLink>
+                </NavItem>
+                <NavItem className="d-flex d-sm-none">
+                    <NavLink
+                        className="nav-link"
+                        to="admin/logout"
+                        >
+                        <div className="nav-icon nav-icon_logout"></div>
+                        <span className="nav-label">Logout</span>
                     </NavLink>
                 </NavItem>
             </Nav>

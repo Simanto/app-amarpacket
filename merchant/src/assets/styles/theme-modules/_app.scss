@@ -34,10 +34,13 @@
 @include media-breakpoint-down(sm){
     .app{
         &-main{
-            // &_body{
-            //     width: 100%;
-            //     padding-left: 260px;
-            // }
+            &_body{
+                width: 100%;
+                padding-left: 0;
+                padding-right: 0;
+                margin-bottom: 80px;
+                margin-top: 56px;
+            }
             &_registration{
                 padding-left: 0;
                 padding: 24px;

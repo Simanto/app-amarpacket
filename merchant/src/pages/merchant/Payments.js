@@ -19,7 +19,7 @@ const Payments = () =>{
             {/* End */}
 
             {/* Body */}
-            <div className="card mx-4 py-4">
+            <div className="card mx-4 py-4 table-payments">
                 <TableMerchantAllPayment />
             </div>
             {/* End */}

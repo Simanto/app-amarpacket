@@ -6,7 +6,6 @@ import { FormPacket } from "../../modules"
 
 const AddPacket = () =>{
     const [total, setTotal] = useState();
-    const [deliveryCharge, setDeliveryCharge] = useState();
 
     const {
         handleChange,
@@ -16,18 +15,18 @@ const AddPacket = () =>{
         packet_trackingID,
         packet_collectionAmount,
         packet_weight,
-        packet_base_charge,
         packet_merchant,
         packet_merchant_phone,
         packet_pcikup_address,
         packet_delivery_charge,
+        merchant_base_charge
     } = useAppContext();
     
     useEffect(() => {
 
         setAreaList();
-        
-        let charge =  parseInt(packet_base_charge) || parseInt(data.base_charge);
+
+        let charge =  parseInt(merchant_base_charge);
         let weightCharge = 0;
 
         if(!packet_weight){
@@ -44,16 +43,25 @@ const AddPacket = () =>{
 
         const calcdelivercharge = charge+weightCharge;
 
-        setDeliveryCharge(calcdelivercharge)
-
         setTotal(packet_collectionAmount - calcdelivercharge)
+        if(
+            calcdelivercharge
+        ){
+            handleChange({
+                name: "packet_delivery_charge",
+                value: calcdelivercharge
+            })
+        }
+        
 
-    }, [packet_collectionAmount,packet_weight,packet_base_charge,packet_delivery_charge])
+        console.log("calcdelivercharge", calcdelivercharge)
+
+    }, [packet_collectionAmount,packet_weight,merchant_base_charge,])
 
     return(
         <Container>
             <Row>
-                <Col md="8">
+                <Col>
                     {/* Header */}
                     <div className='app-header pt-4 pb-3'>
                         <div className="app-header_back pb-5">
@@ -63,35 +71,35 @@ const AddPacket = () =>{
                             </Link>
                         </div>
                         <div className='app-header_title'>
-                            {isEditing ? 
+                            {isEditing && packet_trackingID ? 
                                 <h4>Edit Packet  <span className="text-uppercase">#{packet_trackingID}</span></h4> 
                                 : 
                                 <h4>Add Packet</h4>
                             }
                         </div>
                     </div> 
-
+                </Col>
+            </Row>
+            <Row>
+                <Col md="8">
                     {/* End */}
                     <FormPacket  />
                     
                 </Col> 
                 
                 {/* Floating Card */}
-                <Col md="4" className="ps-4 mt-5 pt-5">
-                    <div className='app-header_date d-flex justify-content-end align-items-end'>
-                        <Link to={'/add-packet'} className='btn btn-primary text-uppercase fw-medium mb-2'> Add New Packet</Link>
-                    </div>
-                    <div className="bg-light mt-2">
+                <Col md="4" className="pt-3">
+                    <div className="bg-light">
                         <div className="header p-5 pb-4 border-bottom">
                             <h5 className="mb-3">
-                            {isEditing ? 
+                            {isEditing && packet_trackingID ? 
                                 packet_merchant
                                 :
                                 data.business_name
                             }
                             </h5>
-                            <p className="mb-2"><span className="fw-medium">Phone:</span> {isEditing ?  packet_merchant_phone : data.phone } </p>
-                            <p className="m-0 pb-3"><span className="fw-medium">Pickup Address:</span> {isEditing ? packet_pcikup_address : data.pickup_address}</p>
+                            <p className="mb-2"><span className="fw-medium">Phone:</span> {isEditing && packet_trackingID ?  packet_merchant_phone : data.phone } </p>
+                            <p className="m-0 pb-3"><span className="fw-medium">Pickup Address:</span> {isEditing && packet_trackingID ? packet_pcikup_address : data.pickup_address}</p>
                         </div>
                         <div className="p-5">
                             <h6 className="pb-3">You will recieve</h6>
@@ -101,7 +109,13 @@ const AddPacket = () =>{
                             </div>
                             <div className="d-flex justify-content-between broder border-bottom">
                                 <p>Delivery Charge</p>
-                                <p className="text-danger">(Tk. { packet_collectionAmount > 0 ? <> {packet_delivery_charge && packet_delivery_charge}</> : 0})</p>
+                                <p className="text-danger">(Tk. 
+                                    { packet_collectionAmount > 0 ? 
+                                        <>{packet_delivery_charge && packet_delivery_charge}</>
+                                        : 
+                                        0
+                                    })
+                                </p>
                             </div>
                             <div className="d-flex justify-content-between mt-4">
                                 <h4>Total</h4>

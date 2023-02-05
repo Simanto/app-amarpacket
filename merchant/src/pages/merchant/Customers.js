@@ -25,7 +25,7 @@ const Customers = () =>{
 
             {/* All Customers */}
             <div className='app-inner px-4 pt-1'>
-                <div className="card pt-2">
+                <div className="card pt-2 table-customers">
                     {isLoading ? 
                         <Loading />
                         :
