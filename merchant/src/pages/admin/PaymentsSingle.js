@@ -38,7 +38,7 @@ const PaymentsSingle = () => {
   return (
     <>
      {/* Header */}
-     <div className='app-header p-4 d-flex flex-row justify-content-between'>
+     <div className='app-header p-4 d-flex flex-column flex-sm-row justify-content-between'>
         <div className='app-header_title pt-1'>
             <h4>Invoice #<span className='text-uppercase'>{invoice_trackingID}</span></h4>
         </div>
@@ -53,54 +53,60 @@ const PaymentsSingle = () => {
       {/* Body */}
       <div className="card mx-4">
         <div id="pdf">
+          
           <div className='brand-logo m-5 visually-hidden' data-html2canvas-ignore="false" >
             <img src={Logo} alt="Amar Packet" />
           </div>
-          <div className='d-flex justify-content-between p-5'>
-            <div className='invoice-merchant'>
-              <h6>Invoice to</h6>
-              <h4 className='mb-2'> {invoice_merchant_business_name} </h4>
-              <p className='mb-1'>Phone: {invoice_merchant_business_phone} </p>
-              <p className='mb-1'>Address: {invoice_merchant_business_address} </p>
-            </div>
-            <div className='invoice-details'>
-              <Table
-              bordered
-              striped
-              >
-                <tbody>
-                  <tr>
-                    <th className='px-4'>
-                      Total Paid Out 
-                    </th>
-                    <td className='text-end px-4'>
-                      TK. <span> {invoice_total_payables} </span>
-                    </td>
-                  </tr>
+          
+          <div className='invoice-header p-5'>
+            <Row className='justify-content-between'>
+              <Col sm="12" md="8" className='invoice-merchant'>
+                <h6>Invoice to</h6>
+                <h4 className='mb-2'> {invoice_merchant_business_name} </h4>
+                <p className='mb-1'>Phone: {invoice_merchant_business_phone} </p>
+                <p className='mb-1'>Address: {invoice_merchant_business_address} </p>
+              </Col>
+              <Col sm="12" md="4"className='invoice-details table-payments_summary'>
+                <Table
+                bordered
+                striped
+                >
+                  <tbody>
+                    <tr>
+                      <th className='px-4'>
+                        Total Paid Out 
+                      </th>
+                      <td className='text-end px-4'>
+                        TK. <span> {invoice_total_payables} </span>
+                      </td>
+                    </tr>
 
-                  <tr>
-                    <th className='px-4'>
-                      Invoice Date
-                    </th>
-                    <td className='text-end px-4'>
-                        <Moment date={invoice_createdAt} format="MMM D, YYYY"/>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th className='px-4'>
-                      Invoice ID
-                    </th>
-                    <td className='text-end px-4 text-uppercase'>
-                      {invoice_trackingID}
-                    </td>
-                  </tr>
-                </tbody>
-              </Table>
-            </div>
+                    <tr>
+                      <th className='px-4'>
+                        Invoice Date
+                      </th>
+                      <td className='text-end px-4'>
+                          <Moment date={invoice_createdAt} format="MMM D, YYYY"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th className='px-4'>
+                        Invoice ID
+                      </th>
+                      <td className='text-end px-4 text-uppercase'>
+                        {invoice_trackingID}
+                      </td>
+                    </tr>
+                  </tbody>
+                </Table>
+              </Col>
+            </Row>
           </div>
-          <div className='invoice-packets'>
+          
+          <div className='invoice-packets table-payments_single'>
             <TableInvoicePackets />
           </div>
+          
           <div className='notice m-5 visually-hidden'>
             <h6>Notice:</h6>
             <ol>

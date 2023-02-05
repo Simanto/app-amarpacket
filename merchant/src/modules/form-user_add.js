@@ -552,12 +552,12 @@ const FormUserAdd = () => {
 
                     {/* Button */}
                     <div className="mt-4">
-                    {isEditing? 
-                        <Button disabled={isLoading} className="text-uppercase fw-medium" color="primary" block onClick={handleUpdate}>
+                    {isEditing && user_fullname? 
+                        <Button   className="text-uppercase fw-medium" color="primary" block onClick={handleUpdate}>
                             Update User Details
                         </Button>
                         : 
-                        <Button disabled={isLoading} className="text-uppercase fw-medium" color="primary" block onClick={handleClick}>
+                        <Button   className="text-uppercase fw-medium" color="primary" block onClick={handleClick}>
                             Add User
                         </Button>
                     }

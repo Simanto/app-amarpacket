@@ -34,6 +34,7 @@ export const createPacket = async (req, res, next) => {
       collectionAmount: req.body.packet_collectionAmount,
       costPrice: req.body.packet_costPrice,
       weight: req.body.packet_weight,
+      delivery_charge: req.body.packet_delivery_charge,
       specialInstruction:req.body.packet_specialInstruction,
       paymentStatus: "pending",
     })

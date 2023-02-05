@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import classnames from "classnames";
 import { Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap"
 import { AllPackets, TableMerchantDelivered, TableMerchantOutForDelivery, TableMerchantReturned } from "../../modules";
 import { Link } from "react-router-dom";
+import { useAppContext } from "../../context/appContext";
 
 const Packets = () =>{
+    const{dispatch} = useAppContext()
 
     // State for current active Tab
     const [activeTab, setActiveTab] = useState("all");
@@ -13,6 +15,11 @@ const Packets = () =>{
     const toggle = (tab) => {
         if (activeTab !== tab) setActiveTab(tab);
     }
+
+    useEffect(() => {
+      dispatch({type:"CLEAR_PACKET_VALUES"})
+    }, [])
+    
 
     return(
         <div>
@@ -28,85 +35,87 @@ const Packets = () =>{
             {/* End */}
 
             {/* Card: Tab - Packets Table */}
-            <div className="card mx-4">
-                {/* Tab - Header */}
-                <Nav tabs className="ps-4">
-                    <NavItem>
-                        <NavLink
-                            className={classnames({
-                                active:
-                                    activeTab === "all"
-                            })}
-                            onClick={() => { toggle("all"); }}
-                        >
-                            All
-                        </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink
+            <div className="app-inner mx-4">
+                <div className="card">
+                    {/* Tab - Header */}
+                    <Nav tabs className="ps-4">
+                        <NavItem>
+                            <NavLink
                                 className={classnames({
                                     active:
-                                        activeTab === "onRoute"
+                                        activeTab === "all"
                                 })}
-                                onClick={() => { toggle("onRoute"); }}
+                                onClick={() => { toggle("all"); }}
                             >
-                                On Route
-                        </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink
-                                className={classnames({
-                                    active:
-                                        activeTab === "delivered"
-                                })}
-                                onClick={() => { toggle("delivered"); }}
-                            >
-                                Delivered
-                        </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink
-                                className={classnames({
-                                    active:
-                                        activeTab === "returned"
-                                })}
-                                onClick={() => { toggle("returned"); }}
-                            >
-                                Returned
-                        </NavLink>
-                    </NavItem>
-                </Nav>
-                {/* End: Tab - Header */}
-                {/* TAB - Content */}
-                <TabContent activeTab={activeTab}>
-                    {/* Table: All Packets*/}
-                    <TabPane tabId="all" className="p-0">
-                        <AllPackets />
-                    </TabPane>
-                    {/* End */}
-                    {/* Table: On Route Packet */}
-                    <TabPane tabId="onRoute" className="p-0">
-                        <div>
-                            <TableMerchantOutForDelivery />
-                        </div>
-                    </TabPane>
-                    {/* End */}
-                    {/* Table: On Route Packet */}
-                    <TabPane tabId="delivered" className="p-0">
-                        <div>
-                            <TableMerchantDelivered />
-                        </div>
-                    </TabPane>
-                    {/* End */}
-                    {/* Table: On Route Packet */}
-                    <TabPane tabId="returned" className="p-0">
-                        <div>
-                           <TableMerchantReturned />
-                        </div>
-                    </TabPane>
-                    {/* End */}
-                </TabContent>
-                {/* End: TAB - Content */}
+                                All
+                            </NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink
+                                    className={classnames({
+                                        active:
+                                            activeTab === "onRoute"
+                                    })}
+                                    onClick={() => { toggle("onRoute"); }}
+                                >
+                                    On Route
+                            </NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink
+                                    className={classnames({
+                                        active:
+                                            activeTab === "delivered"
+                                    })}
+                                    onClick={() => { toggle("delivered"); }}
+                                >
+                                    Delivered
+                            </NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink
+                                    className={classnames({
+                                        active:
+                                            activeTab === "returned"
+                                    })}
+                                    onClick={() => { toggle("returned"); }}
+                                >
+                                    Returned
+                            </NavLink>
+                        </NavItem>
+                    </Nav>
+                    {/* End: Tab - Header */}
+                    {/* TAB - Content */}
+                    <TabContent activeTab={activeTab}>
+                        {/* Table: All Packets*/}
+                        <TabPane tabId="all" className="p-0 table-packets">
+                            <AllPackets />
+                        </TabPane>
+                        {/* End */}
+                        {/* Table: On Route Packet */}
+                        <TabPane tabId="onRoute" className="p-0">
+                            <div className="table-packets">
+                                <TableMerchantOutForDelivery />
+                            </div>
+                        </TabPane>
+                        {/* End */}
+                        {/* Table: On Route Packet */}
+                        <TabPane tabId="delivered" className="p-0">
+                            <div className="table-packets">
+                                <TableMerchantDelivered />
+                            </div>
+                        </TabPane>
+                        {/* End */}
+                        {/* Table: On Route Packet */}
+                        <TabPane tabId="returned" className="p-0">
+                            <div className="table-packets">
+                            <TableMerchantReturned />
+                            </div>
+                        </TabPane>
+                        {/* End */}
+                    </TabContent>
+                    {/* End: TAB - Content */}
+                </div>
             </div>
             {/* End */}
         </div>

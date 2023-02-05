@@ -1,7 +1,15 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useAppContext } from "../../context/appContext";
 import {TableAllUsers } from "../../modules";
 
 const AdminUsers = () =>{
+    const {dispatch} = useAppContext();
+    
+    useEffect(() => {
+      dispatch({type: "CLEAR_USER_VALUES"});
+    }, [])
+    
     return(
         <>
             {/* Header */}
@@ -10,7 +18,7 @@ const AdminUsers = () =>{
                     <h4>All Users</h4>
                 </div>
                 <div className='app-header_date d-flex justify-content-center align-items-center'>
-                    <Link to={'/user/new'} className='btn btn-primary text-uppercase fw-medium mb-2'> Add User</Link>
+                    <Link to={'/admin/user/new'} className='btn btn-primary text-uppercase fw-medium mb-2'> Add User</Link>
                 </div>
             </div>
             {/* End */}

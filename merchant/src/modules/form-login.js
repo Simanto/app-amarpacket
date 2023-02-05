@@ -112,7 +112,7 @@ const LoginForm = () => {
                             />
                         </InputGroup>
                     </FormGroup>
-                    <Button disabled={isLoading} className="text-uppercase fw-medium" color="primary" block onClick={handleClick}>Login</Button>
+                    <Button  className="text-uppercase fw-medium" color="primary" block onClick={handleClick}>Login</Button>
                 </Form>
             </Row>
             

@@ -51,3 +51,19 @@
         }
     }
 }
+
+
+@include media-breakpoint-down(sm){
+    .action{
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        
+        span{
+            padding: 0 5px;
+        }
+    }
+}

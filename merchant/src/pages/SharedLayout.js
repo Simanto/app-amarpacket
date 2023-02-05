@@ -7,7 +7,7 @@ import { useAppContext } from "../context/appContext"
 // Import Assets
 import {IconArrowRightS, IconUser, Logo, LogoLight, LogoPrint} from "../assets/images/index.js"
 import { useEffect } from "react"
-import { Container, Row } from "reactstrap"
+import { Col, Container, Row } from "reactstrap"
 
 
 const SharedLayout = () => {
@@ -86,24 +86,27 @@ const SharedLayout = () => {
         {/* End of App Sidebar */}
         
         {/* App Main */}
-        <Container fluid className="app-main_body position-relative min-vh-100">
-            <Row className="bg-primary_dark">
-                <div className="app-sidebar_sm d-flex d-sm-none lign-items-center jsutify-content-start">
-                    <div>
-                        <Link className="menu-wrapper">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="icon-36"><path fill="none" d="M0 0h24v24H0z"/><path d="M22 12.999V20a1 1 0 0 1-1 1h-8v-8.001h9zm-11 0V21H3a1 1 0 0 1-1-1v-7.001h9zM11 3v7.999H2V4a1 1 0 0 1 1-1h8zm10 0a1 1 0 0 1 1 1v6.999h-9V3h8z" fill="currentColor"/></svg>
-                        </Link>
-                    </div>
-                    <div className="logo">
-                        <img src={LogoLight} alt="Amar Packet" />
-                    </div>
-                    <div>
-                        <Link to="#" className="btn btn-sm btn-outline-primary">Add Packet</Link>
-                    </div>
+        
+        <Row className="bg-primary_dark m-0">
+            <Col className="app-sidebar_sm d-flex d-sm-none align-items-center justify-content-between">
+                <div className="logo m-1 ps-2">
+                    <img src={LogoLight} alt="Amar Packet" />
                 </div>
-            </Row>
+                {user.role === "merchant" ? 
+                    <div>
+                        <Link to={'/add-packet'} className="btn btn-sm btn-primary">Add Packet</Link>
+                    </div>
+                    :
+                    ""
+                }
+            </Col>
+        </Row>
+        <div className='app-sidebar_nav bg-primary_dark d-block d-sm-none'>
+            <SideBarNav />
+        </div>
+        <Container fluid className="app-main_body position-relative min-vh-100 pb-5">
 
-            {/* {isAdmin ? 
+            {isAdmin ? 
                 <Outlet /> 
                 :
                 <>
@@ -113,7 +116,7 @@ const SharedLayout = () => {
                     <PendingVerification />
                 }
                 </>
-            } */}
+            }
         </Container>
         {/* End of App Main */}
     </div>

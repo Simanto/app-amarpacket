@@ -10,6 +10,8 @@ import {
     GET_DATA_SUCESS,
     ASYNC_SUCCESS,
     CLEAR_VALUES,
+    CLEAR_PACKET_VALUES,
+    CLEAR_USER_VALUES,
     HANDLE_CHANGE,
     GET_PACKETS_BEGIN,
     GET_PACKETS_SUCCESS,
@@ -72,7 +74,7 @@ const reducer = (state,action) => {
                 ...state,
                 showAlert: true,
                 alertType: "danger",
-                alertText: "Please provide all the details."
+                alertText: "Please provide all the details.",
             }
         break;
 
@@ -81,7 +83,7 @@ const reducer = (state,action) => {
                 ...state,
                 showAlert: false,
                 alerttype: "",
-                alertText: ""
+                alertText: "",
             }
     break;
 
@@ -213,7 +215,7 @@ const reducer = (state,action) => {
             return{
                 ...state,
                 isLoading: false,
-                allPackets: action.payload.data
+                allPackets: action.payload.data,
             }
         break;
 
@@ -232,7 +234,7 @@ const reducer = (state,action) => {
             return{
                 ...state,
                 isLoading: false,
-                allCustomer: action.payload.data
+                allCustomer: action.payload.data,
             }
         break;
 
@@ -249,14 +251,14 @@ const reducer = (state,action) => {
             return{
                 ...state,
                 isLoading: false,
-                singlePacket: action.payload.packet
+                singlePacket: action.payload.packet,
             }
         break;
 
         case CLEAR_PACKET:
             return{
                 ...state,
-                singlePacket: ""
+                singlePacket: "",
             }
         break;
 
@@ -271,7 +273,7 @@ const reducer = (state,action) => {
         case SET_AREA:
             return{
                 ...state,
-                areaList: action.payload.options
+                areaList: action.payload.options,
             }
         break;
 
@@ -303,7 +305,7 @@ const reducer = (state,action) => {
         case HANDLE_CHANGE:
             return{
                 ...state,
-                [action.payload.name]: action.payload.value 
+                [action.payload.name]: action.payload.value ,
             }
         break;
 
@@ -321,7 +323,7 @@ const reducer = (state,action) => {
             return{
                 ...state,
                 isLoading: false,
-                packetsForDelivery: action.payload.packets
+                packetsForDelivery: action.payload.packets,
             }
         break;
 
@@ -393,7 +395,7 @@ const reducer = (state,action) => {
             
 
         case CLEAR_VALUES:
-            console.log("clear value triggered")
+
             const initialState  = {
                 idEditing: false,
                 
@@ -441,7 +443,57 @@ const reducer = (state,action) => {
                 merchant_notes: "",
 
 
-                // User Data
+                
+
+                // Invoice
+                invoice_createdAt:"",
+                invoiceID:"",
+                invoice_status:"",
+                invoice_trackingID:"",
+                invoice_merchant_business_name:"",
+                invoice_merchant_business_phone:"",
+                invoice_merchant_business_address:"",
+                invoice_total_payables:"",
+            };
+            return{
+                ...state,
+                ...initialState,
+            }
+        break;
+
+        case CLEAR_PACKET_VALUES:
+            const clearPacket = {
+                idEditing: false,
+                editPacketID: "",
+                packet_trackingID:"",
+                packet_customerName: "",
+                packet_customerPhone: "",
+                packet_customerCity: "dhaka",
+                packet_customerArea: "",
+                packet_customerAddress: "",
+                packet_merchantInvoice: "",
+                packet_merchant:"",
+                packet_merchant_phone:"",
+                packet_pcikup_area:"",
+                packet_pcikup_address:"",
+                packet_collectionAmount: "",
+                packet_delivery_charge:"",
+                packet_costPrice: "",
+                packet_weight: "",
+                packet_specialInstruction: "",
+                packet_status:"",
+                packet_status_message:"",
+                packet_status_category:"",
+            }
+            return{
+                ...state,
+                ...clearPacket
+            }
+        break;
+
+        case CLEAR_USER_VALUES:
+            const clearUser = {
+                idEditing: false,
                 user_fullname:"",
                 user_email:"",
                 user_password:"",
@@ -458,23 +510,12 @@ const reducer = (state,action) => {
                 user_emergency_contact_relation:"",
                 user_emergency_contact_area:"",
                 user_emergency_contact_address:"",
-
-                // Invoice
-                invoice_createdAt:"",
-                invoiceID:"",
-                invoice_status:"",
-                invoice_trackingID:"",
-                invoice_merchant_business_name:"",
-                invoice_merchant_business_phone:"",
-                invoice_merchant_business_address:"",
-                invoice_total_payables:"",
-            };
+            }
             return{
                 ...state,
-                initialState,
+                ...clearUser
             }
         break;
-
 
         case EDIT_PACKET_BEGIN:
             return{

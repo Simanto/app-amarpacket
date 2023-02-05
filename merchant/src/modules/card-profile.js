@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import classnames from "classnames";
-import { Col,Button, Modal, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
+import { Col,Button, Modal, Nav, NavItem, NavLink, TabContent, TabPane, Card } from "reactstrap";
 import { useAppContext } from "../context/appContext"
 import FormAddBank from "./form-add_bank";
 import FormAddMFS from "./form-add_mfs";
@@ -59,7 +59,7 @@ const CardProfile = () => {
     }, [])
 
   return (
-    <div className='card'>
+    <Card className="my-3">
         {/* Header */}
         <div className="d-flex flex-row justify-content-between p-4">
             <div className="car-user_info">
@@ -108,7 +108,7 @@ const CardProfile = () => {
         {/* TAB - Content */}
         <TabContent activeTab={activeTab}>
             <TabPane tabId="profile" className="p-4">
-                <div className="card profile d-flex flex-row align-items-start p-4 my-3">
+                <div className="card profile d-flex flex-column flex-sm-row align-items-start p-4 mb-3">
                     <div className="profile-info flex-grow-1">
                         <div className="d-flex justify-content-start pb-1">
                             <p className="text-dark w-25">Owner Name:</p>
@@ -151,7 +151,7 @@ const CardProfile = () => {
             </TabPane>
             <TabPane tabId="payment_method" className="p-4">
                 {/* Bank Account */}
-                <div className="card  p-4 my-3">
+                <div className="card  p-4 mb-3">
                     <h6 className="pb-3">Bank Account</h6>
                     {merchant_bank_name ? 
                     <div className="payment_bank d-flex flex-row align-items-start">
@@ -233,7 +233,8 @@ const CardProfile = () => {
             {form === "password" && <FormPassword />}
         </Modal>
         {/* End: modal */}
-    </div>
+
+    </Card>
   )
 }
 

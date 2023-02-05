@@ -108,7 +108,7 @@ const FormAddBank = () => {
                                 value={merchant_account_number}
                             />
                     </FormGroup>
-                    <Button disabled={isLoading} className="text-uppercase fw-medium" color="primary" block onClick={handleClick}>SAVE</Button>
+                    <Button className="text-uppercase fw-medium" color="primary" block onClick={handleClick}>SAVE</Button>
                 </Form>
             </Row>
             

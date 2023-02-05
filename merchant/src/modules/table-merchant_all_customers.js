@@ -39,16 +39,19 @@ const TableMerchantAllCustomer = () => {
         Header: "Total Packets",
         accessor: "customer_total_packets",
         Filter: TableColumnFilter,
+        Cell: ({ row }) => (<><p className="mb-1 d-block d-sm-none text-secondary">Total</p><span className="text-uppercase fw-medium text-secondary">{row.values.customer_total_packets}</span></>),
       },
       {
         Header: "Delivered",
         accessor: "customer_total_delivered",
         Filter: TableColumnFilter,
+        Cell: ({ row }) => (<><p className="mb-1 d-block d-sm-none text-success">Delivered</p><span className="text-uppercase fw-medium text-success">{row.values.customer_total_delivered}</span></>),
       },
       {
         Header: "Fialed",
         accessor: "customer_total_canceled",
         Filter: TableColumnFilter,
+        Cell: ({ row }) => (<><p className="mb-1 d-block d-sm-none text-danger">Failed</p><span className="text-uppercase fw-medium text-danger">{row.values.customer_total_canceled}</span></>),
       },
       {
         Header: "Success Rate",

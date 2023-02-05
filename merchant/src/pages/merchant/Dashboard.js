@@ -39,21 +39,27 @@ const Dashboard = () =>{
             <div className='app-inner px-4 pt-1'>
                 <div className='app-inner_body w-100 d-block'>
                     <Row>
-                        <Col>
+                        <Col sm="12" md="3">
                             <CardStatDeleveries />
                         </Col>
-                        <Col>
+                        {/* Spacer for sm */}
+                        <div className='d-block d-sm-none pb-4'></div>
+                        <Col sm="12" md="3">
                             <CardStatPayments />
                         </Col>
-                        <Col>
+                        {/* Spacer for sm */}
+                        <div className='d-block d-sm-none pb-4'></div>
+                        <Col sm="12" md="3">
                             <CardInvoices />
                         </Col>
-                        <Col>
+                        {/* Spacer for sm */}
+                        <div className='d-block d-sm-none pb-4'></div>
+                        <Col sm="12" md="3">
                             <CardAddPacket />
                         </Col>
                     </Row>
                 </div>
-                <div className='card mt-5'>
+                <div className='card mt-5 table-packets'>
                     <h6 className='pt-4 p-4 border-bottom'>PACKETS OUT FOR DLIEVERY</h6>
                     <TableMerchantOutForDelivery />
                 </div>

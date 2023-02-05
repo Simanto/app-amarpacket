@@ -12,7 +12,10 @@
         }
 
         &_sm{
-            height: 50px;
+            height: 56px;
+            position: fixed;
+            background-color: #45370D;
+            z-index: $zindex-fixed;
             .menu-wrapper{
                 display: block;
             }

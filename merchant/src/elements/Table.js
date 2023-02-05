@@ -38,7 +38,7 @@ const  ElementTable =({ initialState, columns, data, filterCmponents })=> {
 
     return (
         <div>
-            <div className="d-flex m-2">
+            <div className="d-flex m-2 table-filter">
                     {filterCmponents.indexOf("search") !== -1 ?
                         <Col>
                             <TableFilter filter={globalFilter} setFilter={setGlobalFilter} />
@@ -118,9 +118,8 @@ const  ElementTable =({ initialState, columns, data, filterCmponents })=> {
                         );
                     })
                     :
-
                         <tr className="position-relative">
-                            <td className="w-100 position-absolute text-center">No packets found</td>
+                            <td className="w-100 position-absolute text-center">No data found</td>
                         </tr>
                     }
                 </tbody>

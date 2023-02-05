@@ -21,3 +21,13 @@
         }
     }
 }
+
+@include media-breakpoint-down(sm){
+    .nav-tabs{
+        margin-bottom: 10px;
+        .nav-link{
+            font-size: 12px;
+            padding: 10px 15px;
+        }
+    }
+}

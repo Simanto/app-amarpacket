@@ -371,7 +371,7 @@ const FromRegistration = () => {
             {/* Row: End */}
             <Row className="justify-content-center mt-4">
                 <Col md="6" className="p-0">
-                    <Button disabled={isLoading} className="text-uppercase fw-medium" color="primary" block onClick={handleClick}>Create Account</Button>
+                    <Button   className="text-uppercase fw-medium" color="primary" block onClick={handleClick}>Create Account</Button>
                 </Col>
             </Row>
             

@@ -64,7 +64,7 @@ const initialState = {
     merchant_business_name:"",
     merchant_business_phone:"",
     merchant_product_type: "",
-    merchant_base_charge: 50,
+    merchant_base_charge: "" || 50,
     merchant_pickup_area:"",
     merchant_pickup_address:"",
     merchant_fb_page:"",
@@ -103,7 +103,6 @@ const initialState = {
     packet_merchant_phone:"",
     packet_pcikup_area:"",
     packet_pcikup_address:"",
-    packet_base_charge:"" || 50,
     packet_status:"",
     packet_status_message:"",
     packet_status_category:"",
@@ -262,7 +261,7 @@ const AppProvider = ({children}) => {
             return
         } catch (err) {
             console.log(err);
-            // logOut();
+            logOut();
         }
     }
 
@@ -272,16 +271,16 @@ const AppProvider = ({children}) => {
         try {
             const res = await axiosFetch.get("/api/v1/admin/get");
             const {data} = res
-            dispatch({type:"GET_DATA_SUCESS", payload: data})
-
-            setTimeout(() => {
-                dispatch({type:"CLEAR_ALERT"})
-            }, 1000);
+            dispatch({type:"GET_DATA_SUCESS", payload: data});
 
             return
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
         }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 1000);
     }
 
     // Add or Update Payment Method Bank
@@ -303,16 +302,14 @@ const AppProvider = ({children}) => {
 
             dispatch({type:"ASYNC_SUCCESS", payload: {msg:"Thank you, bank details has saved"}})
 
-            setTimeout(() => {
-                dispatch({type:"CLEAR_ALERT"})
-            }, 1000);
-
-            return
-
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
-            return
         }
+
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 1000);
     }
 
     const addPaymentMethodMFS = async () => {
@@ -325,16 +322,15 @@ const AppProvider = ({children}) => {
                 merchant_nagad_number
             });
 
-            dispatch({type:"ASYNC_SUCCESS", payload: {msg:"Thank you, payment details has been saved"}})
+            dispatch({type:"ASYNC_SUCCESS", payload: {msg:"Thank you, payment details has been saved"}});
 
-            setTimeout(() => {
-                dispatch({type:"CLEAR_ALERT"})
-            }, 1000);
-
-            return
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
         }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 1000);
     }
     // ************************************
     //              Packets
@@ -343,7 +339,6 @@ const AppProvider = ({children}) => {
     // Add New Pcket
     const addPakcet = async (newPacket) =>{
         dispatch({type:"ADD_PACKET_BEGIN"})
-
         const { 
             packet_customerName, 
             packet_customerPhone, 
@@ -372,11 +367,20 @@ const AppProvider = ({children}) => {
                 packet_specialInstruction,
                 packet_delivery_charge,
             });
+
             dispatch({type:"ADD_PACKET_SUCCESS"});
-            dispatch({type:"CLEAR_VALUES"});
+            
+            setTimeout(() => {
+                dispatch({type: "CLEAR_PACKET_VALUES"});
+            }, 3000);
+
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
         }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 3000);
     }
 
     // Get All Packet
@@ -386,16 +390,16 @@ const AppProvider = ({children}) => {
         
         try {
             const {data} = await axiosFetch.get("/api/v1/packets/all");
+
             dispatch({type:"GET_PACKETS_SUCCESS",payload: {data}})
 
-            return
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
-
-            setTimeout(() => {
-                dispatch({type:"CLEAR_ALERT"})
-            }, 1000);
         }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 1000);
     }
 
     const packetOutForDelivery = async () =>{
@@ -406,15 +410,12 @@ const AppProvider = ({children}) => {
             const {packets} = data[0];
             dispatch({type: "FILTER_PACKET_DELIVERY", payload: {packets}})
 
-            return
-
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
-
-            setTimeout(() => {
-                dispatch({type:"CLEAR_ALERT"})
-            }, 1000);
         }
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 1000);
     }
 
     const getPacketDelivered = async () =>{
@@ -423,14 +424,13 @@ const AppProvider = ({children}) => {
             const {data} = await axiosFetch.get("/api/v1/packets/delivered");
             const {packets} = data[0];
             dispatch({type: "FILTER_PACKET_DELIVERED", payload: {packets}})
-            return
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
-
-            setTimeout(() => {
-                dispatch({type:"CLEAR_ALERT"})
-            }, 1000);
         }
+        
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 1000);
     }
 
     const getPacketReturned = async () =>{
@@ -439,14 +439,13 @@ const AppProvider = ({children}) => {
             const {data} = await axiosFetch.get("/api/v1/packets/returned");
             const {packets} = data[0];
             dispatch({type: "FILTER_PACKET_RETURNED", payload: {packets}})
-            return
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
-
-            setTimeout(() => {
-                dispatch({type:"CLEAR_ALERT"})
-            }, 1000);
         }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 1000);
     }
     const getAllPacketAdmin = async () =>{
 
@@ -455,16 +454,14 @@ const AppProvider = ({children}) => {
         try {
             const {data} = await axiosFetch.get("/api/v1/admin/packets/all");
             dispatch({type:"GET_PACKETS_SUCCESS",payload: {data}})
-            return
             
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
-
-            setTimeout(() => {
-                dispatch({type:"CLEAR_ALERT"})
-            }, 1000);
-            return
         }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 1000);
     }
 
     // Get Single Packet
@@ -477,13 +474,13 @@ const AppProvider = ({children}) => {
             const {data} = await axiosFetch.get(`/api/v1/packets/${packetid}`)
             const packet = data[0];
             dispatch({type:"GET_PACKET_SUCCESS", payload: {packet}})
-            return
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
-            setTimeout(() => {
-                dispatch({type:"CLEAR_ALERT"})
-            }, 1000);
         }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 1000);
     }
 
     const setAreaList = () =>{
@@ -516,7 +513,7 @@ const AppProvider = ({children}) => {
     }
 
     const setEditPacket = (id) =>{
-        dispatch({type: "CLEAR_VALUES"})
+        dispatch({type: "CLEAR_PACKET_VALUES"})
         dispatch({type:"SET_EDIT_PACKET", payload: {id}})
     }
 
@@ -555,10 +552,11 @@ const AppProvider = ({children}) => {
             
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
-            setTimeout(() => {
-                dispatch({type:"CLEAR_ALERT"})
-            }, 3000);
         }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 3000);
     }
 
     const updatePacketStatus = async () =>{
@@ -586,21 +584,13 @@ const AppProvider = ({children}) => {
 
             dispatch({type:"EDIT_STATUS_SUCCESS", payload: {data}})
 
-            setTimeout(() => {
-                dispatch({type:"CLEAR_ALERT"})
-            }, 3000);
-            return
-
         } catch (err) {
-            
-
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
-
-            setTimeout(() => {
-                dispatch({type:"CLEAR_ALERT"})
-            }, 3000);
-            return
         }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 1000);
     }
 
     const getAllCustomers = async ()=>{
@@ -623,6 +613,10 @@ const AppProvider = ({children}) => {
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
         }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 1000);
     }
 
     const setMerchantID =(id) =>{
@@ -651,6 +645,10 @@ const AppProvider = ({children}) => {
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
         }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 1000);
     }
 
     const UpdateMerchant = async () =>{
@@ -704,6 +702,10 @@ const AppProvider = ({children}) => {
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
         }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 1000);
     }
 
     const merchantChangePassword = async (passwords) =>{
@@ -722,6 +724,10 @@ const AppProvider = ({children}) => {
 
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
         }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 1000);
     }
 
     const adminAddUser = async () =>{
@@ -747,7 +753,7 @@ const AppProvider = ({children}) => {
         } = state
 
         try {
-            await axios.post('/admin/user/add',{
+            await axios.post('/api/v1/admin/user/add',{
                 user_fullname,
                 user_email,
                 user_password,
@@ -779,6 +785,10 @@ const AppProvider = ({children}) => {
 
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
         }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 1000);
     }
 
     const adminAllUser = async () =>{
@@ -789,10 +799,14 @@ const AppProvider = ({children}) => {
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
         }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 1000);
     }
 
     const setEditUser = (id) =>{
-        dispatch({type: "CLEAR_VALUES"})
+        dispatch({type: "CLEAR_USER_VALUES"})
         dispatch({type:"SET_EDIT_USER", payload: {id}})
     }
 
@@ -844,6 +858,10 @@ const AppProvider = ({children}) => {
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
         }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 1000);
     }
 
     const getAllAgent = async () =>{
@@ -859,6 +877,10 @@ const AppProvider = ({children}) => {
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
         }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 1000);
     }
 
     const resetFilterValues = () =>{
@@ -873,10 +895,11 @@ const AppProvider = ({children}) => {
             dispatch({type:"CREATE_INVOICES_SUCCESS"})
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
-            setTimeout(() => {
-                dispatch({type:"CLEAR_ALERT"})
-            }, 3000);
         }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 3000);
     }
 
     const adminGetAllInvoice = async () =>{
@@ -887,6 +910,10 @@ const AppProvider = ({children}) => {
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
         }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 1000);
     }
 
     const setEditInvoice = (id) =>{
@@ -911,10 +938,11 @@ const AppProvider = ({children}) => {
             dispatch({type: "UPDATE_INVOICE_SUCCESS"})
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
-            setTimeout(() => {
-                dispatch({type:"CLEAR_ALERT"})
-            }, 3000);
         }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 3000);
     }
 
     const admingGetInvoicePacketsByID = async () =>{
@@ -925,10 +953,11 @@ const AppProvider = ({children}) => {
             dispatch({type: "GET_INVOICE_SUCCESS", payload: {data}});
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
-            setTimeout(() => {
-                dispatch({type:"CLEAR_ALERT"})
-            }, 3000);
         }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 3000);
     }
 
 

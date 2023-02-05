@@ -316,7 +316,7 @@ export const FormEditMerchant = () =>{
 
                 {/* Button */}
                 <div className="mt-4">
-                    <Button disabled={isLoading} className="text-uppercase fw-medium" color="primary" block onClick={handleClick}>
+                    <Button   className="text-uppercase fw-medium" color="primary" block onClick={handleClick}>
                         Update Details
                     </Button>
                 </div>
