@@ -61,7 +61,7 @@ const CardProfile = () => {
   return (
     <Card className="my-3">
         {/* Header */}
-        <div className="d-flex flex-row justify-content-between p-4">
+        <div className="d-flex flex-column flex-sm-row justify-content-between p-4">
             <div className="car-user_info">
                 <h3> {merchant_name} </h3>
                 <p> 
@@ -73,8 +73,8 @@ const CardProfile = () => {
                     </span>
                 </p>
             </div>
-            <div className="align-self-center">
-                <div className="btn btn-primary btn-logout text-uppercase fw-medium" onClick={handleClick}>Logout</div>
+            <div className="w-sm-100 align-self-center">
+                <div className="btn btn-primary d-block btn-logout text-uppercase fw-medium" onClick={handleClick}>Logout</div>
             </div>
         </div>
         {/* End: header */}

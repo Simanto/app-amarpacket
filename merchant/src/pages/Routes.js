@@ -13,13 +13,10 @@ import {AgentDashboard, AgentPickup, AgentDeliveries, AgentProfile} from "./Agen
 import TestConnection from "./auth/TestConnection.js";
 import Error from "./Error.js";
 import { useAppContext } from "../context/appContext.js";
+import Logout from "./Logout.js";
 
 const PageRoutes = () => {
   const {logOut} = useAppContext();
-  const handleLogut = () =>{
-    console.log("logout")
-    logOut()
-  }
     return (
       // Routes
         <Routes>
@@ -78,7 +75,7 @@ const PageRoutes = () => {
                 <Route path={"payments"} element={<AdminPayments />}></Route>
                 <Route path={"payment/:id"} element={<PaymentsSingle />}></Route>
 
-                {/* <Route path={"logout"} element={handleLogut}></Route> */}
+                <Route path={"logout"} element={<Logout />}></Route>
               </Route>
 
           </Route>
