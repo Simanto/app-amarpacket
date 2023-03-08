@@ -13,7 +13,7 @@ merchant/.pnp
 /coverage
 
 # production
-merchant/build
+# merchant/build
 
 # misc
 .DS_Store
