@@ -25,6 +25,12 @@ const TableInvoicePackets = () => {
             Cell: ({ row }) =>  (<><p className="mb-1 d-block d-sm-none text-secondary">Invoice ID</p><span className="text-uppercase fw-medium"> {row.values.invoice_packet_trackingID} </span></>),
           },
           {
+            Header: "Order ID",
+            accessor: "invoice_packet_orderID",
+            Filter: TableColumnFilter,
+            Cell: ({ row }) =>  (<><p className="mb-1 d-block d-sm-none text-secondary">Invoice ID</p><span className="text-uppercase fw-medium"> {row.values.invoice_packet_orderID} </span></>),
+          },
+          {
             Header: "Customer Name",
             accessor: "invoice_packet_customer_name",
             Filter: TableColumnFilter,
@@ -45,6 +51,15 @@ const TableInvoicePackets = () => {
             accessor: "invoice_packet_delivery_charge",
             Filter: TableColumnFilter,
             Cell: ({ row }) => (<><p className="mb-1 d-block d-sm-none text-danger">Cahrges</p><span className='fw-medium text-danger'>TK. {row.values.invoice_packet_delivery_charge}</span></>),
+            Footer: (info) => {
+              const total = useMemo(
+                () => info.rows.reduce(
+                  (sum, row) => 
+                    parseInt(row.values.invoice_packet_delivery_charge) + parseInt(sum), 0
+                ),[info.rows]
+              );
+              return <span className="fw-medium text-danger">TK. {total}</span>
+          }
           },
           {
             Header: "Amount Paid",
