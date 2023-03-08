@@ -16,13 +16,12 @@ const PacketView = () =>{
     const printRef = useRef(null);
 
     useEffect(() => {
-
         let charge =  singlePacket.delivery_charge;            
         setDeliveryCharge(((charge)/1.15).toFixed(2));
         setVat((charge-deliveryCharge).toFixed(2));
         setTotal(singlePacket.collectionAmount-charge)
 
-    }, [params,deliveryCharge,vat,data,total,singlePacket]);
+    }, [params,deliveryCharge,singlePacket]);
 
     const handlePrint = useReactToPrint({
         content: () => printRef.current
@@ -328,20 +327,20 @@ const PacketView = () =>{
                                     
                                     <div className="d-flex justify-content-between">
                                         <p>Delivery Charge</p>
-                                        <p className="text-danger">(Tk. {singlePacket.collectionAmount > 0 ? deliveryCharge : 0})</p>
+                                        <p className="text-danger">(Tk. {deliveryCharge ? deliveryCharge : 0})</p>
                                     </div>
                                     <div className="d-flex justify-content-between border-bottom mb-3">
                                         <p>VAT 15%</p>
                                         <p className="text-danger">(Tk.
                                             {vat ? 
-                                                <>{singlePacket.collectionAmount > 0 ? vat : 0}</>
+                                                <>{vat ? vat : 0}</>
                                             : 0}
                                         )
                                         </p>
                                     </div>
                                     <div className="d-flex justify-content-between">
                                         <h5>Total</h5>
-                                        <h5 className="text-success">Tk. {singlePacket.collectionAmount > 0 ? total : 0}</h5>
+                                        <h5 className="text-success">Tk. {total ? total : 0}</h5>
                                     </div>
                                 </Col>
                             </Row>

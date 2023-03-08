@@ -206,7 +206,7 @@ const reducer = (state,action) => {
         case GET_PACKETS_BEGIN:
             return{
                 ...state,
-                isLoading: false,
+                isLoading: true,
                 showAlert: false,
             }
         break;

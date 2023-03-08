@@ -1,5 +1,5 @@
 import express from "express";
-import { adminCreateInvoice, adminGetAllInvoices, adminGetPacketsByInvoice, adminUpdateInvoice, merchantInvoice } from "../controllers/invoice.js";
+import { adminCreateInvoice, adminDeleteInvoice, adminGetAllInvoices, adminGetPacketsByInvoice, adminUpdateInvoice, merchantInvoice } from "../controllers/invoice.js";
 
 const router = express.Router();
 
@@ -13,8 +13,9 @@ router.get("/all", merchantInvoice)
 router.get("/invoice/create", adminCreateInvoice);
 // Update
 router.patch("/invoice/update/:id", adminUpdateInvoice)
-// Delete
 
+// Delete
+router.delete("/invoice/delete/:id", adminDeleteInvoice)
 // Get All
 router.get("/invoice/all", adminGetAllInvoices)
 

@@ -326,7 +326,7 @@ export const adminAllPacket = async (req,res,next) => {
         packet_status: { "$arrayElemAt": ["$status.name", -1] },
         packet_paymentStatus: "$paymentStatus",
         packet_invoiceID: "$invoiceID" || null,
-        packet_base_charge: {"$arrayElemAt": ["$merchant.profile.base_charge", 0] } || 50,
+        packet_base_charge: {"$arrayElemAt": ["$merchant.profile.base_charge", 0]},
         packet_merchant: {"$arrayElemAt": ["$merchant.profile.business_name", 0] },
         packet_merchant_phone: {"$arrayElemAt": ["$merchant.profile.phone", 0] },
         packet_pcikup_area: {"$arrayElemAt": ["$merchant.profile.pickup_area", 0]},

@@ -216,7 +216,6 @@ export const adminGetPacketsByInvoice = async (req,res,next) =>{
     }
 }
 
-
 // Get Invoice For Merchant
 export const merchantInvoice = async (req,res,next) =>{
     const invoice = await Invoice.aggregate([
@@ -261,4 +260,20 @@ export const merchantInvoice = async (req,res,next) =>{
     ]).sort({invoice_createdAt: -1});
 
     res.status(200).json(invoice);
+}
+
+// Delete Invoice by Admin
+export const adminDeleteInvoice = async(req,res,next) =>{
+    console.log("Delete Invoice")
+    try {
+        const invoice = await Invoice.findById(req.params.id);
+
+        if(!invoice) return next(createError(404, "Invoice not found"));
+
+        console.log(invoice)
+        await Invoice.deleteOne({_id: invoice._id});
+        res.status(200).json("Invoice is deleted");
+    } catch (err) {
+        next(err)
+    }
 }

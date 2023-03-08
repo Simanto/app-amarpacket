@@ -34,7 +34,7 @@ const LabelPrint = React.forwardRef(({items}, ref) => {
             </div>
 
             <div className='print-label_section section-collection text-center'>
-                <p className='mb-1'>Amoutn to Collect:</p>
+                <p className='mb-1'>Amount to Collect:</p>
                 <h4 className='mb-1 fw-bold'>Tk {items.collectionAmount} </h4>
             </div>
 

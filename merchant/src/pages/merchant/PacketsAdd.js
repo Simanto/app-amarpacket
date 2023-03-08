@@ -6,6 +6,7 @@ import { FormPacket } from "../../modules"
 
 const AddPacket = () =>{
     const [total, setTotal] = useState();
+    let calcdelivercharge = 0;
 
     const {
         handleChange,
@@ -19,29 +20,44 @@ const AddPacket = () =>{
         packet_merchant_phone,
         packet_pcikup_address,
         packet_delivery_charge,
-        merchant_base_charge
+        packet_base_charge
     } = useAppContext();
     
     useEffect(() => {
 
         setAreaList();
+        
+        let weight = Math.ceil(packet_weight)
+        
+        console.log("packet_weight:", weight);
+        let charge = 0 ;
+       
+        if(isEditing && packet_trackingID) {
+            charge =  parseInt(packet_base_charge);
+        } else {
+            charge =  parseInt(data.base_charge);
+        }
 
-        let charge =  parseInt(merchant_base_charge);
-        let weightCharge = 0;
 
-        if(!packet_weight){
+        console.log("charge:", charge,packet_base_charge);
+        
+        let weightCharge = 10;
+
+        if(!weight && weight < 1){
             weightCharge = 10;
         }
 
-        if( packet_weight < 1 || packet_weight < 3){
-            weightCharge = (packet_weight * 10);
+        if( weight < 1 || packet_weight < 3){
+            weightCharge = (weight * 10);
         }
 
-        if(packet_weight>=3){
-            weightCharge = 30+((packet_weight-3)* 20);
+        if(weight>=3){
+            weightCharge = 30+((weight-3)* 20);
+
+            console.log("weightCharge >= 3", weightCharge);
         }
 
-        const calcdelivercharge = charge+weightCharge;
+        calcdelivercharge = charge+weightCharge;
 
         setTotal(packet_collectionAmount - calcdelivercharge)
         if(
@@ -56,7 +72,7 @@ const AddPacket = () =>{
 
         console.log("calcdelivercharge", calcdelivercharge)
 
-    }, [packet_collectionAmount,packet_weight,merchant_base_charge,])
+    }, [packet_collectionAmount,packet_weight, data, packet_base_charge, calcdelivercharge])
 
     return(
         <Container>
@@ -110,7 +126,7 @@ const AddPacket = () =>{
                             <div className="d-flex justify-content-between broder border-bottom">
                                 <p>Delivery Charge</p>
                                 <p className="text-danger">(Tk. 
-                                    { packet_collectionAmount > 0 ? 
+                                    { packet_collectionAmount ? 
                                         <>{packet_delivery_charge && packet_delivery_charge}</>
                                         : 
                                         0
@@ -119,7 +135,7 @@ const AddPacket = () =>{
                             </div>
                             <div className="d-flex justify-content-between mt-4">
                                 <h4>Total</h4>
-                                <h4>Tk. {packet_collectionAmount > 0 ? total : 0}</h4>
+                                <h4>Tk. {packet_collectionAmount ? total : 0}</h4>
                             </div>
                         </div>
                     </div>
