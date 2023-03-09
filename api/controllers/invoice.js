@@ -201,7 +201,7 @@ export const adminGetPacketsByInvoice = async (req,res,next) =>{
                 invoice_packetID: "$allPackets._id",
                 invoice_packet_createdAt: "$allPackets.createdAt",
                 invoice_packet_trackingID:"$allPackets.trackingID",
-                invoice_packet_orderID:"$allPackets.merchantInvoice" || 0,
+                invoice_packet_orderID:"$allPackets.merchantInvoice",
                 invoice_packet_customer_name: "$allPackets.customer.name",
                 invoice_packet_customer_phone: "$allPackets.customer.phone",
                 invoice_packet_collection_amount: "$allPackets.collectionAmount",
