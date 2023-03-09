@@ -19,16 +19,16 @@ const TableInvoicePackets = () => {
             Cell: ({ row }) =>  moment(row.values.invoice_packet_createdAt).utc().format("MMM D, YY"),
           },
           {
-            Header: "Packets ID",
+            Header: "Tracking ID",
             accessor: "invoice_packet_trackingID",
             Filter: TableColumnFilter,
-            Cell: ({ row }) =>  (<><p className="mb-1 d-block d-sm-none text-secondary">Invoice ID</p><span className="text-uppercase fw-medium"> {row.values.invoice_packet_trackingID} </span></>),
+            Cell: ({ row }) =>  (<><span className="text-uppercase fw-medium"> {row.values.invoice_packet_trackingID} </span></>),
           },
           {
             Header: "Order ID",
             accessor: "invoice_packet_orderID",
             Filter: TableColumnFilter,
-            Cell: ({ row }) =>  (<><p className="mb-1 d-block d-sm-none text-secondary">Invoice ID</p><span className="text-uppercase fw-medium"> {row.values.invoice_packet_orderID} </span></>),
+            Cell: ({ row }) =>  (<><span className="text-uppercase fw-medium">{row.values.invoice_packet_orderID} </span></>),
           },
           {
             Header: "Customer Name",
