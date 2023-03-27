@@ -26,4 +26,4 @@ router.get("/packets/all", adminAllPacket);
 router.get("/:packetid", GetPacket)
 
 
-export default router
+export default router 
