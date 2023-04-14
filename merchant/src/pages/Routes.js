@@ -16,7 +16,6 @@ import { useAppContext } from "../context/appContext.js";
 import Logout from "./Logout.js";
 
 const PageRoutes = () => {
-  const {logOut} = useAppContext();
     return (
       // Routes
         <Routes>

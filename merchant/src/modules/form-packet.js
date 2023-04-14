@@ -83,8 +83,10 @@ const FormPacket = () =>{
         }
 
         if(!packet_collectionAmount){
-            dispatch({type:"ERROR", payload: {msg:"Please provide collection amount."}});
-            return
+            handleChange({
+                name: "packet_collectionAmount",
+                value: 0
+            })
         } else{
             dispatch({type:"CLEAR_ALERT"})
         }
@@ -103,19 +105,19 @@ const FormPacket = () =>{
             dispatch({type:"CLEAR_ALERT"})
         }
 
-        if(!validator.isNumeric(packet_collectionAmount.toString(), { min: 0 })){
-            dispatch({type:"ERROR", payload: {msg:"Price can't be less then 0"}});
-            return
-        }else{
-            dispatch({type:"CLEAR_ALERT"})
-        }
+        // if(!validator.isNumeric(packet_collectionAmount.toString(), { min: 0 })){
+        //     dispatch({type:"ERROR", payload: {msg:"Price can't be less then 0"}});
+        //     return
+        // }else{
+        //     dispatch({type:"CLEAR_ALERT"})
+        // }
 
-        if(!validator.isNumeric(packet_costPrice.toString(), { min: 0 })){
-            dispatch({type:"ERROR", payload: {msg:"Price can't be less then 0"}});
-            return
-        }else{
-            dispatch({type:"CLEAR_ALERT"})
-        }
+        // if(!validator.isNumeric(packet_costPrice.toString(), { min: 0 })){
+        //     dispatch({type:"ERROR", payload: {msg:"Price can't be less then 0"}});
+        //     return
+        // }else{
+        //     dispatch({type:"CLEAR_ALERT"})
+        // }
 
         if(!validator.isNumeric(packet_weight.toString(),{ min: 0.01 , max: 15 })){
             dispatch({type:"ERROR", payload: {msg:"Weight must be 1 to 15kg"}});
@@ -388,7 +390,7 @@ const FormPacket = () =>{
 
                     {/* Button */}
                     <div className="mt-4">
-                        <Button   className="text-uppercase fw-medium" color="primary" block onClick={handleClick}>
+                        <Button  disabled={isLoading}  className="text-uppercase fw-medium" color="primary" block onClick={handleClick}>
                             {isEditing && packet_trackingID ? 
                                "Update Packet"
                             : 

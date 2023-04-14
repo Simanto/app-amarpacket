@@ -83,26 +83,36 @@ const FromRegistration = () => {
             // displayAlert();
             dispatch({type:"ERROR", payload: {msg:"Please provide all the details."}});
             return
+        }else{
+            dispatch({type:"CLEAR_ALERT"})
         }
         
         if(!validator.isEmail(value.email)){
             dispatch({type:"ERROR", payload: {msg:"Please provide valid Email address"}});
             return
+        }else{
+            dispatch({type:"CLEAR_ALERT"})
         }
 
         if(!validator.isMobilePhone(value.phone,["bn-BD"])){
             dispatch({type:"ERROR", payload: {msg:"Please provide valid Phone Number"}});
             return
+        }else{
+            dispatch({type:"CLEAR_ALERT"})
         }
 
         if(value.password.length < 6){
             dispatch({type:"ERROR", payload: {msg:"Password must be at least 6 character long"}});
             return
+        }else{
+            dispatch({type:"CLEAR_ALERT"})
         }
 
         if(value.password !== value.confirmPassword || value.confirmPassword !== value.password){
             dispatch({type:"ERROR", payload: {msg:"Password and Confirmed password does not match"}});
             return
+        }else{
+            dispatch({type:"CLEAR_ALERT"})
         }
         
         dispatch({type: "CLEAR_ALERT"})
@@ -371,7 +381,7 @@ const FromRegistration = () => {
             {/* Row: End */}
             <Row className="justify-content-center mt-4">
                 <Col md="6" className="p-0">
-                    <Button   className="text-uppercase fw-medium" color="primary" block onClick={handleClick}>Create Account</Button>
+                    <Button className="text-uppercase fw-medium" color="primary" block onClick={handleClick}>Create Account</Button>
                 </Col>
             </Row>
             

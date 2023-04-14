@@ -58,7 +58,7 @@ const CardStatPayments = () => {
 
                  {/* No. of Packets returned today */}
                  <div className="card-body_item d-flex justify-content-between pt-3 pb-1">
-                    <p className="mb-0">Pending Due:</p>
+                    <p className="mb-0">Payment Due:</p>
                     <p className="mb-0 text-danger fw-medium"><span>৳</span>
                         {isLoading ? 
                             <Loading />

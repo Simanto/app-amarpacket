@@ -1,4 +1,6 @@
-import { Row, Col } from "reactstrap"
+import { useEffect, useState } from "react"
+import classnames from "classnames";
+import { Row, Col, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap"
 import { useAppContext } from "../../context/appContext"
 import { Loading } from "../../elements";
 import { FormEditMerchant } from "../../modules"
@@ -13,8 +15,18 @@ const AdminMerchantEdit = () =>{
         merchant_bikash_number,
         merchant_nagad_number,
     } = useAppContext();
+
+     // State for current active Tab
+     const [activeTab, setActiveTab] = useState("Account");
+  
+     // Toggle active state for Tab
+     const toggle = (tab) => {
+         if (activeTab !== tab) setActiveTab(tab);
+     }
+
+
     return(
-        <>
+        <>      
             {/* Header */}
             <div className='app-header p-4 d-flex flex-row justify-content-between'>
                 <div className='app-header_title pt-1'>
@@ -27,12 +39,45 @@ const AdminMerchantEdit = () =>{
             <div className="mx-4">
                 <Row>
                     <Col md="7">
-                        {isLoading ?
-                            <Loading /> 
-                            :
-                            <FormEditMerchant />
-                        }
+                        <div className="card">
+                            {/* Tab - Header */}
+                            <Nav tabs className="ps-4">
+                                <NavItem>
+                                    <NavLink
+                                        className={classnames({
+                                            active:
+                                                activeTab === "Account"
+                                        })}
+                                        onClick={() => { toggle("Account"); }}
+                                    >
+                                        Account
+                                    </NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink
+                                        className={classnames({
+                                            active:
+                                                activeTab === "delivery_charge"
+                                        })}
+                                        onClick={() => { toggle("delivery_charge"); }}
+                                    >
+                                        Delivery Charge
+                                    </NavLink>
+                                </NavItem>
+                            </Nav>
+                            {/* End: Tab - Header */}
+
+                            <TabContent activeTab={activeTab}>
+                                <TabPane tabId="Account" className="p-4">
+                                    <FormEditMerchant />
+                                </TabPane>
+                                <TabPane tabId="delivery_charge" className="p-4">
+                                    Payment
+                                </TabPane>
+                            </TabContent>
+                        </div>
                     </Col>
+                    {/* Payment Method */}
                     <Col md="5" className="px-5">
                         <div className="section-heading pb-3">
                             <h5>Payment Methods</h5>

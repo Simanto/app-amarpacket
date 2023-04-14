@@ -31,5 +31,6 @@ export const booleanOptions=[
 
 export const roleOptions=[
   {value: "admin", label: "Admin"},
-  {value: "agent", label: "Agent"}
+  {value: "agent", label: "Agent"},
+  {value: "super-admin", label: "Super Admin"}
 ]

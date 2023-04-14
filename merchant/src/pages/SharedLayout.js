@@ -5,7 +5,7 @@ import { useAppContext } from "../context/appContext"
 
 
 // Import Assets
-import {IconArrowRightS, IconUser, Logo, LogoLight, LogoPrint} from "../assets/images/index.js"
+import {IconArrowRightS, IconUser, LogoLight} from "../assets/images/index.js"
 import { useEffect } from "react"
 import { Col, Container, Row } from "reactstrap"
 
@@ -24,10 +24,10 @@ const SharedLayout = () => {
         if(user.role === "merchant"){
             getMerchant()
         }
-        if(user.role === "admin"){
+        if(user.role === "admin" || user.role === "super-admin" ){
             setIsAdmin(true)
         }
-    },[]);
+    },[user]);
 
     const {isVerified,business_name,phone} = data;
 
@@ -37,7 +37,7 @@ const SharedLayout = () => {
         if(user.role === "merchant"){
             navigate("/profile");
         }
-        if(user.role === "admin"){
+        if(isAdmin){
             logOut();
         }
     }

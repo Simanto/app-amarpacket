@@ -3,7 +3,7 @@ import { Col, Form, FormGroup, Label,InputGroup, InputGroupText,Input, Row, Butt
 import { booleanOptions, deliveryStatusOptions } from "../assets/doc/options";
 import { IconEmail, IconPhone, IconShop, IconShoppingBag, IconUser } from "../assets/images";
 import { useAppContext } from "../context/appContext";
-import { Alert, InputSelect, InputSelectArea } from "../elements";
+import { Alert, InputSelect, InputSelectArea, Loading } from "../elements";
 
 
 
@@ -80,7 +80,7 @@ export const FormEditMerchant = () =>{
 
     return(
         <>
-            <Form className="mb-5 pb-5">
+            <Form className="mb-2">
                 {/* Error */}
                 {showAlert && 
                     <Row className="justify-content-center mb-4">
@@ -89,7 +89,7 @@ export const FormEditMerchant = () =>{
                 }
                 {/* Error: end */}
                 {/* Account Details */}
-                <div md="6" className="p-4 card">
+                <div md="6" className="">
                     {/* Card: Header */}
                     <div className="card-header_overline">
                         <h6 className="text-overline">Account Detials</h6>
@@ -316,8 +316,12 @@ export const FormEditMerchant = () =>{
 
                 {/* Button */}
                 <div className="mt-4">
-                    <Button   className="text-uppercase fw-medium" color="primary" block onClick={handleClick}>
-                        Update Details
+                    <Button disabled={isLoading}  className="text-uppercase fw-medium d-flex justify-content-center" color="primary" block onClick={handleClick}>
+                        {isLoading ?
+                            <Loading /> 
+                            :
+                            "Update Details"
+                        }
                     </Button>
                 </div>
             </Form>

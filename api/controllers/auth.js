@@ -168,7 +168,6 @@ export const registerMerchant = async(req,res,next) =>{
 export const login = async(req,res,next) =>{
     try {
         // Check by email or phone
-
         if(!req.body.email || !req.body.password) return next(createError(400, "Please provide email and password"))
 
         const isUser = await User.findOne({email:req.body.email});
@@ -179,6 +178,7 @@ export const login = async(req,res,next) =>{
         const isPasswordCorrect = await bcrypt.compare(
             req.body.password, isUser.password
         );
+
         
         if(!isPasswordCorrect) return next(createError(400, "Wrong password"));
 
@@ -187,16 +187,42 @@ export const login = async(req,res,next) =>{
         const token = jwt.sign({id:isUser.id}, process.env.JWT, { expiresIn: process.env.JWT_LIFE});
 
         const user = {name:isUser.name, role:isUser.role};
-        
+
         // Send Response
         res
             .cookie("access_token", token,{
                 httpOnly:true
             })
             .status(200)
-            // .send(otherDetails) 
             .send({user,token})
         
+    } catch (err) {
+        next(err);
+    }
+}
+
+
+// Reset password
+export const resetPassword = async(req,res,next)=>{
+    try {
+        var salt = bcrypt.genSaltSync(10);
+        var hash = bcrypt.hashSync(req.body.password, salt);
+
+        const isUser = await User.findOne({email:req.body.email});
+
+        if(!isUser) return next(createError(404, "User not found"));
+        
+        const newPassword = {
+            password: hash
+        }
+    
+        await User.findByIdAndUpdate(
+            isUser.id,
+            {$set: newPassword},
+            {new: true}
+        )
+          res.status(200).send("Success! Password has been changed");
+          
     } catch (err) {
         next(err);
     }

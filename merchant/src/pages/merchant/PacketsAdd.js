@@ -28,8 +28,7 @@ const AddPacket = () =>{
         setAreaList();
         
         let weight = Math.ceil(packet_weight)
-        
-        console.log("packet_weight:", weight);
+
         let charge = 0 ;
        
         if(isEditing && packet_trackingID) {
@@ -38,8 +37,6 @@ const AddPacket = () =>{
             charge =  parseInt(data.base_charge);
         }
 
-
-        console.log("charge:", charge,packet_base_charge);
         
         let weightCharge = 10;
 
@@ -53,8 +50,6 @@ const AddPacket = () =>{
 
         if(weight>=3){
             weightCharge = 30+((weight-3)* 20);
-
-            console.log("weightCharge >= 3", weightCharge);
         }
 
         calcdelivercharge = charge+weightCharge;
@@ -69,8 +64,6 @@ const AddPacket = () =>{
             })
         }
         
-
-        console.log("calcdelivercharge", calcdelivercharge)
 
     }, [packet_collectionAmount,packet_weight, data, packet_base_charge, calcdelivercharge])
 
@@ -126,7 +119,7 @@ const AddPacket = () =>{
                             <div className="d-flex justify-content-between broder border-bottom">
                                 <p>Delivery Charge</p>
                                 <p className="text-danger">(Tk. 
-                                    { packet_collectionAmount ? 
+                                    { packet_weight ? 
                                         <>{packet_delivery_charge && packet_delivery_charge}</>
                                         : 
                                         0
@@ -135,7 +128,7 @@ const AddPacket = () =>{
                             </div>
                             <div className="d-flex justify-content-between mt-4">
                                 <h4>Total</h4>
-                                <h4>Tk. {packet_collectionAmount ? total : 0}</h4>
+                                <h4>Tk. {packet_weight  ? total : 0}</h4>
                             </div>
                         </div>
                     </div>

@@ -1,5 +1,5 @@
 import express from "express";
-import { login, registerUser, registerMerchant, addAdmin } from "../controllers/auth.js";
+import { login, registerUser, registerMerchant, addAdmin, resetPassword } from "../controllers/auth.js";
 import rateLimiter from "express-rate-limit";
 
 const router = express.Router();
@@ -21,5 +21,7 @@ router.post("/user/create", registerUser );
 // Merchants Panel
 router.post("/merchant/register", registerMerchant );
 
+// Reset password
+router.post("/reset-password", resetPassword)
 
 export default router

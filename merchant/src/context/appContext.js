@@ -175,10 +175,8 @@ const AppProvider = ({children}) => {
     const testConnection = async () =>{
         try {
             const res = await axiosFetch.get("/");
-            console.log("res", res)
             return
         } catch (err) {
-            console.log(err)
             dispatch({type: "ERROR", payload: {msg:err.response.data.message}});
         }
     }
@@ -235,7 +233,6 @@ const AppProvider = ({children}) => {
             return
 
         } catch (err) {
-            console.log("err message:", err)
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
         }
     }
@@ -260,7 +257,6 @@ const AppProvider = ({children}) => {
             }, 1000);
             return
         } catch (err) {
-            console.log(err);
             logOut();
         }
     }
@@ -731,6 +727,19 @@ const AppProvider = ({children}) => {
         }, 1000);
     }
 
+    const resetPassword = async (resetData) =>{
+        try {
+            const res = await axiosFetch.post("/api/v1/auth/reset-password", resetData )
+            dispatch({type:"ASYNC_SUCCESS", payload: {msg: res.data}})
+        } catch (err) {
+            dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
+        }
+        
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 10000);
+    }
+
     const adminAddUser = async () =>{
         dispatch({type:"ADD_USER_BEGIN"})
 
@@ -978,10 +987,12 @@ const AppProvider = ({children}) => {
             ...state,
             // Test connection
             testConnection,
+            
             // Auth
             registerMerchant,
             login,
             logOut,
+            resetPassword,
 
             // Merchant
             getMerchant,

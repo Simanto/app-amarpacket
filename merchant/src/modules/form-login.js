@@ -49,7 +49,7 @@ const LoginForm = () => {
                 navigate("/dashboard")
             }
 
-            if(user.role === "admin"){
+            if(user.role === "admin" || user.role === "super-admin"){
                 navigate("/admin/dashboard")
             }
 
