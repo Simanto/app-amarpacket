@@ -287,7 +287,7 @@ const reducer = (state,action) => {
         case ADD_PACKET_BEGIN:
             return{
                 ...state,
-                isLoading: false,
+                isLoading: true,
                 showAlert: false,
             }
         break;

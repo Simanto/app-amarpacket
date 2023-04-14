@@ -3,7 +3,7 @@ import classnames from "classnames";
 import { Row, Col, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap"
 import { useAppContext } from "../../context/appContext"
 import { Loading } from "../../elements";
-import { FormEditMerchant } from "../../modules"
+import { FormEditMerchant, FormMerchantDeliveryCharges } from "../../modules"
 
 const AdminMerchantEdit = () =>{
     const {
@@ -72,7 +72,7 @@ const AdminMerchantEdit = () =>{
                                     <FormEditMerchant />
                                 </TabPane>
                                 <TabPane tabId="delivery_charge" className="p-4">
-                                    Payment
+                                    <FormMerchantDeliveryCharges />
                                 </TabPane>
                             </TabContent>
                         </div>

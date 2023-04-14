@@ -33,7 +33,7 @@ import FormPassword from './form-merchant_password_change.js';
 import NavBarBottom from './nav-bar_bottom.js';
 import CardAgentPickup from './card-agent_pickup.js';
 import CardAgentDelivery from './card-agent_delivery.js';
-
+import FormMerchantDeliveryCharges from './form-merchant_delivery_charges.js';
 export{
     // Forms
     FormForgotPass,
@@ -49,6 +49,8 @@ export{
     FormInvoiceUpdate,
     FormMerchantProfile,
     FormPassword,
+    FormMerchantDeliveryCharges,
+    
     // Navs
     SideBarNav,
     NavBarBottom,
