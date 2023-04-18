@@ -22,8 +22,12 @@ router.get("/out-for-delivery", packetOutforDelivery);
 router.get("/delivered", packetDelivered);
 router.get("/returned", packetReturned);
 router.get("/packets/all", adminAllPacket);
+
 // Get Single Packet
 router.get("/:packetid", GetPacket)
+
+// Delete Packet
+router.delete("/packet/delete/:packetid", deletePacket);
 
 
 export default router 
