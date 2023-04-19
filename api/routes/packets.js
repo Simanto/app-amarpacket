@@ -1,5 +1,5 @@
 import express from "express";
-import { allPacket, createPacket, GetPacket, updatePacket, adminAllPacket, PacketStats, packetOutforDelivery, packetDelivered, packetReturned } from "../controllers/packets.js";
+import { allPacket, createPacket, GetPacket, updatePacket, adminAllPacket, PacketStats, packetOutforDelivery, packetDelivered, packetReturned, deletePacket } from "../controllers/packets.js";
 
 const router = express.Router();
 

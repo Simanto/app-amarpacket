@@ -169,6 +169,7 @@ export const updatePacket =  async(req,res,next) =>{
 
 // Delete
 export const deletePacket = (req,res,next) => {
+  console.log("Delete Packet")
 }
 
 // Get All Packets by merchant
