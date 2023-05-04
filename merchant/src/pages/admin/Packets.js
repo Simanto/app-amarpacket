@@ -2,10 +2,13 @@ import React, {useEffect, useState} from 'react'
 import classnames from "classnames";
 import { Button, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import { TableAdminAllPackets } from '../../modules';
+import { useAppContext } from '../../context/appContext';
+import { Alert } from '../../elements';
 
 
 
 const AdminPackets = () => {
+    const {showAlert} = useAppContext();
     // State for current active Tab
     const [activeTab, setActiveTab] = useState("all");
   
@@ -135,6 +138,13 @@ const AdminPackets = () => {
                 <TabContent activeTab={activeTab}>
                     {/* Table: All Packets*/}
                     <TabPane tabId="all" className="p-0">
+                        {/* Error */}
+                            {showAlert && 
+                                <div className="p-0 m-4">
+                                    <Alert />
+                                </div>
+                            }
+                        {/* Error: end */}
                         <TableAdminAllPackets />
                     </TabPane>
                     {/* End */}

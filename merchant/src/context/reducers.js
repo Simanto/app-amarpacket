@@ -64,6 +64,8 @@ import {
     FILTER_PACKET_RETURNED,
     SET_MERCHANT_PROFILE,
     CHANGE_PASSWORD_SUCCESS,
+    DELETE_PACKET_BEGIN,
+    DELETE_PACKET_SUCCESS
 } from "./actions";
 
 const reducer = (state,action) => {
@@ -81,8 +83,9 @@ const reducer = (state,action) => {
         case CLEAR_ALERT:
             return{
                 ...state,
+                isLoading: false,
                 showAlert: false,
-                alerttype: "",
+                alertType: "",
                 alertText: "",
             }
     break;
@@ -207,7 +210,6 @@ const reducer = (state,action) => {
             return{
                 ...state,
                 isLoading: true,
-                showAlert: false,
             }
         break;
 
@@ -665,6 +667,7 @@ const reducer = (state,action) => {
         case ADD_USER_BEGIN:
             return{
                 ...state,
+                isEditing: false,
                 isLoading: true,
                 showAlert: false
             }
@@ -729,6 +732,7 @@ const reducer = (state,action) => {
         case EDIT_USER_BEGIN:
             return{
                 ...state,
+                isEditing: true,
                 isLoading: true,
                 showAlert: false
             }
@@ -737,6 +741,7 @@ const reducer = (state,action) => {
         case EDIT_USER_SUCCESS:
             return{
                 ...state,
+                isEditing: true,
                 isLoading: false,
                 showAlert: true,
                 alertType: "success",
@@ -905,6 +910,23 @@ const reducer = (state,action) => {
                 showAlert: true,
                 alertType: "success",
                 alertText: "Success! Password has been changed. You will be logged out",
+            }
+        break;
+
+
+        case DELETE_PACKET_BEGIN:
+            return{
+                ...state,
+                isLoading: true
+            }
+        break;
+
+        case DELETE_PACKET_SUCCESS:
+            return{
+                ...state,
+                showAlert: true,
+                alertType: "success",
+                alertText: action.payload.data,
             }
         break;
             

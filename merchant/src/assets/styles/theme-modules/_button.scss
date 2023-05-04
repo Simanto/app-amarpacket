@@ -41,6 +41,16 @@
         }
     }
 
+    &-delete{
+        background-color: rgba($danger,0.1);
+        color: $danger;
+        border: 1px solid $danger;
+
+        &:hover{
+            color: $danger;
+        }
+    }
+
     &-update{
         background-color: rgba($primary,0.1);
         color: $primary;

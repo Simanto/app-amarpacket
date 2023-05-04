@@ -461,6 +461,23 @@ const AppProvider = ({children}) => {
         }, 1000);
     }
 
+    const deletePacket = async (id) =>{
+        dispatch({type:"DELETE_PACKET_BEGIN"})
+        try {
+            const res =  await axios.delete(`/api/v1/admin/packet/delete/${id}`)
+            const {data} = res
+            dispatch({type:"DELETE_PACKET_SUCCESS", payload: {data}});
+
+            getAllPacketAdmin();
+
+        } catch (err) {
+            dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
+        }
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 3000);
+    }
+
     // Get Single Packet
     const getPacket = async (packetid) =>{
 
@@ -1042,6 +1059,10 @@ const AppProvider = ({children}) => {
             setEditInvoice,
             updateInvoice,
             admingGetInvoicePacketsByID,
+
+
+            // Global
+            deletePacket,
             
             // Results
             dispatch

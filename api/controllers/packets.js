@@ -168,8 +168,23 @@ export const updatePacket =  async(req,res,next) =>{
 }
 
 // Delete
-export const deletePacket = (req,res,next) => {
-  console.log("Delete Packet")
+export const deletePacket = async(req,res,next) => {
+  try {
+    
+    const packet = await Packet.findById(req.params.packetid);
+    
+    if(!packet) return next(createError(404, "packet not found"));
+
+    // Delete Status
+    await Status.deleteMany({'_id':{'$in': packet.status}})
+
+    await Packet.deleteOne({'_id':{'$in': packet._id}})
+
+    res.status(200).json("Packet has been deleted.");
+
+  } catch (err) {
+    next(err)
+  }
 }
 
 // Get All Packets by merchant
@@ -314,6 +329,7 @@ export const adminAllPacket = async (req,res,next) => {
         packetID: "$_id",
         packet_trackingID: "$trackingID",
         packet_createdAt: "$createdAt",
+        packet_updatedAt: "$updatedAt",
         packet_merchantInvoice: "$merchantInvoice",
         packet_collectionAmount: "$collectionAmount",
         packet_costPrice: "$costPrice" || 0,
