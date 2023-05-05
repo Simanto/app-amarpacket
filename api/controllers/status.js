@@ -83,6 +83,17 @@ export const updateStatus = async (req,res,next) =>{
                 await requestedStatus.save();
 
                 await Packet.findByIdAndUpdate(req.params.id, {
+                    $push: {
+                        status:requestedStatus._id
+                    },
+                });
+                res.status(200).send("Status updated!");
+            break;
+
+            case "cash-collected":
+                await requestedStatus.save();
+
+                await Packet.findByIdAndUpdate(req.params.id, {
                     paymentStatus: "due",
                     $push: {
                         status:requestedStatus._id

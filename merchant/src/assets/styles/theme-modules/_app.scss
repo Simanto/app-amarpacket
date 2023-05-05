@@ -55,4 +55,15 @@
             }
         }
     }
+
+
+    // All agent styles
+
+    .top{
+        &-bar{
+            position: fixed;
+            z-index: 1030;
+            width: 100%;
+        }
+    }
 }

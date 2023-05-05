@@ -379,7 +379,11 @@ const AppProvider = ({children}) => {
         }, 3000);
     }
 
-    // Get All Packet
+    // ****************************
+    //         Get
+    // ****************************
+
+    // Merchant: All packet
     const getAllPacket = async () =>{
 
         dispatch({type:"GET_PACKETS_BEGIN"})
@@ -389,6 +393,42 @@ const AppProvider = ({children}) => {
 
             dispatch({type:"GET_PACKETS_SUCCESS",payload: {data}})
 
+        } catch (err) {
+            dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
+        }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 1000);
+    }
+
+    const getAllPacketAdmin = async () =>{
+
+        dispatch({type:"GET_PACKETS_BEGIN"})
+        
+        try {
+            const {data} = await axiosFetch.get("/api/v1/admin/packets/all");
+            dispatch({type:"GET_PACKETS_SUCCESS",payload: {data}})
+            
+        } catch (err) {
+            dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
+        }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 1000);
+    }
+
+    // Get Single Packet
+    const getPacket = async (packetid) =>{
+
+        dispatch({type:"CLEAR_PACKET"})
+        dispatch({type:"GET_PACKET_BEGIN"})
+
+        try {
+            const {data} = await axiosFetch.get(`/api/v1/packets/${packetid}`)
+            const packet = data[0];
+            dispatch({type:"GET_PACKET_SUCCESS", payload: {packet}})
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
         }
@@ -443,15 +483,15 @@ const AppProvider = ({children}) => {
             dispatch({type:"CLEAR_ALERT"})
         }, 1000);
     }
-    
-    const getAllPacketAdmin = async () =>{
 
-        dispatch({type:"GET_PACKETS_BEGIN"})
-        
+    // Agent: Get Packets that Assigned and Out For Delivery
+    const getPacketAssignedForDeliveries = async () =>{
+        dispatch({type:"GET_ASSIGNED_DELIVERIES_BEGIN"})
         try {
-            const {data} = await axiosFetch.get("/api/v1/admin/packets/all");
-            dispatch({type:"GET_PACKETS_SUCCESS",payload: {data}})
-            
+            const {data} = await axiosFetch.get("/api/v1//agent/deliveries/assigned");
+            const {packets} = data[0]
+            console.log(packets);
+            dispatch({type:"GET_ASSIGNED_DELIVERIES_SUCCESS", payload: {packets}})
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
         }
@@ -460,6 +500,12 @@ const AppProvider = ({children}) => {
             dispatch({type:"CLEAR_ALERT"})
         }, 1000);
     }
+    
+
+
+    // ****************************
+    //         Delete
+    // ****************************
 
     const deletePacket = async (id) =>{
         dispatch({type:"DELETE_PACKET_BEGIN"})
@@ -478,24 +524,7 @@ const AppProvider = ({children}) => {
         }, 3000);
     }
 
-    // Get Single Packet
-    const getPacket = async (packetid) =>{
-
-        dispatch({type:"CLEAR_PACKET"})
-        dispatch({type:"GET_PACKET_BEGIN"})
-
-        try {
-            const {data} = await axiosFetch.get(`/api/v1/packets/${packetid}`)
-            const packet = data[0];
-            dispatch({type:"GET_PACKET_SUCCESS", payload: {packet}})
-        } catch (err) {
-            dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
-        }
-
-        setTimeout(() => {
-            dispatch({type:"CLEAR_ALERT"})
-        }, 1000);
-    }
+    
 
     const setAreaList = () =>{
 
@@ -999,6 +1028,7 @@ const AppProvider = ({children}) => {
     }
 
 
+
     return (
         <AppContext.Provider value={{
             ...state,
@@ -1063,6 +1093,9 @@ const AppProvider = ({children}) => {
 
             // Global
             deletePacket,
+
+            // Agent
+            getPacketAssignedForDeliveries,
             
             // Results
             dispatch

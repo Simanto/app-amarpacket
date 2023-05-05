@@ -36,3 +36,13 @@ export const verifyMerchant = async (req,res,next) => {
         }
     })
 }
+
+export const verifyAgent = async (req,res,next) => {
+    verifyToken(req,res,next,() => {
+        if (req.user.role === "agent") {
+            next()
+        } else {
+            return next(createError(403, "You are not Verified!"))
+        }
+    })
+}

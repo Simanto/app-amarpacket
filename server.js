@@ -28,7 +28,7 @@ import customerRoute from "./api/routes/customers.js";
 import statusRoute from "./api/routes/statuses.js";
 import invoiceRoute from "./api/routes/invoices.js";
 import vatRoute from "./api/routes/vats.js";
-import {verifyAdmin,verifyMerchant} from "./api/utils/verifyToken.js";
+import {verifyAdmin,verifyAgent,verifyMerchant} from "./api/utils/verifyToken.js";
 
 const app = express();
 dotenv.config();
@@ -117,6 +117,8 @@ app.use("/api/v1/admin", verifyAdmin, agentRoute);
 app.use("/api/v1/admin", verifyAdmin, statusRoute);
 app.use("/api/v1/admin", verifyAdmin, invoiceRoute);
 app.use("/api/v1/admin", verifyAdmin, vatRoute);
+
+app.use("/api/v1/agent", verifyAgent, agentRoute)
 
 
 app.get("*", (req,res)=>{

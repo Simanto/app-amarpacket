@@ -65,7 +65,9 @@ import {
     SET_MERCHANT_PROFILE,
     CHANGE_PASSWORD_SUCCESS,
     DELETE_PACKET_BEGIN,
-    DELETE_PACKET_SUCCESS
+    DELETE_PACKET_SUCCESS,
+    GET_ASSIGNED_DELIVERIES_BEGIN,
+    GET_ASSIGNED_DELIVERIES_SUCCESS
 } from "./actions";
 
 const reducer = (state,action) => {
@@ -927,6 +929,21 @@ const reducer = (state,action) => {
                 showAlert: true,
                 alertType: "success",
                 alertText: action.payload.data,
+            }
+        break;
+
+        case GET_ASSIGNED_DELIVERIES_BEGIN:
+            return{
+                ...state,
+                isLoading: true,
+            }
+        break;
+
+        case GET_ASSIGNED_DELIVERIES_SUCCESS:
+            return{
+                ...state,
+                isLoading: false,
+                allPackets: action.payload.packets
             }
         break;
             
