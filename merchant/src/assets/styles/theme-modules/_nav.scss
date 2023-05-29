@@ -1,0 +1,148 @@
+.app-sidebar{
+    &_nav{
+        ul{
+            margin: 0 1.5rem;
+            display: flex;
+            flex-direction: column;
+            li{
+                list-style: none;
+                margin-bottom: 15px;
+                a.nav-link{
+                    display: flex !important;
+                    align-items: center;
+                    color: $white;
+                    // padding: .375rem .75rem;
+                    padding: 10px 15px;
+                    transition: all 0.6s ease;
+
+                    .nav-icon{
+                        width: 24px;
+                        height: 24px;
+                        margin-right: 10px;
+                        fill: $white;
+                        &_dashboard{
+                            background: url(../../images/icon-dashboard.svg) no-repeat;
+                            transition: all 0.6s ease;
+                        }
+                        &_packets{
+                            background: url(../../images/icon-packet.svg) no-repeat;
+                            transition: all 0.6s ease;
+                        }
+                        &_customers{
+                            background: url(../../images/icon-user_white.svg) no-repeat;
+                            transition: all 0.6s ease;
+                        }
+                        &_payments{
+                            background: url(../../images/icon-file-list.svg) no-repeat;
+                            transition: all 0.6s ease;
+                        }
+                        &_settings{
+                            background: url(../../images/icon-settings-line.svg) no-repeat;
+                            transition: all 0.6s ease;
+                        }
+                        &_logout{
+                            background: url(../../images/icon-logout-circle-line.svg) no-repeat;
+                            transition: all 0.6s ease;
+                        }
+                    }
+
+
+                    &.active,
+                    &:hover{
+                        background-color: rgba($white, 0.1);
+                        .nav-icon{
+                            &_dashboard{
+                                background: url(../../images/icon-dashboard_filled.svg) no-repeat;
+                            }
+                            &_packets{
+                                background: url(../../images/icon-packet_filled.svg) no-repeat;
+                            }
+                            &_customers{
+                                background: url(../../images/icon-user_filled.svg) no-repeat;
+                            }
+                            &_payments{
+                                background: url(../../images/icon-file-list_filled.svg) no-repeat;
+                            }
+                            &_settings{
+                                background: url(../../images/icon-settings-fill.svg) no-repeat;
+                            }
+                            &_logout{
+                                background: url(../../images/icon-logout-circle-fill.svg) no-repeat;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.bar{
+    &-bottom{
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        margin: 0;
+        padding: 0;
+        background: #45370D;
+        // min-height: 56px;
+        &:before {
+            content: "";
+            top: -14px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            box-shadow: 0 -4px 20px  rgba(0, 0, 0, 1);
+            z-index: 100;
+        }
+    }
+
+    &-item{
+        a{
+            color: $white;
+        }
+        &_label{
+            span{
+                font-size: 14px;
+            }
+        }
+    }
+}
+
+@include media-breakpoint-down(sm){
+    .app-sidebar{
+        &_nav{
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: $zindex-fixed;
+            ul{
+                display: flex;
+                flex-direction: row;
+                padding: 0;
+                margin: 0;
+                li{
+                    flex-grow: 1;
+                    flex-basis: 0;
+                    margin: 0;
+                    a.nav-link{
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        .nav-icon{
+                            width: 24px;
+                            height: 24px;
+                            margin: 0;
+                            margin-bottom: 4px;
+                        }
+                        .nav-label{
+                            // display: none;
+                            font-size: 9px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

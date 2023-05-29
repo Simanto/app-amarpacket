@@ -1,0 +1,24 @@
+.app{
+    &-sidebar{
+        z-index: $zindex-fixed;
+
+        &_navbar{
+            width: 260px;
+            background: #45370D;
+        }
+
+        &_registration{
+            width: 450px;
+        }
+
+        &_sm{
+            height: 56px;
+            position: fixed;
+            background-color: #45370D;
+            z-index: $zindex-fixed;
+            .menu-wrapper{
+                display: block;
+            }
+        }
+    }
+}

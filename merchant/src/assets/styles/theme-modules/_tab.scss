@@ -1,0 +1,33 @@
+.nav-tabs{
+    padding-left: 0 !important;
+    .nav-link{
+        padding: 1rem 2rem;
+        text-transform: uppercase;
+        color: $body-color;
+        border: none;
+        font-weight: $font-weight-medium;
+        &.active{
+            color: $headings-color;
+            background-color: transparent !important;
+            border: none;
+            border-bottom: 2px solid $primary;
+        }
+
+        &:hover{
+            color: $headings-color;
+            border: none;
+            border-bottom: 2px solid $primary;
+            cursor: pointer;
+        }
+    }
+}
+
+@include media-breakpoint-down(sm){
+    .nav-tabs{
+        margin-bottom: 10px;
+        .nav-link{
+            font-size: 12px;
+            padding: 10px 15px;
+        }
+    }
+}

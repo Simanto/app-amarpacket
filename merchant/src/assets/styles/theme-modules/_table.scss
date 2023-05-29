@@ -1,0 +1,362 @@
+.table{
+    margin-bottom: 0;
+    th,td{
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+    }
+    t{
+        &head{
+            border-top: 1px solid $gray-100;
+            background-color: $table-header-bg;
+
+            th{
+                font-size: 0.75rem;
+                font-weight: 400;
+                text-transform: uppercase;
+                color: $headings-color;
+
+                &:first-child{
+                    padding-left: 1rem;
+                }
+            }
+        }
+
+        &body{
+            tr{
+                td{
+
+                    &:first-child{
+                        padding-left: 1rem;
+                    }
+                }
+
+                &:last-child{
+                    td{
+                        border-bottom-width: 0;
+                    }
+                }
+            }
+        }
+        &foot{
+            border-bottom: 0;
+            border-top: 1px solid $gray-400;
+            tr{
+                td{
+                    border-bottom: 0;
+                }
+            }
+        }
+    }
+}
+
+@include media-breakpoint-down(sm){
+    
+    .table > :not(caption) > * > *{
+        padding: 0;
+        border: none;
+    }
+    table{
+        padding: 0;
+        display: flex !important;
+        thead{
+            display: none;
+        }
+        tbody{
+            display: flex !important;
+            flex-direction: column;
+            width: 100%;
+            tr{
+                display: grid;
+                padding: 10px 0;
+                border-bottom: 1px solid $gray-400;
+
+                &:nth-child(1){
+                    border-top: 1px solid $gray-400;
+                    margin-top: 10px;
+                }
+                td{
+                    width: 100%;
+                    padding: 10px 20px !important;
+                    &:nth-child(1){
+                        grid-column: 1;
+                        grid-row: 1;
+                        padding: inherit;
+                    }
+                    &:nth-child(2){
+                        grid-column: 1;
+                        grid-row: 2;
+                    }
+                    &:nth-child(3){
+                        grid-column: 1;
+                        grid-row: 3;
+                    }
+                    &:nth-child(4){
+                        grid-column: 1;
+                        grid-row: 4;
+                    }
+                    &:nth-child(5){
+                        grid-column: 1;
+                        grid-row: 5;
+                    }
+                    &:nth-child(6){
+                        grid-column: 1;
+                        grid-row: 6;
+                    }
+                    &:nth-child(7){
+                        grid-column: 1;
+                        grid-row: 7;
+                    }
+                    &:nth-child(8){
+                        grid-column: 1;
+                        grid-row: 8;
+                    }
+                    &:nth-child(9){
+                        grid-column: 1;
+                        grid-row: 9;
+                    }
+                    &:nth-child(10){
+                        grid-column: 1;
+                        grid-row: 10;
+                    }
+                    &:nth-child(11){
+                        grid-column: 1;
+                        grid-row: 11;
+                    }
+                    &:nth-child(12){
+                        grid-column: 2;
+                        grid-row: 12;
+                    }
+                }
+            }
+        }
+        tfoot{
+            display: none;
+        }
+    }
+
+    .table{
+        padding: 0;
+        &-packets{
+            table{
+                tbody{
+                    tr{
+                        td{
+                            &:nth-child(1){
+                                grid-column: 1 / span 2;
+                                grid-row: 1;
+                            } 
+                            
+                            &:nth-child(2){
+                                grid-column: 1;
+                                grid-row: 2;
+                            }
+                            &:nth-child(4){
+                                grid-column: 2;
+                                grid-row: 2;
+                            }
+                            
+                            &:nth-child(3){
+                                grid-column: 1 / span 2;
+                                grid-row: 3;
+                            } 
+
+                            &:nth-child(5){
+                                grid-column: 1;
+                                grid-row: 4;
+                            }
+                            &:nth-child(6){
+                                grid-column: 2;
+                                grid-row: 4 / span 2;
+                                font-size: 20px;
+                                font-weight: 600;
+                                text-align: right;
+                            }
+                            &:nth-child(7){
+                                grid-column: 1;
+                                grid-row: 5;
+                            }
+
+                            &:nth-child(8){
+                                grid-column: 1 / span 2;
+                                grid-row: 6;
+                            }
+
+                        }
+                    }
+                }
+            }
+            
+        }
+
+        &-customers{
+            table{
+                tbody{
+                    tr{
+                        td{
+                            &:nth-child(1){
+                                grid-column: 1 / span 2;
+                                grid-row: 1;
+                            }
+                            &:nth-child(8){
+                                grid-column: 3;
+                                grid-row: 1;
+                                text-align: right;
+                            }
+
+                            &:nth-child(2){
+                                grid-column: 1 / span 3;
+                                grid-row: 2;
+                                padding-bottom: 0 !important;
+                            }
+                            &:nth-child(3){
+                                grid-column: 1 / span 3;
+                                grid-row: 3;
+                                padding-bottom: 0 !important;
+                            }
+                            &:nth-child(4){
+                                grid-column: 1 / span 3;
+                                grid-row: 4;
+                            }
+
+                            &:nth-child(5){
+                                grid-column: 1;
+                                grid-row: 5;
+                            }
+                            &:nth-child(6){
+                                grid-column: 2;
+                                grid-row: 5;
+                            }
+                            &:nth-child(7){
+                                grid-column: 3;
+                                grid-row: 5;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &-payments{
+            table{
+                tbody{
+                    tr{
+                        td{
+                            &:nth-child(1){
+                                grid-column: 1 / span 2;
+                                grid-row: 1;
+                            } 
+                            &:nth-child(6){
+                                grid-column: 3;
+                                grid-row: 1;
+                                text-align: right;
+                            } 
+
+                            &:nth-child(2){
+                                grid-column: 1 / span 3;
+                                grid-row: 2;
+                            } 
+
+                            &:nth-child(3){
+                                grid-column: 1;
+                                grid-row: 3;
+                            } 
+                            &:nth-child(4){
+                                grid-column: 2;
+                                grid-row: 3;
+                                padding-left: 0 !important;
+                                padding-right: 0 !important;
+                            } 
+                            &:nth-child(5){
+                                grid-column: 3;
+                                grid-row: 3;
+                            } 
+                            &:nth-child(7){
+                                grid-column: 1 / span 3;
+                                grid-row: 4;
+                            } 
+                        }
+                    }
+                }
+            }
+
+            &_summary{
+                table{
+                    tbody{
+                        tr{
+                            th{
+                                box-shadow: none !important;
+                            }
+                            td{
+                                box-shadow: none;
+                                &.text-end{
+                                    text-align: left !important;
+                                }
+                            }
+                            > *{
+                                padding: 0 !important;
+                            }
+                        }
+                    }
+                }
+            }
+
+            &_single{
+                table{
+                    tbody{
+                        tr{
+                            td{
+                                &:nth-child(1){
+                                    grid-column: 1 / span 3;
+                                    grid-row: 1;
+                                }
+                                &:nth-child(2){
+                                    grid-column: 1 / span 3;
+                                    grid-row: 2;
+                                }
+                                &:nth-child(3){
+                                    grid-column: 1 / span 3;
+                                    grid-row: 3;
+                                }
+                                &:nth-child(4){
+                                    grid-column: 1 / span 3;
+                                    grid-row: 4;
+                                }
+
+                                &:nth-child(5){
+                                    grid-column: 1;
+                                    grid-row: 5;
+                                }
+                                &:nth-child(6){
+                                    grid-column: 2;
+                                    grid-row: 5;
+                                    padding-left: 0 !important;
+                                    padding-right: 0 !important;
+                                }
+                                &:nth-child(7){
+                                    grid-column: 3;
+                                    grid-row: 5;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &-td{
+            &_order-id, &_tracking-id{
+                color: $dark;
+            }
+        }
+
+        &-filter{
+            flex-direction: column;
+            .col{
+                margin-bottom: 15px;
+                &:last-child{
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+}

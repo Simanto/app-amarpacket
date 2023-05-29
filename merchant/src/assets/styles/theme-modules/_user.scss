@@ -1,0 +1,22 @@
+.user{
+    &-info{
+        &:hover{
+            cursor: pointer;
+        }
+        &_name{
+            max-width: 150px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+}
+@include media-breakpoint-down(sm){
+    .profile{
+        &-info{
+            .w-25{
+                min-width: 130px !important;
+            }
+        }
+    }
+}

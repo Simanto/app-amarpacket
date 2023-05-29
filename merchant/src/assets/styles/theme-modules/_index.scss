@@ -1,0 +1,22 @@
+@import 'bg';
+@import 'font';
+@import 'form';
+@import 'button';
+@import 'app';
+@import 'sidebar';
+@import 'nav';
+@import 'table';
+@import 'icons';
+@import 'img';
+@import 'user';
+@import 'tab';
+@import 'status';
+@import 'timeline';
+@import 'label';
+@import 'loader';
+
+.w{
+    &-40{
+        width: 40% !important;
+    }
+}

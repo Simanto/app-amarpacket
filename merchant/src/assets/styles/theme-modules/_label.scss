@@ -1,0 +1,38 @@
+.print-label{
+    width: 96mm;
+    height: 146mm;
+    border: 2px solid $dark;
+    padding: 4mm;
+    margin: 2mm;
+    overflow: hidden;
+
+    &_brand{
+        border-bottom: 1px solid $black;
+        margin-bottom: 2mm;
+        padding-bottom: 4mm;
+        text-align: center;
+
+        img{
+            width: 50mm;
+        }
+    }
+
+    &_section{
+        padding: 2mm 0;
+        margin-bottom: 2mm;
+        border-bottom: 1px solid $black;
+
+        p{
+            margin-bottom: 2mm;
+            color: $black;
+        }
+
+        h5{
+            margin-bottom: 4mm;
+        }
+    }
+}
+
+.label-ft{
+    min-width: 80px;
+}
