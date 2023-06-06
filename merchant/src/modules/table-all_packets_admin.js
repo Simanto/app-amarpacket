@@ -7,7 +7,7 @@ import { Badge, Button, Modal, } from "reactstrap";
 import { deliveryStatusOptions } from "../assets/doc/options";
 import { useAppContext } from "../context/appContext";
 import { ElementTable,InputSelect,Loading } from "../elements";
-import { TableColumnFilter, TableColumnFilterPacketDeliveryAgent, TableColumnFilterPacketPickupAgent, TableColumnFilterPacketStatus } from "../elements/TableColumnFilter.js";
+import { dateBetweenFilterFn, DateRangeColumnFilter, TableColumnFilter, TableColumnFilterPacketDeliveryAgent, TableColumnFilterPacketPickupAgent, TableColumnFilterPacketStatus } from "../elements/TableColumnFilter.js";
 import FormPacketUpdate from "./form-packet_update";
 
 
@@ -34,7 +34,8 @@ const TableAdminAllPackets = () =>{
         Header: "Order Date",
         accessor: "packet_createdAt",
         width: 150,
-        Filter: TableColumnFilter,
+        Filter: DateRangeColumnFilter,
+        filter: dateBetweenFilterFn,
         Cell: ({ row }) =>  moment(row.values.packet_createdAt).utc().format("MMM D, YY"),
       },
       {
@@ -218,7 +219,7 @@ const TableAdminAllPackets = () =>{
   }, []);
   
 
-    const initialState = { hiddenColumns: ['packetID', 'packet_updatedAt', 'packet_customerPhone', 'packet_customerAddress', "packet_pcikup_area","packet_merchantInvoice", "packet_customerArea","packet_status_category" ] };
+    const initialState = { hiddenColumns: ['packetID', 'packet_customerPhone', 'packet_customerAddress', "packet_pcikup_area","packet_merchantInvoice", "packet_customerArea","packet_status_category" ] };
   
     return (
       <div className="table">

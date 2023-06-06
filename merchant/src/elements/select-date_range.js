@@ -6,7 +6,7 @@ import moment from 'moment';
 import { useAppContext } from '../context/appContext.js';
 
 const SelectDateRange = () => {
-    const {filter_end_date,handleChange} = useAppContext();
+    const {filter_start_date, filter_end_date, handleChange} = useAppContext();
     
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
@@ -18,15 +18,17 @@ const SelectDateRange = () => {
         setStartDate(start);
         setEndDate(end);
 
+        
         handleChange({
             name: "filter_start_date",
             value: moment(start).format("YYYY-MM-DD") || "",
         })
-    
+
         handleChange({
             name: "filter_end_date",
             value: moment(end).format("YYYY-MM-DD") || "",
         })
+        
       };
     
     

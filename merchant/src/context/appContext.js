@@ -407,7 +407,7 @@ const AppProvider = ({children}) => {
         dispatch({type:"GET_PACKETS_BEGIN"})
         
         try {
-            const {data} = await axiosFetch.get("/api/v1/admin/packets/all");
+            const {data} = await axiosFetch.get("/api/v1/admin/packets/all?status=[pedning, new]&fileter_status=paid&age=1");
             dispatch({type:"GET_PACKETS_SUCCESS",payload: {data}})
             
         } catch (err) {
