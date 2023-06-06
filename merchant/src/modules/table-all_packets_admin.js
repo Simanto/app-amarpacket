@@ -219,7 +219,7 @@ const TableAdminAllPackets = () =>{
   }, []);
   
 
-    const initialState = { hiddenColumns: ['packetID', 'packet_customerPhone', 'packet_customerAddress', "packet_pcikup_area","packet_merchantInvoice", "packet_customerArea","packet_status_category" ] };
+    const initialState = { hiddenColumns: ['packetID', 'packet_updatedAt', 'packet_customerPhone', 'packet_customerAddress', "packet_pcikup_area","packet_merchantInvoice", "packet_customerArea","packet_status_category" ] };
   
     return (
       <div className="table">
