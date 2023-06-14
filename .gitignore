@@ -6,6 +6,7 @@ node_modules
 # merchant/build
 /.pnp
 merchant/node_modules
+merchant/build
 merchant/.pnp
 .pnp.js
 

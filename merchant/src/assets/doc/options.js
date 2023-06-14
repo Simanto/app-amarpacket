@@ -18,6 +18,11 @@ export const deliveryStatusOptions = [
   { value: 'returned', label: 'Returned', category: 'danger', message: 'packet has been returned to merchant'},
 ];
 
+export const agentDeliveryStatusOptions = [
+  { value: 'delivered', label: 'Delivered', category: 'success', message: 'packet has been delivered'},
+  { value: 'failed-to-deliver', label: 'Failed', category: 'success', message: ''}
+];
+
 export const paymentStatus = [
   {value: 'pending', label: 'Pending', category: "info"}, 
   {value: 'due', label: 'Due', category: "danger"}, 
