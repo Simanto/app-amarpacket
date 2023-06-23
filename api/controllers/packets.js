@@ -332,7 +332,7 @@ export const adminAllPacket = async (req,res,next) => {
           packetID: "$_id",
           packet_trackingID: "$trackingID",
           packet_createdAt: "$createdAt",
-          : { "$arrayElemAt": ["$status.createdAt", -1] },
+          packet_updatedAt: { "$arrayElemAt": ["$status.createdAt", -1] },
           packet_merchantInvoice: "$merchantInvoice",
           packet_collectionAmount: "$collectionAmount",
           packet_costPrice: "$costPrice" || 0,
