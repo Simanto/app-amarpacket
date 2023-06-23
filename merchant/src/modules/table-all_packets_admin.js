@@ -9,6 +9,7 @@ import { useAppContext } from "../context/appContext";
 import { ElementTable,InputSelect,Loading } from "../elements";
 import { dateBetweenFilterFn, DateRangeColumnFilter, TableColumnFilter, TableColumnFilterPacketDeliveryAgent, TableColumnFilterPacketPickupAgent, TableColumnFilterPacketStatus } from "../elements/TableColumnFilter.js";
 import FormPacketUpdate from "./form-packet_update";
+import FormSearchAdminPackets from "./form-search-admin_packets";
 
 
 
@@ -114,7 +115,6 @@ const TableAdminAllPackets = () =>{
         Filter: TableColumnFilter,
         Cell: ({ row }) => (
           <>
-            
             <p className={"status status-"+row.values.packet_status_category}>{row.values.packet_status_category}</p>
           </>
         ),
@@ -224,7 +224,11 @@ const TableAdminAllPackets = () =>{
     return (
       <div className="table">
         
-        <ElementTable columns={columns} initialState={initialState} data={allPackets} filterCmponents={["search", "status", "pickup_agent", "delivery_agent", "date-range"]} />
+        {/* Admin Packet Search */}
+        <FormSearchAdminPackets />
+        {/* End */}
+
+        <ElementTable columns={columns} initialState={initialState} data={allPackets} filterCmponents={[]} />
 
         <Modal isOpen={modal} toggle={toggle}>
           <FormPacketUpdate />

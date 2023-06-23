@@ -82,6 +82,8 @@ const initialState = {
 
     // Packet Data
     allPackets:[],
+    totalPackets:"",
+    numOfPages:"",
     packetsForDelivery:"",
     packetsDelivered:"",
     packetsReturned:"",
@@ -407,11 +409,14 @@ const AppProvider = ({children}) => {
         dispatch({type:"GET_PACKETS_BEGIN"})
         
         try {
-            const {data} = await axiosFetch.get("/api/v1/admin/packets/all?status=[pedning, new]&fileter_status=paid&age=1");
-            dispatch({type:"GET_PACKETS_SUCCESS",payload: {data}})
+            const {data} = await axiosFetch.get("/api/v1/admin/packets/all?status=all");
+            const {packets, totalPackets, numOfPages} = data;
+            console.log(data);
+            dispatch({type:"GET_PACKETS_SUCCESS",payload: {packets, totalPackets, numOfPages}})
             
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
+            console.log(err);
         }
 
         setTimeout(() => {

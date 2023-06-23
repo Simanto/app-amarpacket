@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { useTable, useGlobalFilter, useFilters } from "react-table";
+import { useTable, useGlobalFilter, useFilters, usePagination } from "react-table";
 import { Button, Col, Input, Row, Table } from "reactstrap";
 import TableFilter from "./TableFilter";
 import { DateRangeColumnFilter, TableColumnFilterPacketDeliveryOption, TableColumnFilterPacketPickupOption, TableColumnFilterPacketStatusOptions } from "./TableColumnFilter";
@@ -12,7 +12,11 @@ const  ElementTable =({ initialState, columns, data, filterCmponents })=> {
         getTableBodyProps,
         headerGroups, 
         footerGroups,
-        rows, 
+        rows,
+        // page, 
+        // nextPage,
+        // previousPage,
+        // pageOptions,
         prepareRow,
         state,
         setGlobalFilter,
@@ -24,7 +28,8 @@ const  ElementTable =({ initialState, columns, data, filterCmponents })=> {
         data,
     }, 
         useFilters,
-        useGlobalFilter
+        useGlobalFilter,
+        usePagination
     );
 
     const {globalFilter} = state;
@@ -137,6 +142,10 @@ const  ElementTable =({ initialState, columns, data, filterCmponents })=> {
                 }
 
             </Table>
+            {/* <div>
+                <button onClick={()=> previousPage()}>Prevoius</button>
+                <button onClick={()=> nextPage()}>Next</button>
+            </div> */}
         </div>
     );
 }

@@ -264,7 +264,9 @@ export const allPacket = async (req,res,next) => {
 
 export const adminAllPacket = async (req,res,next) => {
   try {
-    const packets = await Packet.aggregate([
+    const {search,status,startDate,endDate,pickup_agent,delivery_agent} = req.query;
+
+    const queryObject = [
       {
         $lookup:{
           from: "users",
@@ -325,34 +327,65 @@ export const adminAllPacket = async (req,res,next) => {
           as:"status"
         }
       },
-      {$project:{
-        packetID: "$_id",
-        packet_trackingID: "$trackingID",
-        packet_createdAt: "$createdAt",
-        packet_updatedAt: "$updatedAt",
-        packet_merchantInvoice: "$merchantInvoice",
-        packet_collectionAmount: "$collectionAmount",
-        packet_costPrice: "$costPrice" || 0,
-        packet_weight: "$weight" || 1,
-        packet_delivery_charge: "$delivery_charge",
-        packet_customerName:{ "$arrayElemAt": ["$customer.name", 0] },
-        packet_customerPhone:{ "$arrayElemAt": ["$customer.phone", 0] },
-        packet_customerArea:{ "$arrayElemAt": ["$customer.area", 0] },
-        packet_customerAddress:{ "$arrayElemAt": ["$customer.address", 0] },
-        packet_status_category: { "$arrayElemAt": ["$status.category", -1] },
-        packet_status: { "$arrayElemAt": ["$status.name", -1] },
-        packet_paymentStatus: "$paymentStatus",
-        packet_invoiceID: "$invoiceID" || null,
-        packet_base_charge: {"$arrayElemAt": ["$merchant.profile.base_charge", 0]},
-        packet_merchant: {"$arrayElemAt": ["$merchant.profile.business_name", 0] },
-        packet_merchant_phone: {"$arrayElemAt": ["$merchant.profile.phone", 0] },
-        packet_pcikup_area: {"$arrayElemAt": ["$merchant.profile.pickup_area", 0]},
-        packet_pcikup_address: {"$arrayElemAt": ["$merchant.profile.pickup_address", 0]},
-        packet_pickup_man: {"$arrayElemAt": ["$pickup_man.name", 0] },
-        packet_delivery_man: {"$arrayElemAt": ["$delivery_man.name", 0] },
-      }}
-    ]).sort({packet_createdAt: -1});
-    res.status(200).json(packets)
+      {
+        $project:{
+          packetID: "$_id",
+          packet_trackingID: "$trackingID",
+          packet_createdAt: "$createdAt",
+          : { "$arrayElemAt": ["$status.createdAt", -1] },
+          packet_merchantInvoice: "$merchantInvoice",
+          packet_collectionAmount: "$collectionAmount",
+          packet_costPrice: "$costPrice" || 0,
+          packet_weight: "$weight" || 1,
+          packet_delivery_charge: "$delivery_charge",
+          packet_customerName:{ "$arrayElemAt": ["$customer.name", 0] },
+          packet_customerPhone:{ "$arrayElemAt": ["$customer.phone", 0] },
+          packet_customerArea:{ "$arrayElemAt": ["$customer.area", 0] },
+          packet_customerAddress:{ "$arrayElemAt": ["$customer.address", 0] },
+          packet_status_category: { "$arrayElemAt": ["$status.category", -1] },
+          packet_status: { "$arrayElemAt": ["$status.name", -1] },
+          packet_status_all: "$status",
+          packet_paymentStatus: "$paymentStatus",
+          packet_invoiceID: "$invoiceID" || null,
+          packet_base_charge: {"$arrayElemAt": ["$merchant.profile.base_charge", 0]},
+          packet_merchant: {"$arrayElemAt": ["$merchant.profile.business_name", 0] },
+          packet_merchant_phone: {"$arrayElemAt": ["$merchant.profile.phone", 0] },
+          packet_pcikup_area: {"$arrayElemAt": ["$merchant.profile.pickup_area", 0]},
+          packet_pcikup_address: {"$arrayElemAt": ["$merchant.profile.pickup_address", 0]},
+          packet_pickup_man: {"$arrayElemAt": ["$pickup_man.name", 0] },
+          packet_delivery_man: {"$arrayElemAt": ["$delivery_man.name", 0] },
+        },
+      },
+    ]
+
+    // NO AWAIT
+    let results = Packet.aggregate(queryObject)
+
+    let packets = await results.sort({packet_createdAt: -1});
+
+    if(search !== ""){
+      packets = packets.filter((item) => JSON.stringify(item).indexOf(search)!=-1)
+    }
+
+    if(status !== "all"){
+      packets = packets.filter((item) => item.packet_status === status)
+    }
+
+    if(startDate !== "" && endDate !== ""){
+      console.log(startDate, "to", endDate)
+      var from = new Date(startDate)
+      var to = new Date(endDate)
+      
+      packets = packets.filter((item) => {
+        var date = new Date(item.packet_updatedAt);
+        return date >= from && date <= to
+      })
+    }
+
+    // .skip(5).limit(5)
+    
+    res.status(200).json({packets, totalPackets: packets.length, numOfPages: 1})
+
   } catch (err) {
     next(err)
   }
@@ -724,7 +757,7 @@ export const PacketStats = async (req,res,next) =>{
     next(err)
   }
 }
-2
+
 // Packets Out for Delivery packets
 export const packetOutforDelivery = async (req,res,next)=>{
   try {

@@ -219,7 +219,9 @@ const reducer = (state,action) => {
             return{
                 ...state,
                 isLoading: false,
-                allPackets: action.payload.data,
+                allPackets: action.payload.packets,
+                totalPackets: action.payload.totalPackets,
+                numOfPages: action.payload.numOfPages,
             }
         break;
 
