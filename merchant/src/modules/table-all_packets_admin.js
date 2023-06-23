@@ -7,7 +7,7 @@ import { Badge, Button, Modal, } from "reactstrap";
 import { deliveryStatusOptions } from "../assets/doc/options";
 import { useAppContext } from "../context/appContext";
 import { ElementTable,InputSelect,Loading } from "../elements";
-import { TableColumnFilter, TableColumnFilterPacketDeliveryAgent, TableColumnFilterPacketPickupAgent, TableColumnFilterPacketStatus } from "../elements/TableColumnFilter.js";
+import { DateRangeColumnFilter, TableColumnFilter, TableColumnFilterPacketDeliveryAgent, TableColumnFilterPacketPickupAgent, TableColumnFilterPacketStatus, dateBetweenFilterFn } from "../elements/TableColumnFilter.js";
 import FormPacketUpdate from "./form-packet_update";
 
 
@@ -63,7 +63,8 @@ const TableAdminAllPackets = () =>{
           <Fragment>
             <p className="mb-1 fw-semibold">{row.values.packet_customerName}</p>
             <p className="mb-1">{row.values.packet_customerPhone}</p>
-            <p>{row.values.packet_customerArea}</p>
+            <p className="mb-0">{row.values.packet_customerArea}</p>
+            <p>{row.values.packet_customerAddress}</p>
           </Fragment>
         ),
       },
@@ -117,8 +118,17 @@ const TableAdminAllPackets = () =>{
         Cell: ({ row }) => (
           <>
             <span className={"text-uppercase status alert alert-"+row.values.packet_status_category}>{row.values.packet_status}</span>
+            {/* <p className="mt-2">Updated: {moment(row.values.packet_updatedAt).utc().format("MMM D, YY")}</p> */}
           </>
         ),
+      },
+      {
+        Header: "Update Date",
+        accessor: "packet_updatedAt",
+        width: 150,
+        Filter: DateRangeColumnFilter,
+        filter: dateBetweenFilterFn,
+        Cell: ({ row }) =>  moment(row.values.packet_updatedAt).utc().format("MMM D, YY"),
       },
       {
         Header: "Pickup Man",
