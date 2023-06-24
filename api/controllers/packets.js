@@ -264,7 +264,11 @@ export const allPacket = async (req,res,next) => {
 
 export const adminAllPacket = async (req,res,next) => {
   try {
-    const {search,status,startDate,endDate,pickup_agent,delivery_agent} = req.query;
+    const {search,status,startDate,endDate,pickup_agent,delivery_agent,page,limit} = req.query;
+    let pageNumber = parseInt(page);
+    let itemsPerPage = parseInt(limit);
+    let start = new Date(2020, 1, 1), // months are zero-based indexes i.e Aug month index is 7
+    end = new Date(2021, 12, 30);
 
     const queryObject = [
       {
@@ -328,7 +332,7 @@ export const adminAllPacket = async (req,res,next) => {
         }
       },
       {
-        $project:{
+        $project: {
           packetID: "$_id",
           packet_trackingID: "$trackingID",
           packet_createdAt: "$createdAt",
@@ -354,37 +358,64 @@ export const adminAllPacket = async (req,res,next) => {
           packet_pcikup_address: {"$arrayElemAt": ["$merchant.profile.pickup_address", 0]},
           packet_pickup_man: {"$arrayElemAt": ["$pickup_man.name", 0] },
           packet_delivery_man: {"$arrayElemAt": ["$delivery_man.name", 0] },
-        },
+        }
       },
-    ]
+      {
+        $match: {
+          "packet_updatedAt": { "$gte": start, "$lte": end}
+        }
+        // packet_updatedAt:
+        // {$gte:Date("2023-01-01"), $lt:}
+      }
+    ];
+
+    if( typeof status !== 'undefined' && status != null && status !== ''){
+      queryObject.push(
+        {$match: {packet_status: status}}
+      );
+    }
+
+    queryObject.push(
+      {
+        $sort:{packet_createdAt: -1}
+      },
+      {
+        $facet: {
+          metadata: [{$count: "total"}, {$addFields: {page: pageNumber}}],
+          data: [{$skip: (pageNumber * itemsPerPage) - itemsPerPage}, {$limit: itemsPerPage}],
+        }
+      }
+    );
 
     // NO AWAIT
-    let results = Packet.aggregate(queryObject)
+    let results = Packet.aggregate(queryObject);
 
-    let packets = await results.sort({packet_createdAt: -1});
+    let packets = await results;
 
-    if(search !== ""){
-      packets = packets.filter((item) => JSON.stringify(item).indexOf(search)!=-1)
-    }
+    // if(search !== ""){
+    //   packets = packets.filter((item) => JSON.stringify(item).indexOf(search)!=-1)
+    // }
 
-    if(status !== "all"){
-      packets = packets.filter((item) => item.packet_status === status)
-    }
+    // if(status !== "all"){
+    //   packets = packets.filter((item) => item.packet_status === status)
+    // }
 
-    if(startDate !== "" && endDate !== ""){
-      console.log(startDate, "to", endDate)
-      var from = new Date(startDate)
-      var to = new Date(endDate)
+    // if(startDate !== "" && endDate !== ""){
+    //   console.log(startDate, "to", endDate)
+    //   var from = new Date(startDate)
+    //   var to = new Date(endDate)
       
-      packets = packets.filter((item) => {
-        var date = new Date(item.packet_updatedAt);
-        return date >= from && date <= to
-      })
-    }
+    //   packets = packets.filter((item) => {
+    //     var date = new Date(item.packet_updatedAt);
+    //     return date >= from && date <= to
+    //   })
+    // }
 
     // .skip(5).limit(5)
     
-    res.status(200).json({packets, totalPackets: packets.length, numOfPages: 1})
+    //res.status(200).json({packets, totalPackets: packets.length, numOfPages: 1})
+    res.status(200).json({packets})
+    // res.status(200).json({results})
 
   } catch (err) {
     next(err)
