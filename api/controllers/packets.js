@@ -264,11 +264,7 @@ export const allPacket = async (req,res,next) => {
 
 export const adminAllPacket = async (req,res,next) => {
   try {
-    const {search,status,startDate,endDate,pickup_agent,delivery_agent,page,limit} = req.query;
-    let pageNumber = parseInt(page);
-    let itemsPerPage = parseInt(limit);
-    let start = new Date(2020, 1, 1), // months are zero-based indexes i.e Aug month index is 7
-    end = new Date(2021, 12, 30);
+    let {search,status,start_date,end_date,pickup_agent,delivery_agent,page,limit} = req.query;
 
     const queryObject = [
       {
@@ -359,39 +355,81 @@ export const adminAllPacket = async (req,res,next) => {
           packet_pickup_man: {"$arrayElemAt": ["$pickup_man.name", 0] },
           packet_delivery_man: {"$arrayElemAt": ["$delivery_man.name", 0] },
         }
-      },
-      {
-        $match: {
-          "packet_updatedAt": { "$gte": start, "$lte": end}
-        }
-        // packet_updatedAt:
-        // {$gte:Date("2023-01-01"), $lt:}
       }
     ];
 
-    if( typeof status !== 'undefined' && status != null && status !== ''){
+    if(typeof start_date !== 'undefined' && start_date != null && start_date !== '' && typeof end_date !== 'undefined' && end_date != null && end_date !== ''){
+      //start_date = new Date(start_date);
+      //end_date = new Date(end_date);
+      queryObject.push(
+        {
+          $match: {
+            "packet_updatedAt": { "$gte": start_date, "$lte": end_date}
+          }
+        }
+      );
+    }
+
+    if(typeof search !== 'undefined' && search != null && search !== ''){
+      queryObject.push(
+        {
+          $match: {
+            $or: [
+              {packet_trackingID: {$regex: search, $options: "i"}},
+              {packet_customerPhone: {$regex: search, $options: "i"}},
+              {packet_customerName: {$regex: search, $options: "i"}},
+            ]
+          }
+        }
+      );
+    }
+
+    if(typeof pickup_agent !== 'undefined' && pickup_agent != null && pickup_agent !== ''){
+      queryObject.push(
+        {
+          $match: {packet_pickup_man: {$regex: pickup_agent, $options: "i"}}
+        }
+      );
+    }
+
+    if(typeof delivery_agent !== 'undefined' && delivery_agent != null && delivery_agent !== ''){
+      queryObject.push(
+        {
+          $match: {packet_delivery_man: {$regex: delivery_agent, $options: "i"}}
+        }
+      );
+    }
+
+    if(typeof status !== 'undefined' && status != null && status !== ''){
       queryObject.push(
         {$match: {packet_status: status}}
       );
     }
-
+    
     queryObject.push(
       {
         $sort:{packet_createdAt: -1}
-      },
-      {
-        $facet: {
-          metadata: [{$count: "total"}, {$addFields: {page: pageNumber}}],
-          data: [{$skip: (pageNumber * itemsPerPage) - itemsPerPage}, {$limit: itemsPerPage}],
-        }
       }
     );
+    
+    if(typeof page !== 'undefined' && page != null && page !== '' && typeof limit !== 'undefined' && limit != null && limit !== ''){
+      page = parseInt(page);
+      limit = parseInt(limit);
+
+      queryObject.push(
+        {
+          $facet: {
+            metadata: [{$count: "total"}, {$addFields: {page: page}}],
+            allPackets: [{$skip: (page * limit) - limit}, {$limit: limit}]
+          }
+        }
+      );
+    }
 
     // NO AWAIT
     let results = Packet.aggregate(queryObject);
 
     let packets = await results;
-
     // if(search !== ""){
     //   packets = packets.filter((item) => JSON.stringify(item).indexOf(search)!=-1)
     // }
@@ -415,7 +453,6 @@ export const adminAllPacket = async (req,res,next) => {
     
     //res.status(200).json({packets, totalPackets: packets.length, numOfPages: 1})
     res.status(200).json({packets})
-    // res.status(200).json({results})
 
   } catch (err) {
     next(err)

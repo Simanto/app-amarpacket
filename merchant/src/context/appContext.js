@@ -407,13 +407,21 @@ const AppProvider = ({children}) => {
     const getAllPacketAdmin = async () =>{
 
         dispatch({type:"GET_PACKETS_BEGIN"})
-        
+        let page = 1;
+        let limit = 10;
+        let status = 'delivered';
+        let search = '';
+        let start_date = '';
+        let end_date = '';
+        let delivery_agent = '';
+        let pickup_agent = '';
+
         try {
-            const {data} = await axiosFetch.get("/api/v1/admin/packets/all?status=all");
-            const {packets, totalPackets, numOfPages} = data;
-            console.log(data);
-            dispatch({type:"GET_PACKETS_SUCCESS",payload: {packets, totalPackets, numOfPages}})
-            
+            let params = `page=${page}&limit=${limit}&status=${status}&search=${search}&start_date=${start_date}&end_date=${end_date}&delivery_agent=${delivery_agent}&pickup_agent=${pickup_agent}`;
+            const {data} = await axiosFetch.get(`/api/v1/admin/packets/all?${params}`);
+            const {allPackets, metadata} = data.packets[0];
+            dispatch({type:"GET_PACKETS_SUCCESS",payload: {allPackets, metadata}})
+
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
             console.log(err);
