@@ -251,10 +251,18 @@ export const adminAllPacket = async (req,res,next) => {
     // const page = Number(req.query.page) || 1;
     // const limit = Number(req.query.limit) || 1;
     const page = 1;
-    const limit = 200;
+    const limit = 1000;
     const skip = (page - 1) * limit;
     
     const packets = await Packet.aggregate([
+      {
+        $match:{
+          createdAt: { 
+            $gte: moment().day(-7).toDate(),
+             $lt: moment().startOf('week').toDate()
+          },
+        }
+      },
       {
         $lookup:{
           from: "users",
@@ -341,7 +349,7 @@ export const adminAllPacket = async (req,res,next) => {
         packet_pickup_man: {"$arrayElemAt": ["$pickup_man.name", 0] },
         packet_delivery_man: {"$arrayElemAt": ["$delivery_man.name", 0] },
       }}
-    ]).sort({packet_createdAt: -1}).skip(skip).limit(limit);
+    ]).sort({packet_createdAt: -1});
     
     res.status(200).json(packets)
   } catch (err) {
