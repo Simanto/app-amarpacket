@@ -258,8 +258,9 @@ export const adminAllPacket = async (req,res,next) => {
       {
         $match:{
           createdAt: { 
-            $gte: moment().day(-14).toDate(),
-             $lt: moment().startOf('week').toDate()
+            $gte: moment(Date.now() - 7 * 24 * 3600 * 1000).toDate()
+            // $gte: moment().day(-14).toDate(),
+            // $lt: moment().startOf('week').toDate()
           },
         }
       },
