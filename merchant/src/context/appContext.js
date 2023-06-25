@@ -450,6 +450,7 @@ const AppProvider = ({children}) => {
         
         try {
             const {data} = await axiosFetch.get("/api/v1/admin/packets/all");
+            console.log(data)
             dispatch({type:"GET_PACKETS_SUCCESS",payload: {data}})
             
         } catch (err) {
