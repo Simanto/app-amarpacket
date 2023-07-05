@@ -82,6 +82,7 @@ const initialState = {
 
     // Packet Data
     allPackets:[],
+    totalPackets:"",
     packetsForDelivery:"",
     packetsDelivered:"",
     packetsReturned:"",
@@ -108,6 +109,20 @@ const initialState = {
     packet_status_category:"",
     packet_pickup_agentID:"",
     packet_delivery_agentID:"",
+
+    // Packet Search
+    search: "",
+    search_status: "",
+    search_start_date: "",
+    search_end_date: "",
+    search_delivery_agent: "",
+    search_pickup_agent: "",
+
+
+    // Pagination
+    page: 1,
+    limit: 20,
+    num0fpages:"",
 
     // Agent
     allAgent:"",
@@ -379,7 +394,11 @@ const AppProvider = ({children}) => {
         }, 3000);
     }
 
-    // Get All Packet
+    // ****************************
+    //         Get
+    // ****************************
+
+    // Merchant: All packet
     const getAllPacket = async () =>{
 
         dispatch({type:"GET_PACKETS_BEGIN"})
@@ -387,8 +406,78 @@ const AppProvider = ({children}) => {
         try {
             const {data} = await axiosFetch.get("/api/v1/packets/all");
 
-            dispatch({type:"GET_PACKETS_SUCCESS",payload: {data}})
+            console.log(data);
 
+            dispatch({type:"GET_MERCHANT_PACKETS_SUCCESS",payload: {data}})
+
+        } catch (err) {
+            dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
+        }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 1000);
+    }
+
+    const getAllPacketAdmin = async () =>{
+
+        const {page,limit,search, search_status, search_start_date, search_end_date, search_delivery_agent, search_pickup_agent} = state;
+
+        let url = `/api/v1/admin/packets/all?page=${page}&limit=${limit}`
+
+        if(search && search.length >= 3){
+            url = url + `&search=${search}`
+        }
+
+        if(search_status){
+            url = url + `&status=${search_status}`
+        }
+
+        if(search_start_date && search_end_date){
+            url = url + `&start_date=${search_start_date}&end_date=${search_end_date}`
+        }
+
+        if(search_delivery_agent){
+            url = url + `&delivery_agent=${search_delivery_agent}`
+        }
+
+        if(search_pickup_agent){
+            url = url + `&pickup_agent=${search_pickup_agent}`
+        }
+
+        dispatch({type:"GET_PACKETS_BEGIN"})
+        try {
+            
+            // let params = `page=${page}&limit=${limit}&status=${search_status}&search=${search}&start_date=${search_start_date}&end_date=${search_end_date}&delivery_agent=${search_delivery_agent}&pickup_agent=${search_pickup_agent}`;
+            
+            const {data} = await axiosFetch.get(url);
+            
+            const {packets, totalPackets, totalPages} = data;
+
+            console.log(data);
+            
+            dispatch({type:"GET_PACKETS_SUCCESS", payload:{packets, totalPackets, totalPages}})
+
+        } catch (err) {
+            dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
+            console.log(err);
+        }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 1000);
+    }
+
+    // Get Single Packet
+    const getPacket = async (packetid) =>{
+
+        dispatch({type:"CLEAR_PACKET"})
+        dispatch({type:"GET_PACKET_BEGIN"})
+
+        try {
+            const {data} = await axiosFetch.get(`/api/v1/packets/${packetid}`)
+            const packet = data[0];
+            dispatch({type:"GET_PACKET_SUCCESS", payload: {packet}})
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
         }
@@ -443,43 +532,48 @@ const AppProvider = ({children}) => {
             dispatch({type:"CLEAR_ALERT"})
         }, 1000);
     }
+
+    // Agent: Get Packets that Assigned and Out For Delivery
+    const getPacketAssignedForDeliveries = async () =>{
+        dispatch({type:"GET_ASSIGNED_DELIVERIES_BEGIN"})
+        try {
+            const {data} = await axiosFetch.get("/api/v1//agent/deliveries/assigned");
+            const {packets} = data[0]
+            console.log(packets);
+            dispatch({type:"GET_ASSIGNED_DELIVERIES_SUCCESS", payload: {packets}})
+        } catch (err) {
+            dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
+        }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 1000);
+    }
     
-    const getAllPacketAdmin = async () =>{
 
-        dispatch({type:"GET_PACKETS_BEGIN"})
-        
+
+    // ****************************
+    //         Delete
+    // ****************************
+
+    const deletePacket = async (id) =>{
+        dispatch({type:"DELETE_PACKET_BEGIN"})
         try {
-            const {data} = await axiosFetch.get("/api/v1/admin/packets/all");
-            console.log(data)
-            dispatch({type:"GET_PACKETS_SUCCESS",payload: {data}})
-            
+            const res =  await axios.delete(`/api/v1/admin/packet/delete/${id}`)
+            const {data} = res
+            dispatch({type:"DELETE_PACKET_SUCCESS", payload: {data}});
+
+            getAllPacketAdmin();
+
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
         }
-
         setTimeout(() => {
             dispatch({type:"CLEAR_ALERT"})
-        }, 1000);
+        }, 3000);
     }
 
-    // Get Single Packet
-    const getPacket = async (packetid) =>{
-
-        dispatch({type:"CLEAR_PACKET"})
-        dispatch({type:"GET_PACKET_BEGIN"})
-
-        try {
-            const {data} = await axiosFetch.get(`/api/v1/packets/${packetid}`)
-            const packet = data[0];
-            dispatch({type:"GET_PACKET_SUCCESS", payload: {packet}})
-        } catch (err) {
-            dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
-        }
-
-        setTimeout(() => {
-            dispatch({type:"CLEAR_ALERT"})
-        }, 1000);
-    }
+    
 
     const setAreaList = () =>{
 
@@ -983,6 +1077,14 @@ const AppProvider = ({children}) => {
     }
 
 
+    // Pagination
+
+    const changePage = (page) =>{
+        dispatch({type:"CHANGE_PAGE", payload:{page}})
+    }
+
+
+
     return (
         <AppContext.Provider value={{
             ...state,
@@ -1043,6 +1145,16 @@ const AppProvider = ({children}) => {
             setEditInvoice,
             updateInvoice,
             admingGetInvoicePacketsByID,
+
+
+            // Global
+            deletePacket,
+
+            // Agent
+            getPacketAssignedForDeliveries,
+
+            // Pagination
+            changePage,
             
             // Results
             dispatch

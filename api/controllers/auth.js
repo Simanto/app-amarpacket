@@ -170,10 +170,9 @@ export const login = async(req,res,next) =>{
         // Check by email or phone
         if(!req.body.email || !req.body.password) return next(createError(400, "Please provide email and password"))
 
-        const isUser = await User.findOne({email:req.body.email});
+        const isUser = await User.findOne({email: req.body.email});
 
         if(!isUser) return next(createError(404, "User not found"));
-
         // Check password
         const isPasswordCorrect = await bcrypt.compare(
             req.body.password, isUser.password

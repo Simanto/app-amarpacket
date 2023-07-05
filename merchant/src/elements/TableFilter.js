@@ -1,16 +1,15 @@
-import React, { useEffect } from 'react'
-import { FormGroup, Input, InputGroup, InputGroupText } from "reactstrap";
+import React, { useEffect, useState } from 'react'
+import { Input, InputGroup, InputGroupText } from "reactstrap";
 import { useAppContext } from '../context/appContext';
+import { useAsyncDebounce } from 'react-table';
 
 const TableFilter = ({filter, setFilter}) => {
-    const {filter_global_search, handleChange} = useAppContext()
-    const handleInputChange = (e) =>{
-        const {name, value} = e.target;
-        handleChange({name, value})
-    }
-    useEffect(() => {
-        setFilter(filter_global_search)
-    }, [filter_global_search])
+    const [value, setValue] = useState(filter);
+    const {filter_global_search, handleChange} = useAppContext();
+
+    const handleInputChange = useAsyncDebounce((value) => {
+        setFilter(value || undefined);
+      }, 1000);
     
   return (
     <InputGroup>
@@ -25,8 +24,11 @@ const TableFilter = ({filter, setFilter}) => {
             name="filter_global_search"
             placeholder="Search"
             type="text"
-            onChange={handleInputChange}
-            value={filter || ""}
+            value={value || ""}
+            onChange={(e) => {
+                setValue(e.target.value);
+                handleInputChange(e.target.value);
+            }}
         />
     </InputGroup>
   )

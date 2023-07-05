@@ -168,7 +168,23 @@ export const updatePacket =  async(req,res,next) =>{
 }
 
 // Delete
-export const deletePacket = (req,res,next) => {
+export const deletePacket = async(req,res,next) => {
+  try {
+    
+    const packet = await Packet.findById(req.params.packetid);
+    
+    if(!packet) return next(createError(404, "packet not found"));
+
+    // Delete Status
+    await Status.deleteMany({'_id':{'$in': packet.status}})
+
+    await Packet.deleteOne({'_id':{'$in': packet._id}})
+
+    res.status(200).json("Packet has been deleted.");
+
+  } catch (err) {
+    next(err)
+  }
 }
 
 // Get All Packets by merchant
@@ -240,7 +256,9 @@ export const allPacket = async (req,res,next) => {
         packet_pcikup_address: {"$arrayElemAt": ["$merchant.profile.pickup_address", 0]},
       }}
     ]).sort({packet_createdAt: -1});
+
     res.status(200).json(packets)
+    
   } catch (err) {
     next(err)
   }
@@ -248,13 +266,11 @@ export const allPacket = async (req,res,next) => {
 
 export const adminAllPacket = async (req,res,next) => {
   try {
-    // const page = Number(req.query.page) || 1;
-    // const limit = Number(req.query.limit) || 1;
-    const page = 1;
-    const limit = 1000;
-    const skip = (page - 1) * limit;
+    let {search,status,start_date,end_date,pickup_agent,delivery_agent,page,limit} = req.query;
     
-    const packets = await Packet.aggregate([
+    
+    
+    const queryObject = [
       {
         $match:{
           createdAt: { 
@@ -324,35 +340,123 @@ export const adminAllPacket = async (req,res,next) => {
           as:"status"
         }
       },
-      {$project:{
-        packetID: "$_id",
-        packet_trackingID: "$trackingID",
-        packet_createdAt: "$createdAt",
-        packet_updatedAt:{ "$arrayElemAt": ["$status.updatedAt", -1] },
-        packet_merchantInvoice: "$merchantInvoice",
-        packet_collectionAmount: "$collectionAmount",
-        packet_costPrice: "$costPrice" || 0,
-        packet_weight: "$weight" || 1,
-        packet_delivery_charge: "$delivery_charge",
-        packet_customerName:{ "$arrayElemAt": ["$customer.name", 0] },
-        packet_customerPhone:{ "$arrayElemAt": ["$customer.phone", 0] },
-        packet_customerArea:{ "$arrayElemAt": ["$customer.area", 0] },
-        packet_customerAddress:{ "$arrayElemAt": ["$customer.address", 0] },
-        packet_status_category: { "$arrayElemAt": ["$status.category", -1] },
-        packet_status: { "$arrayElemAt": ["$status.name", -1] },
-        packet_paymentStatus: "$paymentStatus",
-        packet_invoiceID: "$invoiceID" || null,
-        packet_base_charge: {"$arrayElemAt": ["$merchant.profile.base_charge", 0]},
-        packet_merchant: {"$arrayElemAt": ["$merchant.profile.business_name", 0] },
-        packet_merchant_phone: {"$arrayElemAt": ["$merchant.profile.phone", 0] },
-        packet_pcikup_area: {"$arrayElemAt": ["$merchant.profile.pickup_area", 0]},
-        packet_pcikup_address: {"$arrayElemAt": ["$merchant.profile.pickup_address", 0]},
-        packet_pickup_man: {"$arrayElemAt": ["$pickup_man.name", 0] },
-        packet_delivery_man: {"$arrayElemAt": ["$delivery_man.name", 0] },
-      }}
-    ]).sort({packet_createdAt: -1});
+      {
+        $project: {
+          packetID: "$_id",
+          packet_trackingID: "$trackingID",
+          packet_createdAt: "$createdAt",
+          packet_updatedAt: { "$arrayElemAt": ["$status.createdAt", -1] },
+          packet_merchantInvoice: "$merchantInvoice",
+          packet_collectionAmount: "$collectionAmount",
+          packet_costPrice: "$costPrice" || 0,
+          packet_weight: "$weight" || 1,
+          packet_delivery_charge: "$delivery_charge",
+          packet_customerName:{ "$arrayElemAt": ["$customer.name", 0] },
+          packet_customerPhone:{ "$arrayElemAt": ["$customer.phone", 0] },
+          packet_customerArea:{ "$arrayElemAt": ["$customer.area", 0] },
+          packet_customerAddress:{ "$arrayElemAt": ["$customer.address", 0] },
+          packet_status_category: { "$arrayElemAt": ["$status.category", -1] },
+          packet_status: { "$arrayElemAt": ["$status.name", -1] },
+          packet_status_all: "$status",
+          packet_paymentStatus: "$paymentStatus",
+          packet_invoiceID: "$invoiceID" || null,
+          packet_base_charge: {"$arrayElemAt": ["$merchant.profile.base_charge", 0]},
+          packet_merchant: {"$arrayElemAt": ["$merchant.profile.business_name", 0] },
+          packet_merchant_phone: {"$arrayElemAt": ["$merchant.profile.phone", 0] },
+          packet_pcikup_area: {"$arrayElemAt": ["$merchant.profile.pickup_area", 0]},
+          packet_pcikup_address: {"$arrayElemAt": ["$merchant.profile.pickup_address", 0]},
+          packet_pickup_man: {"$arrayElemAt": ["$pickup_man.name", 0] },
+          packet_delivery_man: {"$arrayElemAt": ["$delivery_man.name", 0] },
+        }
+      }
+    ];
+
+    if(typeof start_date !== 'undefined' && start_date != null && start_date !== '' && typeof end_date !== 'undefined' && end_date != null && end_date !== ''){
+      
+      const query_start_date = new Date(start_date);
+      const query_end_date = new Date(end_date);
+
+      queryObject.push(
+        {
+          $match: {
+            "packet_updatedAt": { "$gte": query_start_date, "$lte": query_end_date}
+          }
+        }
+      );
+    }
+
+    if(typeof search !== 'undefined' && search != null && search !== ''){
+      queryObject.push(
+        {
+          $match: {
+            $or: [
+              {packet_trackingID: {$regex: search, $options: "i"}},
+              {packet_customerPhone: {$regex: search, $options: "i"}},
+              {packet_customerName: {$regex: search, $options: "i"}},
+            ]
+          }
+        }
+      );
+    }
+
+    if(typeof pickup_agent !== 'undefined' && pickup_agent != null && pickup_agent !== ''){
+      queryObject.push(
+        {
+          $match: {packet_pickup_man: {$regex: pickup_agent, $options: "i"}}
+        }
+      );
+    }
+
+    if(typeof delivery_agent !== 'undefined' && delivery_agent != null && delivery_agent !== ''){
+      queryObject.push(
+        {
+          $match: {packet_delivery_man: {$regex: delivery_agent, $options: "i"}}
+        }
+      );
+    }
+
+    if(typeof status !== 'undefined' && status != null && status !== ''){
+      queryObject.push(
+        {$match: {packet_status: status}}
+      );
+    }
     
-    res.status(200).json(packets)
+    queryObject.push(
+      {
+        $sort:{packet_createdAt: -1}
+      }
+    );
+    
+    if(typeof page !== 'undefined' && page != null && page !== '' && typeof limit !== 'undefined' && limit != null && limit !== ''){
+      page = parseInt(page);
+      limit = parseInt(limit);
+
+      queryObject.push(
+        {
+          $facet: {
+            metadata: [{$count: "total"}, {$addFields: {pages: page}}],
+            packets: [{$skip: (page * limit) - limit}, {$limit: limit}]
+          }
+        }
+      );
+    }
+
+    // NO AWAIT
+    let getPackets = await Packet.aggregate(queryObject);
+
+    //let getPackets = results;
+
+    const {metadata, packets} = getPackets[0];
+    
+    if(packets.length > 0){
+      const numOfPages = Math.ceil(metadata[0].total / limit);
+      res.status(200).json({packets, totalPackets: metadata[0].total, totalPages: numOfPages})
+
+      return;
+    }
+
+    res.status(200).json({packets, totalPackets: 0, totalPages: 1})
+
   } catch (err) {
     next(err)
   }
@@ -894,7 +998,6 @@ export const packetReturned = async (req,res,next)=>{
               },
             },
             {
-
                 $lookup:{
                   from: "status logs",
                   let:{sid:"$status"},
@@ -940,6 +1043,102 @@ export const packetReturned = async (req,res,next)=>{
 
     res.status(200).json(packetReturned)
 
+  } catch (err) {
+    next(err)
+  }
+}
+
+
+// *********************************
+//              Agents
+// *********************************
+export const packetAssignedforDeliveries = async(req,res,next)=>{
+  try {
+    console.log("agent id:",req.user.id)
+    const packets = await User.aggregate([
+      {$match:{_id: new mongoose.Types.ObjectId(req.user.id)}},
+      {
+        $lookup:{
+          from: "packets",
+          let:{id: req.user.id},
+          pipeline:[
+            {$match:{$expr:{$eq:["$delivery_man", "$$id"]}}},
+            {
+              $lookup:{
+                from: "users",
+                let:{mid:"$merchantID"},
+                pipeline:[
+                  {$match:{$expr:{$eq:[{$toString:"$_id"}, "$$mid"]}}},
+                  {
+                    $lookup:{
+                      from: "merchant profiles",
+                      let:{mid:"$merchantProfileID"},
+                      pipeline:[
+                        {$match:{$expr:{$eq:[{$toString:"$_id"}, "$$mid"]}}},
+                      ],
+                      as: "profile"
+                    },
+                  },
+                ],
+                as: "merchant"
+              },
+            },
+            {
+              $lookup:{
+                from: "customers",
+                let:{cid:"$customerID"},
+                pipeline:[
+                  {$match:{$expr:{$eq:[{$toString:"$_id"}, "$$cid"]}}},
+                ],
+                as: "customer"
+              },
+            },
+            {
+                $lookup:{
+                  from: "status logs",
+                  let:{sid:"$status"},
+                  pipeline:[
+                    {$match:{$expr:{$in:[{$toString:"$_id"}, "$$sid"]}}},
+                  ],
+                  as:"status"
+                }
+            },
+            {$project:{
+              packetID: "$_id",
+              packet_trackingID: "$trackingID",
+              packet_createdAt: "$createdAt",
+              packet_collectionAmount: "$collectionAmount",
+              packet_delivery_charge: "$delivery_charge",
+              packet_customerName:{ "$arrayElemAt": ["$customer.name", 0] },
+              packet_customerPhone:{ "$arrayElemAt": ["$customer.phone", 0] },
+              packet_customerArea:{ "$arrayElemAt": ["$customer.area", 0] },
+              packet_customerAddress:{ "$arrayElemAt": ["$customer.address", 0] },
+              packet_status:{ "$arrayElemAt": ["$status.name", -1] }, 
+              packet_merchant: {"$arrayElemAt": ["$merchant.profile.business_name", 0] },
+              packet_merchant_phone: {"$arrayElemAt": ["$merchant.profile.phone", 0] },
+              packet_note: "$specialInstruction",
+            }}
+          ],
+        as: "packets"
+      },
+    },
+    {
+      $project:{
+        _id: 1,
+        packets:{
+          "$filter":{
+            "input": "$packets",
+            "cond": { 
+              "$or": [ 
+                {"$eq": ["$$this.packet_status", "assigned-for-delivery"]},
+                {"$eq": ["$$this.packet_status", "out-for-delivery"]},
+            ]}
+          }
+        }
+      },
+    },
+    ]);
+    res.status(200).json(packets)
   } catch (err) {
     next(err)
   }

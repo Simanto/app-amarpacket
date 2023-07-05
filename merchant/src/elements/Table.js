@@ -1,11 +1,10 @@
-import React from "react";
-import { useTable, useGlobalFilter, useFilters } from "react-table";
+import React, { useMemo } from "react";
+import { useTable, useGlobalFilter, useFilters, usePagination } from "react-table";
 import { Button, Col, Input, Row, Table } from "reactstrap";
 import TableFilter from "./TableFilter";
-import { IllustationEmptyState } from "../assets/images";
 import { DateRangeColumnFilter, TableColumnFilterPacketDeliveryOption, TableColumnFilterPacketPickupOption, TableColumnFilterPacketStatusOptions } from "./TableColumnFilter";
-import { useAppContext } from "../context/appContext";
 import SelectDateRange from "./select-date_range";
+import { useAppContext } from "../context/appContext";
 
 
 const  ElementTable =({ initialState, columns, data, filterCmponents })=> {
@@ -14,7 +13,7 @@ const  ElementTable =({ initialState, columns, data, filterCmponents })=> {
         getTableBodyProps,
         headerGroups, 
         footerGroups,
-        rows, 
+        rows,
         prepareRow,
         state,
         setGlobalFilter,
@@ -26,9 +25,12 @@ const  ElementTable =({ initialState, columns, data, filterCmponents })=> {
         data,
     }, 
         useFilters,
-        useGlobalFilter
+        useGlobalFilter,
+        usePagination
     );
 
+    const {isLoading} = useAppContext();
+    
     const {globalFilter} = state;
 
     const resetFilter = () =>{
@@ -107,21 +109,36 @@ const  ElementTable =({ initialState, columns, data, filterCmponents })=> {
                 )) 
                 }
                 <tbody {...getTableBodyProps()}>
-                    {rows.length > 0 ? rows.map((row, i) => {
-                        prepareRow(row);
-                        return (
-                            <tr key={i} {...row.getRowProps()}>
-                                {row.cells.map((cell,i) => {
-                                    return <td key={i} {...cell.getCellProps()}>{cell.render("Cell")}</td>;
-                                })}
-                            </tr>
-                        );
-                    })
-                    :
+                    {isLoading ?
+                                
                         <tr className="position-relative">
-                            <td className="w-100 position-absolute text-center">No data found</td>
+                            <td className="w-100 position-absolute text-center">Loading</td>
                         </tr>
+
+                        :
+
+                        <>
+                            {rows.length > 0 ? 
+                                rows.map((row, i) => {
+                                prepareRow(row);
+                                return (
+                                    <tr key={i} {...row.getRowProps()}>
+                                        {row.cells.map((cell,i) => {
+                                            return <td key={i} {...cell.getCellProps()}>{cell.render("Cell")}</td>;
+                                        })}
+                                    </tr>
+                                );
+                                })
+                            :
+                                <>
+                                    <tr className="position-relative">
+                                        <td className="w-100 position-absolute text-center">No data found</td>
+                                    </tr>
+                                </>
+                            }    
+                        </>
                     }
+                    
                 </tbody>
                 
                 {footerGroups ? 
