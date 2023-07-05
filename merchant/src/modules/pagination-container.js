@@ -34,8 +34,8 @@ const PaginationContainer = () => {
     
 
     return (
-        <div className='d-flex'>
-            <Pagination>
+        <div className='d-block'>
+            <Pagination className='flex-wrap'>
                 <PaginationItem>
                     <PaginationLink previous onClick={previousPage} />
                 </PaginationItem>

@@ -121,7 +121,7 @@ const initialState = {
 
     // Pagination
     page: 1,
-    limit: 50,
+    limit: 20,
     num0fpages:"",
 
     // Agent
