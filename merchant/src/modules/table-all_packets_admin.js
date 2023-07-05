@@ -230,9 +230,10 @@ const TableAdminAllPackets = () =>{
     );
   // Using useEffect to call the API once mounted and set the data
   useEffect(() => {
-    getAllPacketAdmin();
     getAllAgent();
-  }, [ page,limit,search, search_status, search_start_date, search_end_date, search_delivery_agent, search_pickup_agent]);
+    getAllPacketAdmin();
+    
+  }, [ page,limit, search, search_status, search_start_date, search_end_date, search_delivery_agent, search_pickup_agent]);
   
 
     const initialState = { hiddenColumns: ['packetID', 'packet_updatedAt', 'packet_customerPhone', 'packet_customerAddress', "packet_pcikup_area","packet_merchantInvoice", "packet_customerArea","packet_status_category" ] };
