@@ -35,6 +35,8 @@ import CardAgentPickup from './card-agent_pickup.js';
 import CardAgentDelivery from './card-agent_delivery.js';
 import FormMerchantDeliveryCharges from './form-merchant_delivery_charges.js';
 import FormSearchAdminPackets from './form-search-admin_packets.js';
+import PaginationContainer from './pagination-container.js';
+
 export{
     // Forms
     FormForgotPass,
@@ -82,4 +84,7 @@ export{
     TableMerchantOutForDelivery,
     TableMerchantDelivered,
     TableMerchantReturned,
+
+    // Meta
+    PaginationContainer,
 }

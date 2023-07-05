@@ -256,7 +256,9 @@ export const allPacket = async (req,res,next) => {
         packet_pcikup_address: {"$arrayElemAt": ["$merchant.profile.pickup_address", 0]},
       }}
     ]).sort({packet_createdAt: -1});
+
     res.status(200).json(packets)
+    
   } catch (err) {
     next(err)
   }
@@ -265,7 +267,9 @@ export const allPacket = async (req,res,next) => {
 export const adminAllPacket = async (req,res,next) => {
   try {
     let {search,status,start_date,end_date,pickup_agent,delivery_agent,page,limit} = req.query;
-
+    
+    
+    
     const queryObject = [
       {
         $lookup:{
@@ -359,12 +363,14 @@ export const adminAllPacket = async (req,res,next) => {
     ];
 
     if(typeof start_date !== 'undefined' && start_date != null && start_date !== '' && typeof end_date !== 'undefined' && end_date != null && end_date !== ''){
-      //start_date = new Date(start_date);
-      //end_date = new Date(end_date);
+      
+      const query_start_date = new Date(start_date);
+      const query_end_date = new Date(end_date);
+
       queryObject.push(
         {
           $match: {
-            "packet_updatedAt": { "$gte": start_date, "$lte": end_date}
+            "packet_updatedAt": { "$gte": query_start_date, "$lte": query_end_date}
           }
         }
       );
@@ -419,40 +425,28 @@ export const adminAllPacket = async (req,res,next) => {
       queryObject.push(
         {
           $facet: {
-            metadata: [{$count: "total"}, {$addFields: {page: page}}],
-            allPackets: [{$skip: (page * limit) - limit}, {$limit: limit}]
+            metadata: [{$count: "total"}, {$addFields: {pages: page}}],
+            packets: [{$skip: (page * limit) - limit}, {$limit: limit}]
           }
         }
       );
     }
 
     // NO AWAIT
-    let results = Packet.aggregate(queryObject);
+    let getPackets = await Packet.aggregate(queryObject);
 
-    let packets = await results;
-    // if(search !== ""){
-    //   packets = packets.filter((item) => JSON.stringify(item).indexOf(search)!=-1)
-    // }
+    //let getPackets = results;
 
-    // if(status !== "all"){
-    //   packets = packets.filter((item) => item.packet_status === status)
-    // }
-
-    // if(startDate !== "" && endDate !== ""){
-    //   console.log(startDate, "to", endDate)
-    //   var from = new Date(startDate)
-    //   var to = new Date(endDate)
-      
-    //   packets = packets.filter((item) => {
-    //     var date = new Date(item.packet_updatedAt);
-    //     return date >= from && date <= to
-    //   })
-    // }
-
-    // .skip(5).limit(5)
+    const {metadata, packets} = getPackets[0];
     
-    //res.status(200).json({packets, totalPackets: packets.length, numOfPages: 1})
-    res.status(200).json({packets})
+    if(packets.length > 0){
+      const numOfPages = Math.ceil(metadata[0].total / limit);
+      res.status(200).json({packets, totalPackets: metadata[0].total, totalPages: numOfPages})
+
+      return;
+    }
+
+    res.status(200).json({packets, totalPackets: 0, totalPages: 1})
 
   } catch (err) {
     next(err)

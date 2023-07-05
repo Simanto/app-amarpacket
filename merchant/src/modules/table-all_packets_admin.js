@@ -3,10 +3,9 @@ import moment from "moment";
 import { Fragment, useState } from "react";
 import { useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Badge, Button, Modal, } from "reactstrap";
-import { deliveryStatusOptions } from "../assets/doc/options";
+import { Modal, } from "reactstrap";
 import { useAppContext } from "../context/appContext";
-import { ElementTable,InputSelect,Loading } from "../elements";
+import { ElementTable,Loading } from "../elements";
 import { dateBetweenFilterFn, DateRangeColumnFilter, TableColumnFilter, TableColumnFilterPacketDeliveryAgent, TableColumnFilterPacketPickupAgent, TableColumnFilterPacketStatus } from "../elements/TableColumnFilter.js";
 import FormPacketUpdate from "./form-packet_update";
 import FormSearchAdminPackets from "./form-search-admin_packets";
@@ -14,7 +13,24 @@ import FormSearchAdminPackets from "./form-search-admin_packets";
 
 
 const TableAdminAllPackets = () =>{
-  const {getPacket,setEditPacket,getAllPacketAdmin,allPackets,isLoading,getAllAgent,user,deletePacket} = useAppContext();
+  const {
+    getPacket,
+    setEditPacket,
+    getAllPacketAdmin,
+    allPackets,
+    isLoading,
+    getAllAgent,
+    user,
+    deletePacket,
+    search, 
+    search_status, 
+    search_start_date, 
+    search_end_date, 
+    search_delivery_agent, 
+    search_pickup_agent,
+    page,
+    limit,
+  } = useAppContext();
   const [modal, setModal] = useState(false);
   
   const toggle = () => setModal(!modal);
@@ -216,7 +232,7 @@ const TableAdminAllPackets = () =>{
   useEffect(() => {
     getAllPacketAdmin();
     getAllAgent();
-  }, []);
+  }, [ page,limit,search, search_status, search_start_date, search_end_date, search_delivery_agent, search_pickup_agent]);
   
 
     const initialState = { hiddenColumns: ['packetID', 'packet_updatedAt', 'packet_customerPhone', 'packet_customerAddress', "packet_pcikup_area","packet_merchantInvoice", "packet_customerArea","packet_status_category" ] };

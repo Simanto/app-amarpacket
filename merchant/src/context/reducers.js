@@ -15,6 +15,7 @@ import {
     HANDLE_CHANGE,
     GET_PACKETS_BEGIN,
     GET_PACKETS_SUCCESS,
+    GET_MERCHANT_PACKETS_SUCCESS,
     GET_PACKET_BEGIN,
     GET_PACKET_SUCCESS,
     SET_EDIT_PACKET,
@@ -67,7 +68,8 @@ import {
     DELETE_PACKET_BEGIN,
     DELETE_PACKET_SUCCESS,
     GET_ASSIGNED_DELIVERIES_BEGIN,
-    GET_ASSIGNED_DELIVERIES_SUCCESS
+    GET_ASSIGNED_DELIVERIES_SUCCESS,
+    CHANGE_PAGE,
 } from "./actions";
 
 const reducer = (state,action) => {
@@ -219,13 +221,20 @@ const reducer = (state,action) => {
             return{
                 ...state,
                 isLoading: false,
-                allPackets: action.payload.allPackets,
-                totalPackets: action.payload.metadata.total,
-                numOfPages: action.payload.metadata.page,
+                allPackets: action.payload.packets,
+                totalPackets: action.payload.totalPackets,
+                num0fpages: action.payload.totalPages,
             }
         break;
 
         
+        case GET_MERCHANT_PACKETS_SUCCESS:
+            return{
+                ...state,
+                isLoading: false,
+                allPackets: action.payload.data,
+            }
+        break;
 
 
         case GET_CUSTOMERS_BEGIN:
@@ -311,6 +320,7 @@ const reducer = (state,action) => {
         case HANDLE_CHANGE:
             return{
                 ...state,
+                page: 1,
                 [action.payload.name]: action.payload.value ,
             }
         break;
@@ -946,6 +956,13 @@ const reducer = (state,action) => {
                 ...state,
                 isLoading: false,
                 allPackets: action.payload.packets
+            }
+        break;
+
+        case CHANGE_PAGE:
+            return{
+                ...state,
+                page: action.payload.page
             }
         break;
             

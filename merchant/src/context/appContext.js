@@ -83,7 +83,6 @@ const initialState = {
     // Packet Data
     allPackets:[],
     totalPackets:"",
-    numOfPages:"",
     packetsForDelivery:"",
     packetsDelivered:"",
     packetsReturned:"",
@@ -110,6 +109,20 @@ const initialState = {
     packet_status_category:"",
     packet_pickup_agentID:"",
     packet_delivery_agentID:"",
+
+    // Packet Search
+    search: "",
+    search_status: "",
+    search_start_date: "",
+    search_end_date: "",
+    search_delivery_agent: "",
+    search_pickup_agent: "",
+
+
+    // Pagination
+    page: 1,
+    limit: 20,
+    num0fpages:"",
 
     // Agent
     allAgent:"",
@@ -392,8 +405,8 @@ const AppProvider = ({children}) => {
         
         try {
             const {data} = await axiosFetch.get("/api/v1/packets/all");
-
-            dispatch({type:"GET_PACKETS_SUCCESS",payload: {data}})
+            console.log(data);
+            dispatch({type:"GET_MERCHANT_PACKETS_SUCCESS",payload: {data}})
 
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
@@ -407,20 +420,20 @@ const AppProvider = ({children}) => {
     const getAllPacketAdmin = async () =>{
 
         dispatch({type:"GET_PACKETS_BEGIN"})
-        let page = 1;
-        let limit = 10;
-        let status = 'delivered';
-        let search = '';
-        let start_date = '';
-        let end_date = '';
-        let delivery_agent = '';
-        let pickup_agent = '';
+
+        const {page,limit,search, search_status, search_start_date, search_end_date, search_delivery_agent, search_pickup_agent} = state;
 
         try {
-            let params = `page=${page}&limit=${limit}&status=${status}&search=${search}&start_date=${start_date}&end_date=${end_date}&delivery_agent=${delivery_agent}&pickup_agent=${pickup_agent}`;
+            
+            let params = `page=${page}&limit=${limit}&status=${search_status}&search=${search}&start_date=${search_start_date}&end_date=${search_end_date}&delivery_agent=${search_delivery_agent}&pickup_agent=${search_pickup_agent}`;
+            
             const {data} = await axiosFetch.get(`/api/v1/admin/packets/all?${params}`);
-            const {allPackets, metadata} = data.packets[0];
-            dispatch({type:"GET_PACKETS_SUCCESS",payload: {allPackets, metadata}})
+            
+            const {packets, totalPackets, totalPages} = data;
+
+            //console.log(data);
+            
+            dispatch({type:"GET_PACKETS_SUCCESS", payload:{packets, totalPackets, totalPages}})
 
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
@@ -1041,6 +1054,13 @@ const AppProvider = ({children}) => {
     }
 
 
+    // Pagination
+
+    const changePage = (page) =>{
+        dispatch({type:"CHANGE_PAGE", payload:{page}})
+    }
+
+
 
     return (
         <AppContext.Provider value={{
@@ -1109,6 +1129,9 @@ const AppProvider = ({children}) => {
 
             // Agent
             getPacketAssignedForDeliveries,
+
+            // Pagination
+            changePage,
             
             // Results
             dispatch
