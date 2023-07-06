@@ -446,6 +446,7 @@ const AppProvider = ({children}) => {
         }
 
         dispatch({type:"GET_PACKETS_BEGIN"})
+        
         try {
             
             // let params = `page=${page}&limit=${limit}&status=${search_status}&search=${search}&start_date=${search_start_date}&end_date=${search_end_date}&delivery_agent=${search_delivery_agent}&pickup_agent=${search_pickup_agent}`;
