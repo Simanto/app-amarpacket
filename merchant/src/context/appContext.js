@@ -973,12 +973,15 @@ const AppProvider = ({children}) => {
         dispatch({type: "GET_AGENT_BEGIN"})
         try {
             const {data} = await axiosFetch.get("/api/v1/admin/agent/all");
+
             const options = data.map((agent) => ({
                 "value" : agent.agentID.toString(),
                 "label" : agent.agent_name.toString(),
-                "phone" : agent.agent_phone.toString(),
+                "phone" : agent.agent_phone.toString() || "",
             }))
+
             dispatch({type:"GET_AGENT_SUCCESS", payload:{options}})
+            
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
         }
