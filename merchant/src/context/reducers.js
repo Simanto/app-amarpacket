@@ -87,7 +87,6 @@ const reducer = (state,action) => {
         case CLEAR_ALERT:
             return{
                 ...state,
-                isLoading: false,
                 showAlert: false,
                 alertType: "",
                 alertText: "",

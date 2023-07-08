@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Col, FormGroup, Input, InputGroup, InputGroupText, Row } from 'reactstrap'
+import {Col, FormGroup, Input, InputGroup, InputGroupText } from 'reactstrap'
 import { InputSelect } from '../elements'
 import ReactDatePicker from 'react-datepicker'
 import { useAppContext } from '../context/appContext'
@@ -17,7 +17,8 @@ const FormSearchAdminPackets = () => {
         search_delivery_agent, 
         search_pickup_agent,
         allAgent,
-        handleChange
+        handleChange,
+        getAllAgent,
     } = useAppContext();
 
     const [startDate, setStartDate] = useState(null);
@@ -107,6 +108,8 @@ const FormSearchAdminPackets = () => {
     }
 
     useEffect(() => {
+        getAllAgent();
+
         // Set Selected: Status
         if(deliveryStatusOptions){
             deliveryStatusOptions.forEach((item)=>{

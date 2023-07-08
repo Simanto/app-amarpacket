@@ -230,9 +230,7 @@ const TableAdminAllPackets = () =>{
     );
   // Using useEffect to call the API once mounted and set the data
   useEffect(() => {
-    getAllAgent();
     getAllPacketAdmin();
-    
   }, [ page,limit, search, search_status, search_start_date, search_end_date, search_delivery_agent, search_pickup_agent]);
   
 

@@ -461,7 +461,7 @@ const AppProvider = ({children}) => {
 
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
-            console.log(err);
+            // console.log(err);
         }
 
         setTimeout(() => {
