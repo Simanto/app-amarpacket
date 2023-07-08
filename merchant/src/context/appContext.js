@@ -455,7 +455,7 @@ const AppProvider = ({children}) => {
             
             const {packets, totalPackets, totalPages} = data;
 
-            //console.log(data);
+            console.log(data);
             
             dispatch({type:"GET_PACKETS_SUCCESS", payload:{packets, totalPackets, totalPages}})
 

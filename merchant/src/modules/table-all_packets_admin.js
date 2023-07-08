@@ -56,13 +56,6 @@ const TableAdminAllPackets = () =>{
         Cell: ({ row }) =>  moment(row.values.packet_createdAt).utc().format("MMM D, YY"),
       },
       {
-        Header: "Update Date",
-        accessor: "packet_updatedAt",
-        width: 150,
-        Filter: TableColumnFilter,
-        Cell: ({ row }) =>  moment(row.values.packet_updatedAt).utc().format("MMM D, YY"),
-      },
-      {
         Header: "Merchant ID",
         accessor: "packet_merchantInvoice",
         Filter: TableColumnFilter,
@@ -146,6 +139,14 @@ const TableAdminAllPackets = () =>{
             <p className="font-size_14 pt-2">Updated at: {moment(row.values.packet_updatedAt).utc().format("MMM D, YY")}</p>
           </div>
         ),
+      },
+      {
+        Header: "Update Date",
+        accessor: "packet_updatedAt",
+        width: 150,
+        Filter: DateRangeColumnFilter,
+        filter: dateBetweenFilterFn,
+        Cell: ({ row }) =>  moment(row.values.packet_updatedAt).utc().format("MMM D, YY"),
       },
       {
         Header: "Pickup Man",

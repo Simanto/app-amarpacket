@@ -1,10 +1,19 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, CardHeader } from 'reactstrap'
 import { useAppContext } from '../../context/appContext'
 import { CardAgentDelivery } from '../../modules'
 
 const AgentDeliveries = () => {
-  const {getPacketAssignedForDeliveries, allPackets, isLoading} = useAppContext();
+  const {getPacketAssignedForDeliveries, allPackets, isLoading, setEditPacket} = useAppContext();
+  const [modal, setModal] = useState(false);
+
+  const toggle = () => setModal(!modal);
+
+  const handleUpdtate = (id) =>{
+    setEditPacket(id);
+    toggle();
+  }
+
   useEffect(() => {
     getPacketAssignedForDeliveries()
   }, [])
