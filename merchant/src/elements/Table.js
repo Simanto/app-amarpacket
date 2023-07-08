@@ -99,7 +99,7 @@ const  ElementTable =({ initialState, columns, data, filterCmponents })=> {
                                 })}>
                                     {column.render("Header")}
                                     {/* visually-hidden */}
-                                    <div className="visually-hidden">
+                                    <div className="visually-hidden d-none">
                                         {column.canFilter ? column.render("Filter") : null}
                                     </div>
                                 </th>

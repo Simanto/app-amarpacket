@@ -420,7 +420,6 @@ const AppProvider = ({children}) => {
     }
 
     const getAllPacketAdmin = async () =>{
-
         const {page,limit,search, search_status, search_start_date, search_end_date, search_delivery_agent, search_pickup_agent} = state;
 
         let url = `/api/v1/admin/packets/all?page=${page}&limit=${limit}`
@@ -455,7 +454,7 @@ const AppProvider = ({children}) => {
             
             const {packets, totalPackets, totalPages} = data;
 
-            console.log(data);
+            // console.log(data);
             
             dispatch({type:"GET_PACKETS_SUCCESS", payload:{packets, totalPackets, totalPages}})
 
