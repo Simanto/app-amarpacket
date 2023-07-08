@@ -3,17 +3,34 @@ import moment from "moment";
 import { Fragment, useState } from "react";
 import { useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Badge, Button, Modal, } from "reactstrap";
-import { deliveryStatusOptions } from "../assets/doc/options";
+import { Modal, } from "reactstrap";
 import { useAppContext } from "../context/appContext";
-import { ElementTable,InputSelect,Loading } from "../elements";
-import { TableColumnFilter, TableColumnFilterPacketDeliveryAgent, TableColumnFilterPacketPickupAgent, TableColumnFilterPacketStatus } from "../elements/TableColumnFilter.js";
+import { ElementTable,Loading } from "../elements";
+import { dateBetweenFilterFn, DateRangeColumnFilter, TableColumnFilter, TableColumnFilterPacketDeliveryAgent, TableColumnFilterPacketPickupAgent, TableColumnFilterPacketStatus } from "../elements/TableColumnFilter.js";
 import FormPacketUpdate from "./form-packet_update";
+import FormSearchAdminPackets from "./form-search-admin_packets";
 
 
 
 const TableAdminAllPackets = () =>{
-  const {getPacket,setEditPacket,getAllPacketAdmin,allPackets,isLoading,getAllAgent,user,deletePacket} = useAppContext();
+  const {
+    getPacket,
+    setEditPacket,
+    getAllPacketAdmin,
+    allPackets,
+    isLoading,
+    getAllAgent,
+    user,
+    deletePacket,
+    search, 
+    search_status, 
+    search_start_date, 
+    search_end_date, 
+    search_delivery_agent, 
+    search_pickup_agent,
+    page,
+    limit,
+  } = useAppContext();
   const [modal, setModal] = useState(false);
   
   const toggle = () => setModal(!modal);
@@ -34,15 +51,9 @@ const TableAdminAllPackets = () =>{
         Header: "Order Date",
         accessor: "packet_createdAt",
         width: 150,
-        Filter: TableColumnFilter,
+        Filter: DateRangeColumnFilter,
+        filter: dateBetweenFilterFn,
         Cell: ({ row }) =>  moment(row.values.packet_createdAt).utc().format("MMM D, YY"),
-      },
-      {
-        Header: "Update Date",
-        accessor: "packet_updatedAt",
-        width: 150,
-        Filter: TableColumnFilter,
-        Cell: ({ row }) =>  moment(row.values.packet_updatedAt).utc().format("MMM D, YY"),
       },
       {
         Header: "Merchant ID",
@@ -113,7 +124,6 @@ const TableAdminAllPackets = () =>{
         Filter: TableColumnFilter,
         Cell: ({ row }) => (
           <>
-            
             <p className={"status status-"+row.values.packet_status_category}>{row.values.packet_status_category}</p>
           </>
         ),
@@ -129,6 +139,14 @@ const TableAdminAllPackets = () =>{
             <p className="font-size_14 pt-2">Updated at: {moment(row.values.packet_updatedAt).utc().format("MMM D, YY")}</p>
           </div>
         ),
+      },
+      {
+        Header: "Update Date",
+        accessor: "packet_updatedAt",
+        width: 150,
+        Filter: DateRangeColumnFilter,
+        filter: dateBetweenFilterFn,
+        Cell: ({ row }) =>  moment(row.values.packet_updatedAt).utc().format("MMM D, YY"),
       },
       {
         Header: "Pickup Man",
@@ -213,9 +231,10 @@ const TableAdminAllPackets = () =>{
     );
   // Using useEffect to call the API once mounted and set the data
   useEffect(() => {
-    getAllPacketAdmin();
     getAllAgent();
-  }, []);
+    getAllPacketAdmin();
+    
+  }, [ page,limit, search, search_status, search_start_date, search_end_date, search_delivery_agent, search_pickup_agent]);
   
 
     const initialState = { hiddenColumns: ['packetID', 'packet_updatedAt', 'packet_customerPhone', 'packet_customerAddress', "packet_pcikup_area","packet_merchantInvoice", "packet_customerArea","packet_status_category" ] };
@@ -223,7 +242,11 @@ const TableAdminAllPackets = () =>{
     return (
       <div className="table">
         
-        <ElementTable columns={columns} initialState={initialState} data={allPackets} filterCmponents={["search", "status", "pickup_agent", "delivery_agent", "date-range"]} />
+        {/* Admin Packet Search */}
+        <FormSearchAdminPackets />
+        {/* End */}
+
+        <ElementTable columns={columns} initialState={initialState} data={allPackets} filterCmponents={[]} />
 
         <Modal isOpen={modal} toggle={toggle}>
           <FormPacketUpdate />

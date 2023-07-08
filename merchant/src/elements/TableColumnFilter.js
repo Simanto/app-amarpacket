@@ -5,7 +5,6 @@ import { FormGroup, Input } from "reactstrap";
 import { deliveryStatusOptions } from '../assets/doc/options';
 import { useAppContext } from '../context/appContext';
 import InputSelect from './InputSelect';
-import flatpickr from "flatpickr";
 
 export const TableColumnFilter = ({column}) => {
     const {filterValue, setFilter} = column

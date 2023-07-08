@@ -133,7 +133,9 @@ const AllPackets = () =>{
         {isLoading ? 
           <Loading />
           :
-          <ElementTable columns={columns} initialState={initialState} data={allPackets}  filterCmponents={["search", "date-range"]} />
+          <>
+            <ElementTable columns={columns} initialState={initialState} data={allPackets}  filterCmponents={["search", "date-range"]} />
+          </>
         }
       </div>
     );
