@@ -3,7 +3,6 @@ import { Fragment, useState } from "react";
 import { Badge, Button, Modal, Card, CardBody, CardHeader } from "reactstrap";
 import { useAppContext } from "../context/appContext";
 import FormPacketUpdate from "./form-packet_update";
-import { text } from "express";
 
 const CardAgentDelivery = ({items}) => {
   console.log(items)
