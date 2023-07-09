@@ -268,9 +268,23 @@ export const adminAllPacket = async (req,res,next) => {
   try {
     let {search,status,start_date,end_date,pickup_agent,delivery_agent,page,limit} = req.query;
     
-    
+    page = parseInt(page);
+    limit = parseInt(limit);
     
     const queryObject = [
+      { "$sort": { "createdAt": -1 }},
+      {
+        $lookup:{
+          from: "status logs",
+          let:{sid:"$status"},
+          pipeline:[
+            {$match:{$expr:{$in:[{$toString:"$_id"}, "$$sid"]}}},
+            { "$sort": { "_id": -1 } },
+            { "$limit": 1 }
+          ],
+          as:"status"
+        }
+      },
       {
         $lookup:{
           from: "users",
@@ -320,16 +334,6 @@ export const adminAllPacket = async (req,res,next) => {
           ],
           as: "customer"
         },
-      },
-      {
-        $lookup:{
-          from: "status logs",
-          let:{sid:"$status"},
-          pipeline:[
-            {$match:{$expr:{$in:[{$toString:"$_id"}, "$$sid"]}}},
-          ],
-          as:"status"
-        }
       },
       {
         $project: {
@@ -411,12 +415,6 @@ export const adminAllPacket = async (req,res,next) => {
         {$match: {packet_status: status}}
       );
     }
-    
-    queryObject.push(
-      {
-        $sort:{packet_createdAt: -1}
-      }
-    );
     
     if(typeof page !== 'undefined' && page != null && page !== '' && typeof limit !== 'undefined' && limit != null && limit !== ''){
       page = parseInt(page);
