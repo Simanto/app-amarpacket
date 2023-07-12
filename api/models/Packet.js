@@ -4,7 +4,8 @@ const { Schema } = mongoose;
 const PacketSchema = new mongoose.Schema({
         merchantID:{
             type: String,
-            required: true
+            required: true,
+            index: true
         },
         trackingID:{
             type: String,
@@ -13,7 +14,8 @@ const PacketSchema = new mongoose.Schema({
         },
         customerID:{
             type:String,
-            required: true
+            required: true,
+            index: true
         },
         merchantInvoice:{
             type: String,
@@ -35,26 +37,44 @@ const PacketSchema = new mongoose.Schema({
             type: Number
         },
         pickup_man:{
-            type: String
+            type: String,
+            index: true
         },
         delivery_man:{
-            type: String
+            type: String,
+            index: true
         },
         specialInstruction:{
             type: String
         },
         status:{
-            type: [String]
+            type: [String],
+            index: true
         },
         paymentStatus:{
             type: String
         },
         invoiceID:{
+            type: String,
+            index: true
+        },
+        current_status:{
             type: String
-        }
+        },
+        current_status_category:{
+            type: String
+        },
+        current_status_message:{
+            type: String
+        },
+        current_status_createdAt:{
+            type: Date
+        },
     },{
         timestamps: true
     }
 );
+
+PacketSchema.indexes();
 
 export default mongoose.model("Packets", PacketSchema)

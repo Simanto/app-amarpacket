@@ -13,12 +13,14 @@ const statusSchema = new mongoose.Schema(
             type: String,
         },
         packetID:{
-            type: String
+            type: String,
+            index: true
         }
     },{
         timestamps: true
     }
 );
 
+statusSchema.indexes();
 
 export default mongoose.model("Status Log", statusSchema);

@@ -72,12 +72,12 @@ app.use(expressCspHeader({
 const connect = async () =>{
     try {
         if(process.env.NODE_ENV === "PRODUCTION"){
-            await mongoose.connect(process.env.PRODUCTIONDB);
+            await mongoose.connect(process.env.PRODUCTIONDB, { autoIndex: true });
             console.log("connected to Production Mongo db")
         } 
         
         if(process.env.NODE_ENV === "DEV") {
-            await mongoose.connect(process.env.DB);
+            await mongoose.connect(process.env.DB, { autoIndex: true });
             console.log("connected to Mongo db ATLAS")
         }
         

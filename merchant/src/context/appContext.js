@@ -121,7 +121,7 @@ const initialState = {
 
     // Pagination
     page: 1,
-    limit: 20,
+    limit: 1200,
     num0fpages:"",
 
     // Agent
@@ -981,7 +981,7 @@ const AppProvider = ({children}) => {
             }))
 
             dispatch({type:"GET_AGENT_SUCCESS", payload:{options}})
-            
+
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
         }

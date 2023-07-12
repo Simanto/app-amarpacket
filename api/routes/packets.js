@@ -1,5 +1,5 @@
 import express from "express";
-import { allPacket, createPacket, GetPacket, updatePacket, adminAllPacket, PacketStats, packetOutforDelivery, packetDelivered, packetReturned, deletePacket } from "../controllers/packets.js";
+import { allPacket, createPacket, GetPacket, updatePacket, adminAllPacket, PacketStats, packetOutforDelivery, packetDelivered, packetReturned, deletePacket, mergeLastStatusIntoPacket } from "../controllers/packets.js";
 
 const router = express.Router();
 
@@ -22,6 +22,7 @@ router.get("/out-for-delivery", packetOutforDelivery);
 router.get("/delivered", packetDelivered);
 router.get("/returned", packetReturned);
 router.get("/packets/all", adminAllPacket);
+router.get("/packets/merge-status", mergeLastStatusIntoPacket);
 
 // Get Single Packet
 router.get("/:packetid", GetPacket)

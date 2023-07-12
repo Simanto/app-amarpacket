@@ -1,9 +1,5 @@
-
 import crypto from "crypto";
-import { stat } from "fs";
 import mongoose from "mongoose";
-import { pipeline } from "stream";
-
 
 import Customer from "../models/Customer.js";
 import Invoice from "../models/Invoice.js";
@@ -27,8 +23,15 @@ export const createPacket = async (req, res, next) => {
       merchantID: req.user.id,
     });
 
+    const merchant = {
+      id: req.user.id,
+      // name: req.user.business_name,
+      // phone: 
+    }
+
     const newPacket = new Packet({
       merchantID: req.user.id,
+      merchant: merchant,
       trackingID: trackID,
       merchantInvoice: req.body.packet_merchantInvoice,
       collectionAmount: req.body.packet_collectionAmount,
@@ -352,7 +355,7 @@ export const adminAllPacket = async (req,res,next) => {
           packet_customerAddress:{ "$arrayElemAt": ["$customer.address", 0] },
           packet_status_category: { "$arrayElemAt": ["$status.category", -1] },
           packet_status: { "$arrayElemAt": ["$status.name", -1] },
-          packet_status_all: "$status",
+          // packet_status_all: "$status",
           packet_paymentStatus: "$paymentStatus",
           packet_invoiceID: "$invoiceID" || null,
           packet_base_charge: {"$arrayElemAt": ["$merchant.profile.base_charge", 0]},
@@ -1128,6 +1131,33 @@ export const packetAssignedforDeliveries = async(req,res,next)=>{
     },
     ]);
     res.status(200).json(packets)
+  } catch (err) {
+    next(err)
+  }
+}
+
+
+// *********************************
+//    Merge Operation for Packet
+// *********************************
+
+export const mergeLastStatusIntoPacket = async(req,res,next)=>{
+  try {
+    const data = await Packet.find();
+
+
+    // data.forEach(
+    //   await Packet.findByIdAndUpdate(data._id,{
+
+    //   })
+    // )
+    // const data = await Status.findById("6413092702eb5a0b1e4056c6");
+
+    // const data = await Packet.find({_id: '642e562002eb5a0b1e409505'});
+
+    // console.log(getData);
+    res.status(200).json(data)
+
   } catch (err) {
     next(err)
   }
