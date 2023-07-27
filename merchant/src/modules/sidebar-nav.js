@@ -36,7 +36,7 @@ const SideBarNav = () =>{
                     <NavItem>
                         <NavLink
                             className="nav-link"
-                            to="/packets"
+                            to="/packets/all"
                             >
                             <div className="nav-icon nav-icon_packets"></div>
                             <span className="nav-label">Packets</span>
@@ -104,7 +104,7 @@ const SideBarNav = () =>{
                     <NavItem>
                         <NavLink
                             className="nav-link"
-                            to="admin/packets"
+                            to="admin/packets/weekly"
                             >
                             <div className="nav-icon nav-icon_packets"></div>
                             <span className="nav-label">Packets</span>
@@ -160,7 +160,7 @@ const SideBarNav = () =>{
                     <NavItem>
                         <NavLink
                             className="nav-link"
-                            to="admin/packets"
+                            to="admin/packets/weekly"
                             >
                             <div className="nav-icon nav-icon_packets"></div>
                             <span className="nav-label">Packets</span>

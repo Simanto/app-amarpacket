@@ -6,6 +6,8 @@ import AdminPayments from "./Payments";
 import PaymentsSingle from "./PaymentsSingle";
 import AdminUserAdd from "./UserAdd";
 import AdminUsers from "./Users";
+import AdminPacketsWeekly from "./PacketsWeekly";
+
 export{
     AdminMerchants,
     AdminMerchantEdit,
@@ -15,4 +17,5 @@ export{
     AdminUserAdd,
     AdminPayments,
     PaymentsSingle,
+    AdminPacketsWeekly,
 }

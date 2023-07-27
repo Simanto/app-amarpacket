@@ -5,6 +5,7 @@ import ReactDatePicker from 'react-datepicker'
 import { useAppContext } from '../context/appContext'
 import { deliveryStatusOptions } from '../assets/doc/options';
 import moment from 'moment'
+import Select from "react-select";
 
 const FormSearchAdminPackets = () => {
 
@@ -22,9 +23,9 @@ const FormSearchAdminPackets = () => {
     } = useAppContext();
 
     const [startDate, setStartDate] = useState(null);
-    const {selectedStatus, setSelectedStatus} = useState(null);
-    const {selectedPickup, setSelectedPickup} = useState(null);
-    const {selectedDelivery, setSelectedDelivery} = useState(null);
+    const [selectedStatus, setSelectedStatus] = useState(null);
+    const [selectedPickup, setSelectedPickup] = useState(null);
+    const [selectedDelivery, setSelectedDelivery] = useState(null);
     const [endDate, setEndDate] = useState(null);
 
     const handleInput = (e) => {
@@ -65,7 +66,6 @@ const FormSearchAdminPackets = () => {
     }
 
     const handleSelect = (data,name) =>{
-        // console.log(data, name);
 
         // Status
         if(name.name === "search_status" && data === null){
@@ -73,11 +73,15 @@ const FormSearchAdminPackets = () => {
                 name: "search_status",
                 value: ""
             })
+
+            setSelectedStatus(data)
         } else if (name.name === "search_status" && data !== null){
             handleChange({
                 name: "search_status",
                 value: data.value
             })
+
+            setSelectedStatus(data)
         }
 
         // Pickup Agent
@@ -86,11 +90,15 @@ const FormSearchAdminPackets = () => {
                 name: "search_pickup_agent",
                 value: ""
             })
+
+            setSelectedPickup(data)
         } else if(name.name === "search_pickup_agent" && data !== null){
             handleChange({
                 name: "search_pickup_agent",
                 value: data.label
             })
+
+            setSelectedPickup(data)
         }
 
         // Delivery Agent
@@ -99,11 +107,15 @@ const FormSearchAdminPackets = () => {
                 name: "search_delivery_agent",
                 value: ""
             })
+
+            setSelectedDelivery(data)
         } else if(name.name === "search_delivery_agent" && data !== null){
             handleChange({
                 name: "search_delivery_agent",
                 value: data.label
             })
+
+            setSelectedDelivery(data)
         }
     }
 
@@ -111,10 +123,9 @@ const FormSearchAdminPackets = () => {
         getAllAgent();
 
         // Set Selected: Status
-        if(deliveryStatusOptions){
-            deliveryStatusOptions.forEach((item)=>{
+        if(deliveryStatusOptions){deliveryStatusOptions.forEach((item)=>{
                 if(item.value === search_status){
-                    setSelectedStatus(item);
+                    setSelectedStatus(item)
                 }
             })
         }
@@ -123,13 +134,14 @@ const FormSearchAdminPackets = () => {
         if(allAgent){
             allAgent.forEach((item)=>{
                 if(search_pickup_agent){
-                    if(item.value === search_pickup_agent){
+                    if(item.label === search_pickup_agent){
+                        console.log("search_pickup_agent", item);
                         setSelectedPickup(item);
                     }
                 }
 
                 if(search_delivery_agent){
-                    if(item.value === search_delivery_agent){
+                    if(item.label === search_delivery_agent){
                         setSelectedDelivery(item);
                     }
                 }
@@ -165,31 +177,31 @@ const FormSearchAdminPackets = () => {
 
         {/* Date Range */}
         <Col>
-        <ReactDatePicker
-            className='form-control'
-            selectsRange={true}
-            selected={startDate}
-            startDate={startDate}
-            endDate={endDate}
-            placeholderText="start date - end date"
-            onChange={handleDateInput}
-            monthsShown={2}
-            dateFormat="dd-MM-yyyy"
-            maxDate={new Date()}
-            isClearable      
-        />
+            <ReactDatePicker
+                className='form-control'
+                selectsRange={true}
+                selected={startDate}
+                startDate={startDate}
+                endDate={endDate}
+                placeholderText="start date - end date"
+                onChange={handleDateInput}
+                monthsShown={2}
+                dateFormat="dd-MM-yyyy"
+                maxDate={new Date()}
+                isClearable      
+            />
         </Col>
         {/* End Date Range */}
         
         {/* Packet Staus */}
         <Col>
-            <InputSelect name="search_status" options={deliveryStatusOptions} value={selectedStatus} defaultValue={selectedStatus} placeholder="by Status" handleChange={handleSelect} />
+            <InputSelect name="search_status" options={deliveryStatusOptions} defaultValue={selectedStatus} placeholder="by Status" handleChange={handleSelect} />
         </Col>
         {/* End Packet Status */}
 
         {/* Pickup Agent */}
         <Col>
-            <InputSelect name="search_pickup_agent" placeholder="Pickup Agent" value={selectedPickup} defaultValue={selectedPickup} options={allAgent} handleChange={handleSelect} />
+            <InputSelect name="search_pickup_agent" options={allAgent}  defaultValue={selectedPickup} placeholder="Pickup Agent" handleChange={handleSelect} />
         </Col>
         {/* End Pickup Agent */}
 
@@ -198,6 +210,7 @@ const FormSearchAdminPackets = () => {
             <InputSelect name="search_delivery_agent" placeholder="Delivery Agent" value={selectedDelivery} defaultValue={selectedDelivery} options={allAgent} handleChange={handleSelect} />
         </Col>
         {/* End Delivery Agent */}
+        
         {/* Delivery Agent */}
         {/* <Col>
             <Button block color="primary" onClick={null}>

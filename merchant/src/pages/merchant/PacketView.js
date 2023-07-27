@@ -9,13 +9,21 @@ import { LabelPrint, Loading } from "../../elements";
 
 const PacketView = () =>{
     const [deliveryCharge, setDeliveryCharge] = useState();
+    const [path, setPath] = useState()
     const [vat, setVat] = useState();
     const [total, setTotal] = useState()
-    const {isLoading,singlePacket,data} = useAppContext();
+    const {isLoading,singlePacket,user} = useAppContext();
     const params = useParams();
     const printRef = useRef(null);
 
     useEffect(() => {
+
+        if(user.role === "admin" || user.role === "admin" ){
+            setPath("/admin/packets/weekly")
+        } else {
+            setPath("/packets/all")
+        }
+
         let charge =  singlePacket.delivery_charge;            
         setDeliveryCharge(((charge)/1.15).toFixed(2));
         setVat((charge-deliveryCharge).toFixed(2));
@@ -38,7 +46,7 @@ const PacketView = () =>{
                 <Row>
                     <Col className='app-header m-4 d-flex flex-row justify-content-start align-items-center'>
                         <div className="app-header_back pb-3">
-                            <Link to="/packets" className="icon"> 
+                            <Link to={path} className="icon"> 
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="me-2"><path fill="none" d="M0 0h24v24H0z"/><path d="M7.828 11H20v2H7.828l5.364 5.364-1.414 1.414L4 12l7.778-7.778 1.414 1.414z" fill="currentColor"/></svg>
                                 Back to Packets
                             </Link>

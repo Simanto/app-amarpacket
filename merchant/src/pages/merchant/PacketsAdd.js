@@ -6,9 +6,11 @@ import { FormPacket } from "../../modules"
 
 const AddPacket = () =>{
     const [total, setTotal] = useState();
+    const [path, setPath] = useState();
     let calcdelivercharge = 0;
 
     const {
+        user,
         handleChange,
         data,
         isEditing,
@@ -25,11 +27,18 @@ const AddPacket = () =>{
     
     useEffect(() => {
 
+        if(user.role === "admin" || user.role === "admin" ){
+            setPath("/admin/packets/weekly")
+        } else {
+            setPath("/packets/all")
+        }
+
         setAreaList();
+
         
         let weight = Math.ceil(packet_weight)
 
-        let charge = 0 ;
+        let charge = 0;
        
         if(isEditing && packet_trackingID) {
             charge =  parseInt(packet_base_charge);
@@ -74,7 +83,7 @@ const AddPacket = () =>{
                     {/* Header */}
                     <div className='app-header pt-4 pb-3'>
                         <div className="app-header_back pb-5">
-                            <Link to="/packets" className="icon"> 
+                            <Link to={path} className="icon"> 
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="me-2"><path fill="none" d="M0 0h24v24H0z"/><path d="M7.828 11H20v2H7.828l5.364 5.364-1.414 1.414L4 12l7.778-7.778 1.414 1.414z" fill="currentColor"/></svg>
                                 Back to Packets
                             </Link>

@@ -7,8 +7,6 @@ export const deliveryStatusOptions = [
   { value: 'at-hub', label: 'At Hub', category: 'primary',  message: 'your packet is at our hub'},
   { value: 'assigned-for-delivery', label: 'Assigned for Delivery', category: 'primary', message: ''},
   { value: 'out-for-delivery', label: 'Out For Delivery', category: 'primary', message: 'Our delivery man is on the way to deliver the packet'},
-  { value: 'delivery-done', label: 'Done', category: 'success', message: 'packet has been delivered'},
-  { value: 'delivery-failed', label: 'Failed', category: 'danger', message: ''},
   { value: 'delivered', label: 'Delivered', category: 'success', message: 'packet has been delivered'},
   { value: 'on-hold-at-hub', label: 'On Hold at Hub', category: 'info', message: ''},
   { value: 'partial-return', label: 'Partial Return', category: 'success', message: ''},
@@ -20,8 +18,8 @@ export const deliveryStatusOptions = [
 ];
 
 export const agentDeliveryStatusOptions = [
-  { value: 'delivered', label: 'Delivered', category: 'success', message: 'packet has been delivered'},
-  { value: 'failed-to-deliver', label: 'Failed', category: 'success', message: ''}
+  { value: 'done', label: 'Delivered', category: 'success', message: 'packet has been delivered'},
+  { value: 'failed', label: 'Failed', category: 'success', message: ''}
 ];
 
 export const paymentStatus = [

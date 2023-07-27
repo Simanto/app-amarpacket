@@ -12,14 +12,13 @@ import FormSearchAdminPackets from "./form-search-admin_packets";
 
 
 
-const TableAdminAllPackets = () =>{
+const TableAdminWeeklyPackets = () =>{
   const {
     getPacket,
     setEditPacket,
-    getAllPacketAdmin,
+    getWeeklyPacketAdmin,
     allPackets,
     isLoading,
-    getAllAgent,
     user,
     deletePacket,
     search, 
@@ -228,11 +227,12 @@ const TableAdminAllPackets = () =>{
       }
     ],
     []
-    );
+  );
+  
     // Using useEffect to call the API once mounted and set the data
-    useEffect(() => {
-      getAllPacketAdmin();
-    }, [ page,limit, search, search_status, search_start_date, search_end_date, search_delivery_agent, search_pickup_agent]);
+  useEffect(() => {
+    getWeeklyPacketAdmin();
+  }, [ page,limit, search, search_status, search_start_date, search_end_date, search_delivery_agent, search_pickup_agent]);
   
 
     const initialState = { hiddenColumns: ['packetID', 'packet_updatedAt', 'packet_customerPhone', 'packet_customerAddress', "packet_pcikup_area","packet_merchantInvoice", "packet_customerArea","packet_status_category" ] };
@@ -254,4 +254,4 @@ const TableAdminAllPackets = () =>{
     );
 }
 
-export default TableAdminAllPackets
+export default TableAdminWeeklyPackets

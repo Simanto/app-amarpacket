@@ -17,7 +17,6 @@ export const adminGetAll = async (req,res,next) =>{
                                         {$toString:"$_id"}, "$$uid"
                                     ]
                                 }
-                               
                             }
                         }   
                     ],
@@ -37,7 +36,6 @@ export const adminGetAll = async (req,res,next) =>{
         // console.log(result);
 
         const agents = result.filter( (item) => {
-            console.log("item", item);
             return item.isActive === true
         })
 

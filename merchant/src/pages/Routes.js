@@ -6,10 +6,10 @@ import {
 // Import Pages
 import {ForgotPass, Login, Register, ResetPass} from "./auth/index.js";
 import {Dashboard,Packets,Customers,Payments,Profile,SharedLayout, AddPacket, PacketView} from "./merchant/";
-import {AdminMerchantEdit, AdminMerchantProfile, AdminMerchants,AdminPackets, AdminPayments, AdminUserAdd, AdminUsers, PaymentsSingle} from "./admin/";
+import {AdminMerchantEdit, AdminMerchantProfile, AdminMerchants,AdminPackets, AdminPacketsWeekly, AdminPayments, AdminUserAdd, AdminUsers, PaymentsSingle} from "./admin/";
 import ProtectedRoutes from "./ProtectedRoutes.js";
 import AgentLayout from "./AgentLayout.js";
-import {AgentDashboard, AgentPickup, AgentDeliveries, AgentProfile} from "./Agent";
+import {AgentDashboard, AgentPickup, AgentDeliveries, AgentProfile, DeliveryDetails} from "./Agent";
 import TestConnection from "./auth/TestConnection.js";
 import Error from "./Error.js";
 import { useAppContext } from "../context/appContext.js";
@@ -39,7 +39,14 @@ const PageRoutes = () => {
           }>
               {/* Main Pages */}
               <Route path={"dashboard"} element={<Dashboard />}> </Route>
-              <Route path={"packets"} element={<Packets />}></Route>
+              
+              <Route path={"packets"} >
+                <Route path={"all"} element={<Packets />}></Route>
+                <Route path={"add-packet"} element={<AddPacket />}></Route>
+                <Route path={":id"} element={<PacketView />}></Route>
+                <Route path={"edit/:id"} element={<AddPacket />}></Route>
+              </Route>
+
               <Route path={"customers"} element={<Customers />}> </Route>
               <Route path={"payments"} element={<Payments />}> </Route>
               <Route path={"payment/:id"} element={<PaymentsSingle />}></Route>
@@ -70,7 +77,11 @@ const PageRoutes = () => {
                   <Route path={"edit/:id"} element={<AdminMerchantEdit />}></Route>
                 </Route>
 
-                <Route path={"packets"} element={<AdminPackets />}></Route>
+                <Route path={"packets"}>
+                  <Route path={"all"} element={<AdminPackets />}></Route>
+                  <Route path={"weekly"} element={<AdminPacketsWeekly />}></Route>
+                </Route>
+
                 <Route path={"payments"} element={<AdminPayments />}></Route>
                 <Route path={"payment/:id"} element={<PaymentsSingle />}></Route>
 
@@ -86,7 +97,10 @@ const PageRoutes = () => {
           }>
             <Route path={"dashboard"} element={<AgentDashboard />} />
             <Route path={"pickup"} element={<AgentPickup />} />
-            <Route path={"deliveries"} element={<AgentDeliveries />} />
+            <Route path={"deliveries"} >
+              <Route path={"all"} element={<AgentDeliveries />}></Route>
+              <Route path={":id"} element={<DeliveryDetails />}></Route>
+            </Route>
             <Route path={"profile"} element={<AgentProfile />} />
           </Route>
         </Routes>

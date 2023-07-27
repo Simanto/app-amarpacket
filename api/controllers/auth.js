@@ -15,7 +15,7 @@ export const addAdmin = async (req,res,next)=>{
         user_email: "ashiqul@amarpacketbd.com",
         user_phone: "01682828591",
         user_area: "East Merul Badda",
-        user_password: "Ashiqul*2022_admin",
+        user_password: "123456",
         user_role: "admin",
         user_designation: "founder",
         user_address: "Niketon",

@@ -36,6 +36,7 @@ import CardAgentDelivery from './card-agent_delivery.js';
 import FormMerchantDeliveryCharges from './form-merchant_delivery_charges.js';
 import FormSearchAdminPackets from './form-search-admin_packets.js';
 import PaginationContainer from './pagination-container.js';
+import TableAdminWeeklyPackets from './table-weekly_packets_admin.js';
 
 export{
     // Forms
@@ -84,6 +85,7 @@ export{
     TableMerchantOutForDelivery,
     TableMerchantDelivered,
     TableMerchantReturned,
+    TableAdminWeeklyPackets,
 
     // Meta
     PaginationContainer,

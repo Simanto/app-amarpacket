@@ -46,6 +46,15 @@
                 padding: 24px;
             }
         }
+
+        &-agent{
+            &_body{
+                background-color: #fff;
+                margin-top: 70px;
+                border-top: 1px solid $gray-100;
+                border-bottom: 1px solid $gray-100;
+            }
+        }
     }
 
     .w{
@@ -64,6 +73,7 @@
             position: fixed;
             z-index: 1030;
             width: 100%;
+            top: 0;
         }
     }
 }

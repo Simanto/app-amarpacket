@@ -11,6 +11,7 @@ const PacketSchema = new mongoose.Schema({
             type: String,
             required: true,
             unique: true,
+            index: true
         },
         customerID:{
             type:String,
@@ -58,17 +59,39 @@ const PacketSchema = new mongoose.Schema({
             type: String,
             index: true
         },
-        current_status:{
+        currentStatus:{
+            type: String,
+            index: true
+        },
+        currentStatusCategory:{
             type: String
         },
-        current_status_category:{
+        currentStatusMessage:{
             type: String
         },
-        current_status_message:{
-            type: String
-        },
-        current_status_createdAt:{
+        currentStatusCreatedAt:{
             type: Date
+        },
+        merchantName:{
+            type: String
+        },
+        merchantPhone:{
+            type: String
+        },
+        merchantArea:{
+            type: String
+        },
+        customerName:{
+            type: String
+        },
+        customerPhone:{
+            type: String
+        },
+        customerArea:{
+            type: String
+        },
+        customerAddress:{
+            type: String
         },
     },{
         timestamps: true

@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 import { createError } from "../utils/error.js";
 
 export const updateStatus = async (req,res,next) =>{
+    
+    console.log(req.body);
 
     const requestedStatus = new Status({
         category: req.body.packet_status_category,
@@ -23,16 +25,21 @@ export const updateStatus = async (req,res,next) =>{
         const currentStatus = await Status.findById(statusID);
 
         switch (requestedStatus.name) {
-            case currentStatus.name:
-                return next(createError(409, "Please change your status"))
+            case findPacket.currentStatus:
+                return next(createError(409, "Please change your status Valo"))
             break;
 
             case "at-hub":
                 await requestedStatus.save();
 
                 await Packet.findByIdAndUpdate(req.params.id, {
+                    currentStatus: requestedStatus.name,
+                    currentStatusCategory: requestedStatus.category,
+                    currentStatusMessage: requestedStatus.message,
+                    currentStatusCreatedAt: requestedStatus.createdAt,
                     paymentStatus: "pending",
-                    delivery_man:"",
+                    delivery_man: "",
+                    deliveryManName: "",
                     $push: {
                         status:requestedStatus._id
                     },
@@ -44,6 +51,10 @@ export const updateStatus = async (req,res,next) =>{
                 await requestedStatus.save();
 
                 await Packet.findByIdAndUpdate(req.params.id, {
+                    currentStatus: requestedStatus.name,
+                    currentStatusCategory: requestedStatus.category,
+                    currentStatusMessage: requestedStatus.message,
+                    currentStatusCreatedAt: requestedStatus.createdAt,
                     pickup_man: assignedAgent.pickup_man,
                     $push: {
                         status:requestedStatus._id
@@ -57,6 +68,10 @@ export const updateStatus = async (req,res,next) =>{
                 await requestedStatus.save();
 
                 await Packet.findByIdAndUpdate(req.params.id, {
+                    currentStatus: requestedStatus.name,
+                    currentStatusCategory: requestedStatus.category,
+                    currentStatusMessage: requestedStatus.message,
+                    currentStatusCreatedAt: requestedStatus.createdAt,
                     delivery_man: assignedAgent.delivery_man,
                     $push: {
                         status:requestedStatus._id
@@ -70,6 +85,10 @@ export const updateStatus = async (req,res,next) =>{
                 await requestedStatus.save();
 
                 await Packet.findByIdAndUpdate(req.params.id, {
+                    currentStatus: requestedStatus.name,
+                    currentStatusCategory: requestedStatus.category,
+                    currentStatusMessage: requestedStatus.message,
+                    currentStatusCreatedAt: requestedStatus.createdAt,
                     delivery_man: assignedAgent.delivery_man,
                     $push: {
                         status:requestedStatus._id
@@ -83,6 +102,10 @@ export const updateStatus = async (req,res,next) =>{
                 await requestedStatus.save();
 
                 await Packet.findByIdAndUpdate(req.params.id, {
+                    currentStatus: requestedStatus.name,
+                    currentStatusCategory: requestedStatus.category,
+                    currentStatusMessage: requestedStatus.message,
+                    currentStatusCreatedAt: requestedStatus.createdAt,
                     paymentStatus: "due",
                     $push: {
                         status:requestedStatus._id
@@ -95,6 +118,10 @@ export const updateStatus = async (req,res,next) =>{
                 await requestedStatus.save();
 
                 await Packet.findByIdAndUpdate(req.params.id, {
+                    currentStatus: requestedStatus.name,
+                    currentStatusCategory: requestedStatus.category,
+                    currentStatusMessage: requestedStatus.message,
+                    currentStatusCreatedAt: requestedStatus.createdAt,
                     paymentStatus: "due",
                     $push: {
                         status:requestedStatus._id
@@ -107,6 +134,10 @@ export const updateStatus = async (req,res,next) =>{
                 await requestedStatus.save();
 
                 await Packet.findByIdAndUpdate(req.params.id, {
+                    currentStatus: requestedStatus.name,
+                    currentStatusCategory: requestedStatus.category,
+                    currentStatusMessage: requestedStatus.message,
+                    currentStatusCreatedAt: requestedStatus.createdAt,
                     paymentStatus: "canceled",
                     $push: {
                         status:requestedStatus._id
@@ -114,14 +145,16 @@ export const updateStatus = async (req,res,next) =>{
                 });
                 res.status(200).send("Status updated!");
             break;
-
-        
+    
             default:
                 await requestedStatus.save();
-
                 await Packet.findByIdAndUpdate(req.params.id, {
+                    currentStatus: requestedStatus.name,
+                    currentStatusCategory: requestedStatus.category,
+                    currentStatusMessage: requestedStatus.message,
+                    currentStatusCreatedAt: requestedStatus.createdAt,
                     $push: {
-                        status:requestedStatus._id
+                        status: requestedStatus._id
                     },
                 });
 

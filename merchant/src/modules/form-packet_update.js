@@ -28,6 +28,8 @@ const FormPacketUpdate = () => {
         packet_trackingID,
         packet_pickup_agentID,
         packet_delivery_agentID,
+        packet_pickup_agent_name,
+        packet_delivery_agent_name,
         user
         
     } = useAppContext();
@@ -46,10 +48,13 @@ const FormPacketUpdate = () => {
         })
 
         setStatusOptions(options);
+        
     }, []);
     
     const handleSelect = (option) =>{
+        
         setSelected(option)
+        
         handleChange({
             name: "packet_status",
             value: option.value
@@ -72,6 +77,7 @@ const FormPacketUpdate = () => {
     }
 
     const handleSelectPcikupAgent = (option) =>{
+        console.log("pickupAgent", option);
         setPickupAgent(option);
         handleChange({
             name: "packet_pickup_agentID",
