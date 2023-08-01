@@ -361,6 +361,7 @@ const reducer = (state,action) => {
 
         case SET_EDIT_PACKET:
             const packet = state.allPackets.find((packet)=> packet._id === action.payload.id);
+            
             const {
                 _id, 
                 packet_trackingID, 
@@ -370,6 +371,7 @@ const reducer = (state,action) => {
                 packet_customerArea, 
                 packet_customerAddress, 
                 packet_merchantInvoice,
+                packet_merchant_id,
                 packet_merchant,
                 packet_merchant_phone,
                 packet_pcikup_area,
@@ -399,6 +401,7 @@ const reducer = (state,action) => {
                 packet_costPrice,
                 packet_weight,
                 packet_specialInstruction,
+                packet_merchant_id,
                 packet_merchant,
                 packet_merchant_phone,
                 packet_pcikup_area,

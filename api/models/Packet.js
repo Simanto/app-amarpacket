@@ -41,9 +41,15 @@ const PacketSchema = new mongoose.Schema({
             type: String,
             index: true
         },
+        pickupManName:{
+            type: String,
+        },
         delivery_man:{
             type: String,
             index: true
+        },
+        deliveryManName:{
+            type: String,
         },
         specialInstruction:{
             type: String
@@ -81,10 +87,19 @@ const PacketSchema = new mongoose.Schema({
         merchantArea:{
             type: String
         },
+        merchantAddress:{
+            type: String
+        },
+        merchantBaseCharge:{
+            type: Number
+        },
         customerName:{
             type: String
         },
         customerPhone:{
+            type: String
+        },
+        customerCity:{
             type: String
         },
         customerArea:{

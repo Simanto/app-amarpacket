@@ -100,6 +100,7 @@ const initialState = {
     packet_delivery_charge: "",
     packet_weight: "",
     packet_specialInstruction: "",
+    packet_merchant_id: "",
     packet_merchant:"",
     packet_merchant_phone:"",
     packet_pcikup_area:"",
@@ -356,6 +357,7 @@ const AppProvider = ({children}) => {
     // Add New Pcket
     const addPakcet = async (newPacket) =>{
         dispatch({type:"ADD_PACKET_BEGIN"})
+        // console.log(state.data);
         const { 
             packet_customerName, 
             packet_customerPhone, 
@@ -368,6 +370,10 @@ const AppProvider = ({children}) => {
             packet_weight,
             packet_specialInstruction,
             packet_delivery_charge,
+            merchant_business_name,
+            merchant_business_phone,
+            merchant_pickup_area,
+            merchant_pickup_address,
         } = state
 
         try {
@@ -383,6 +389,10 @@ const AppProvider = ({children}) => {
                 packet_weight,
                 packet_specialInstruction,
                 packet_delivery_charge,
+                merchant_business_name,
+                merchant_business_phone,
+                merchant_pickup_area,
+                merchant_pickup_address,
             });
 
             dispatch({type:"ADD_PACKET_SUCCESS"});
@@ -391,6 +401,55 @@ const AppProvider = ({children}) => {
                 dispatch({type: "CLEAR_PACKET_VALUES"});
             }, 3000);
 
+        } catch (err) {
+            dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
+        }
+
+        setTimeout(() => {
+            dispatch({type:"CLEAR_ALERT"})
+        }, 3000);
+    }
+
+    // Set Edit Packet
+    const setEditPacket = (id) =>{
+        dispatch({type: "CLEAR_PACKET_VALUES"})
+        dispatch({type:"SET_EDIT_PACKET", payload: {id}})
+    }
+
+    // Edit Packet
+    const editPacket = async () =>{
+        dispatch({type:"EDIT_PACKET_BEGIN"})
+
+        const { 
+            packet_customerName, 
+            packet_customerPhone, 
+            packet_customerCity, 
+            packet_customerArea, 
+            packet_customerAddress, 
+            packet_merchantInvoice,
+            packet_collectionAmount,
+            packet_costPrice,
+            packet_weight,
+            packet_specialInstruction,
+            packet_delivery_charge
+        } = state
+
+        try {
+            await axiosFetch.patch(`/api/v1/packets/edit/${state.editPacketID}`,{
+                packet_customerName, 
+                packet_customerPhone, 
+                packet_customerCity, 
+                packet_customerArea, 
+                packet_customerAddress, 
+                packet_merchantInvoice,
+                packet_collectionAmount,
+                packet_costPrice,
+                packet_weight,
+                packet_delivery_charge,
+                packet_specialInstruction
+            })
+            dispatch({type: "EDIT_PACKET_SUCCESS"})
+            
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
         }
@@ -450,7 +509,7 @@ const AppProvider = ({children}) => {
             url = url + `&pickup_agent=${search_pickup_agent}`
         }
 
-        dispatch({type:"GET_PACKETS_BEGIN"})
+        // dispatch({type:"GET_PACKETS_BEGIN"})
         
         try {
             
@@ -661,52 +720,9 @@ const AppProvider = ({children}) => {
         dispatch({type: "HANDLE_CHANGE", payload: {name, value}})
     }
 
-    const setEditPacket = (id) =>{
-        dispatch({type: "CLEAR_PACKET_VALUES"})
-        dispatch({type:"SET_EDIT_PACKET", payload: {id}})
-    }
+    
 
-    const editPacket = async () =>{
-        dispatch({type:"EDIT_PACKET_BEGIN"})
-
-        const { 
-            packet_customerName, 
-            packet_customerPhone, 
-            packet_customerCity, 
-            packet_customerArea, 
-            packet_customerAddress, 
-            packet_merchantInvoice,
-            packet_collectionAmount,
-            packet_costPrice,
-            packet_weight,
-            packet_specialInstruction,
-            packet_delivery_charge,
-        } = state
-
-        try {
-            await axiosFetch.patch(`/api/v1/packets/edit/${state.editPacketID}`,{
-                packet_customerName, 
-                packet_customerPhone, 
-                packet_customerCity, 
-                packet_customerArea, 
-                packet_customerAddress, 
-                packet_merchantInvoice,
-                packet_collectionAmount,
-                packet_costPrice,
-                packet_weight,
-                packet_delivery_charge,
-                packet_specialInstruction,
-            })
-            dispatch({type: "EDIT_PACKET_SUCCESS"})
-            
-        } catch (err) {
-            dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
-        }
-
-        setTimeout(() => {
-            dispatch({type:"CLEAR_ALERT"})
-        }, 3000);
-    }
+    
 
     const updatePacketStatus = async () =>{
         dispatch({type:"EDIT_STATUS_BEGIN"})
@@ -716,7 +732,10 @@ const AppProvider = ({children}) => {
             packet_status_category,
             packet_status_message,
             packet_pickup_agentID,
-            packet_delivery_agentID
+            packet_delivery_agentID,
+            packet_pickup_agent_name,
+            packet_delivery_agent_name,
+        
         } = state;
 
         try {
@@ -726,7 +745,9 @@ const AppProvider = ({children}) => {
                 packet_status_category,
                 packet_status_message,
                 packet_pickup_agentID,
-                packet_delivery_agentID
+                packet_delivery_agentID,
+                packet_pickup_agent_name,
+                packet_delivery_agent_name
             })
 
             getAllPacketAdmin();

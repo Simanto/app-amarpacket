@@ -14,7 +14,9 @@ export const createPacket = async (req, res, next) => {
 
     const packet = req.body;
     const trackID = "ap" + crypto.randomBytes(4).toString('hex');
-
+    
+    console.log(packet);
+    
     const newCustomer = new Customer({
       name: packet.packet_customerName,
       phone: packet.packet_customerPhone,
@@ -26,7 +28,7 @@ export const createPacket = async (req, res, next) => {
 
     const merchant = {
       id: req.user.id,
-      // name: req.user.business_name,
+      business_name: req.user.business_name,
       // phone: 
     }
 
@@ -41,6 +43,17 @@ export const createPacket = async (req, res, next) => {
       delivery_charge: req.body.packet_delivery_charge,
       specialInstruction:req.body.packet_specialInstruction,
       paymentStatus: "pending",
+      customerName: packet.packet_customerName,
+      customerPhone: packet.packet_customerPhone,
+      customerCity: packet.packet_customerCity,
+      customerArea: packet.packet_customerArea,
+      customerAddress: packet.packet_customerAddress,
+      currentStatus: "new",
+      currentStatusCategory: "info",
+      currentStatusMessage: "Pickup requested by merchant.",
+      merchantName: req.body.merchant_business_name,
+      merchantPhone: req.body.merchant_business_phone,
+      merchantArea: req.body.merchant_pickup_area,
     })
 
     // Add Status
@@ -57,6 +70,10 @@ export const createPacket = async (req, res, next) => {
       if(!customer){
         const savedCustomer = await newCustomer.save();
         newPacket.customerID = savedCustomer._id;
+        newPacket.customerName = savedCustomer.name;
+        newPacket.customerPhone = savedCustomer.phone;
+        newPacket.customerArea = savedCustomer.area;
+        newPacket.customerAddress = savedCustomer.address;
       } else if(
         customer.name !== packet.packet_customerName ||
         customer.city !== packet.packet_customerCity ||
@@ -148,6 +165,11 @@ export const updatePacket =  async(req,res,next) =>{
       weight: req.body.packet_weightght,
       delivery_charge: req.body.packet_delivery_charge,
       specialInstruction:req.body.packet_specialInstruction,
+      customerName: req.body.packet_customerName,
+      customerPhone: req.body.packet_customerPhone,
+      customerCity: req.body.packet_customerCity,
+      customerArea: req.body.packet_customerArea,
+      customerAddress: req.body.packet_customerAddress,
     }
 
     if(packet.merchantInvoice !== requestedPacketData.merchantInvoice ||
@@ -155,7 +177,12 @@ export const updatePacket =  async(req,res,next) =>{
       packet.costPrice !== requestedPacketData.costPrice ||
       packet.weight !== requestedPacketData.weight ||
       packet.delivery_charge !== requestedPacketData.delivery_charge ||
-      packet.specialInstruction !== requestedPacketData.specialInstruction 
+      packet.specialInstruction !== requestedPacketData.specialInstruction ||
+      packet.customerName !== requestedPacketData.customerName ||
+      packet.customerPhone !== requestedPacketData.customerPhone ||
+      packet.customerCity !== requestedPacketData.customerCity ||
+      packet.customerArea !== requestedPacketData.customerArea ||
+      packet.customerAddress !== requestedPacketData.customerAddress
     ){
       await Packet.findByIdAndUpdate(
         req.params.id,
@@ -297,8 +324,11 @@ export const adminAllPacket = async (req,res,next) => {
           packet_status_all: "$status",
           packet_paymentStatus: "$paymentStatus",
           packet_invoiceID: "$invoiceID",
+          packet_merchant_id: "$merchantID",
           packet_merchant: "$merchantName",
           packet_merchant_phone: "$merchantPhone",
+          packet_merchant_address: "$merchantAddress",
+          packet_base_charge: "$merchantBaseCharge",
           packet_pcikup_area: "$merchantArea",
           packet_pickup_man: "$pickupManName",
           packet_delivery_man: "$deliveryManName",
@@ -1381,6 +1411,8 @@ export const mergeLastStatusIntoPacket = async(req,res,next)=>{
           merchantName: {"$arrayElemAt": ["$merchant.profile.business_name", 0] },
           merchantPhone: {"$arrayElemAt": ["$merchant.profile.phone", 0] },
           merchantArea: {"$arrayElemAt": ["$merchant.profile.pickup_area", 0]},
+          merchantAddress: {"$arrayElemAt": ["$merchant.profile.pickup_address", 0]},
+          merchantBaseCharge: {"$arrayElemAt": ["$merchant.profile.base_charge", 0]},
           pickupManName: {"$arrayElemAt": ["$pickup_man_details.name", 0]}, 
           deliveryManName:{"$arrayElemAt": ["$delivery_man_details.name", 0]},
           currentStatusCreatedAt: "$currentStatus.createdAt",

@@ -39,8 +39,8 @@ const AddPacket = () =>{
         let weight = Math.ceil(packet_weight)
 
         let charge = 0;
-       
-        if(isEditing && packet_trackingID) {
+
+        if(user.role === "admin" || user.role === "super-admin"){
             charge =  parseInt(packet_base_charge);
         } else {
             charge =  parseInt(data.base_charge);

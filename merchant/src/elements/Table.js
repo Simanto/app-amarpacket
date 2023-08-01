@@ -109,7 +109,7 @@ const  ElementTable =({ initialState, columns, data, filterCmponents })=> {
                 )) 
                 }
                 <tbody {...getTableBodyProps()}>
-                    {isLoading ?
+                    {/* {isLoading ?
                                 
                         <tr className="position-relative">
                             <td className="w-100 position-absolute text-center">Loading</td>
@@ -137,7 +137,26 @@ const  ElementTable =({ initialState, columns, data, filterCmponents })=> {
                                 </>
                             }    
                         </>
-                    }
+                    } */}
+
+                    {rows.length > 0 ? 
+                        rows.map((row, i) => {
+                        prepareRow(row);
+                        return (
+                            <tr key={i} {...row.getRowProps()}>
+                                {row.cells.map((cell,i) => {
+                                    return <td key={i} {...cell.getCellProps()}>{cell.render("Cell")}</td>;
+                                })}
+                            </tr>
+                        );
+                        })
+                    :
+                        <>
+                            <tr className="position-relative">
+                                <td className="w-100 position-absolute text-center">No data found</td>
+                            </tr>
+                        </>
+                    }  
                     
                 </tbody>
                 

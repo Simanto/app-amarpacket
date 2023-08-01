@@ -93,6 +93,11 @@ const FormPacketUpdate = () => {
             name: "packet_status_category",
             value: option.category
         })
+
+        handleChange({
+            name: "packet_pickup_agent_name",
+            value: option.label
+        })
     }
 
     const handleSelectDeliveryAgent = (option) =>{
@@ -105,6 +110,16 @@ const FormPacketUpdate = () => {
         handleChange({
             name: "packet_status_message",
             value: `${option.label}, phone - ${option.phone}, is assigned to deliver your packet`,
+        })
+
+        handleChange({
+            name: "packet_status_category",
+            value: option.category
+        })
+
+        handleChange({
+            name: "packet_delivery_agent_name",
+            value: option.label
         })
     }
 

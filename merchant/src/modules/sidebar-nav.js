@@ -160,7 +160,7 @@ const SideBarNav = () =>{
                     <NavItem>
                         <NavLink
                             className="nav-link"
-                            to="admin/packets/weekly"
+                            to="admin/packets/all"
                             >
                             <div className="nav-icon nav-icon_packets"></div>
                             <span className="nav-label">Packets</span>
