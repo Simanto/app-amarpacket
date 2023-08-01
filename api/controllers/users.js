@@ -105,7 +105,6 @@ export const adminAddUser = async (req,res,next) =>{
     }
 }
 
-
 // Edit User
 export const updateUser = async (req,res,next) =>{
     const userID = req.params.id;

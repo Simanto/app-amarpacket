@@ -1,9 +1,8 @@
 import React from 'react'
 import { Button,ModalHeader,ModalBody,ModalFooter, Form, FormGroup,Input, InputGroup, InputGroupText, Label,Row,Col } from "reactstrap";
 import { InputSelect, Loading } from '../elements';
-import { deliveryStatusOptions } from '../assets/doc/options.js';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { deliveryStatusOptions, agentDeliveryStatusOptions } from '../assets/doc/options.js';
+import { useState, useEffect} from 'react';
 import { useAppContext } from '../context/appContext';
 import { Alert } from "../elements";
 
@@ -11,6 +10,7 @@ const FormPacketUpdate = () => {
     const [selected, setSelected] = useState();
     const [pickupAgent, setPickupAgent] = useState();
     const [deliveryAgent, setDeliveryAgent] = useState();
+    const [statusOptions, setStatusOptions] = useState();
     const {
         isLoading,
         handleChange,
@@ -28,20 +28,33 @@ const FormPacketUpdate = () => {
         packet_trackingID,
         packet_pickup_agentID,
         packet_delivery_agentID,
+        packet_pickup_agent_name,
+        packet_delivery_agent_name,
+        user
         
     } = useAppContext();
 
-
     useEffect(() => {
-        deliveryStatusOptions.forEach((item)=>{
+        let options = deliveryStatusOptions;
+
+        if(user.role === "agent"){
+            options = agentDeliveryStatusOptions;
+        }
+
+        options.forEach((item)=>{
             if(item.value === packet_status){
                 setSelected(item);
             }
         })
+
+        setStatusOptions(options);
+        
     }, []);
     
     const handleSelect = (option) =>{
+        
         setSelected(option)
+        
         handleChange({
             name: "packet_status",
             value: option.value
@@ -64,6 +77,7 @@ const FormPacketUpdate = () => {
     }
 
     const handleSelectPcikupAgent = (option) =>{
+        console.log("pickupAgent", option);
         setPickupAgent(option);
         handleChange({
             name: "packet_pickup_agentID",
@@ -79,6 +93,11 @@ const FormPacketUpdate = () => {
             name: "packet_status_category",
             value: option.category
         })
+
+        handleChange({
+            name: "packet_pickup_agent_name",
+            value: option.label
+        })
     }
 
     const handleSelectDeliveryAgent = (option) =>{
@@ -91,6 +110,16 @@ const FormPacketUpdate = () => {
         handleChange({
             name: "packet_status_message",
             value: `${option.label}, phone - ${option.phone}, is assigned to deliver your packet`,
+        })
+
+        handleChange({
+            name: "packet_status_category",
+            value: option.category
+        })
+
+        handleChange({
+            name: "packet_delivery_agent_name",
+            value: option.label
         })
     }
 
@@ -171,7 +200,7 @@ const FormPacketUpdate = () => {
                                 <Label for="Phone" className="fw-medium">
                                     Select Status
                                 </Label>
-                            <InputSelect options={deliveryStatusOptions} name="packet_delivery_status" value={selected} defaultValue={selected} placeholder="Packet Status" handleChange={handleSelect}/>
+                            <InputSelect options={statusOptions} name="packet_delivery_status" value={selected} defaultValue={selected} placeholder="Packet Status" handleChange={handleSelect}/>
                         </div>
 
                         {/* Status Message based on condition */}
@@ -207,7 +236,7 @@ const FormPacketUpdate = () => {
                         }
 
                          {/* Assigned For Delivery */}
-                         {packet_status === "assigned-for-delivery" ?
+                         {(packet_status === "assigned-for-delivery" && user.role !== 'agent') ?
                             <FormGroup className='mt-3'>
                                 <Label>
                                     Assign Delivery Agent
@@ -218,7 +247,7 @@ const FormPacketUpdate = () => {
                             null
                          }
 
-                         {/* Assigned For Delivery */}
+                         {/* Assigned For Return */}
                          {packet_status === "assigned-for-return" ?
                             <FormGroup className='mt-3'>
                                 <Label>

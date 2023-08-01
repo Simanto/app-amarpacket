@@ -15,7 +15,7 @@ export const addAdmin = async (req,res,next)=>{
         user_email: "ashiqul@amarpacketbd.com",
         user_phone: "01682828591",
         user_area: "East Merul Badda",
-        user_password: "Ashiqul*2022_admin",
+        user_password: "123456",
         user_role: "admin",
         user_designation: "founder",
         user_address: "Niketon",
@@ -170,10 +170,9 @@ export const login = async(req,res,next) =>{
         // Check by email or phone
         if(!req.body.email || !req.body.password) return next(createError(400, "Please provide email and password"))
 
-        const isUser = await User.findOne({email:req.body.email});
+        const isUser = await User.findOne({email: req.body.email});
 
         if(!isUser) return next(createError(404, "User not found"));
-
         // Check password
         const isPasswordCorrect = await bcrypt.compare(
             req.body.password, isUser.password

@@ -1,3 +1,11 @@
+table{
+    tr{
+        &:hover{
+            background: rgba($primary,0.05);
+            // cursor: pointer;
+        }
+    }
+}
 .table{
     margin-bottom: 0;
     th,td{
@@ -25,7 +33,6 @@
             tr{
                 td{
                     font-size: 14px;
-
                     &:first-child{
                         padding-left: 1rem;
                     }

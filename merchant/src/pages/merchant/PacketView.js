@@ -9,13 +9,21 @@ import { LabelPrint, Loading } from "../../elements";
 
 const PacketView = () =>{
     const [deliveryCharge, setDeliveryCharge] = useState();
+    const [path, setPath] = useState()
     const [vat, setVat] = useState();
     const [total, setTotal] = useState()
-    const {isLoading,singlePacket,data} = useAppContext();
+    const {isLoading,singlePacket,user} = useAppContext();
     const params = useParams();
     const printRef = useRef(null);
 
     useEffect(() => {
+
+        if(user.role === "admin" || user.role === "admin" ){
+            setPath("/admin/packets/weekly")
+        } else {
+            setPath("/packets/all")
+        }
+
         let charge =  singlePacket.delivery_charge;            
         setDeliveryCharge(((charge)/1.15).toFixed(2));
         setVat((charge-deliveryCharge).toFixed(2));
@@ -38,7 +46,7 @@ const PacketView = () =>{
                 <Row>
                     <Col className='app-header m-4 d-flex flex-row justify-content-start align-items-center'>
                         <div className="app-header_back pb-3">
-                            <Link to="/packets" className="icon"> 
+                            <Link to={path} className="icon"> 
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="me-2"><path fill="none" d="M0 0h24v24H0z"/><path d="M7.828 11H20v2H7.828l5.364 5.364-1.414 1.414L4 12l7.778-7.778 1.414 1.414z" fill="currentColor"/></svg>
                                 Back to Packets
                             </Link>
@@ -94,6 +102,7 @@ const PacketView = () =>{
                         {/* card: body */}
                         <div className="card-body p-5 ">
                             <Row className="justify-content-between align-items-start">
+                                {/* Customer Details */}
                                 <Col sm="12" md="3" className="mb-4">
                                     <div className="customer-details">
                                         <h6 className="text-uppercase mb-4">Customer Details</h6>
@@ -120,6 +129,7 @@ const PacketView = () =>{
                                         </div>
                                     </div>
                                 </Col>
+                                {/* Packet Status */}
                                 <Col sm="12"  md="5" className="mb-4">
                                     <h6 className="text-uppercase mb-4">Tracking Details</h6>
                                     <div className="timeline">
@@ -218,7 +228,7 @@ const PacketView = () =>{
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    ):  value.name === "delivered" ? (
+                                                    ):  value.name === "delivered" || value.name === "delivery-done" ? (
                                                         <div className="timeline-item">
                                                             <div className="timeline-icon">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" ><path fill="none" d="M0 0h24v24H0z"/><path d="M9.33 11.5h2.17A4.5 4.5 0 0 1 16 16H8.999L9 17h8v-1a5.578 5.578 0 0 0-.886-3H19a5 5 0 0 1 4.516 2.851C21.151 18.972 17.322 21 13 21c-2.761 0-5.1-.59-7-1.625L6 10.071A6.967 6.967 0 0 1 9.33 11.5zM4 9a1 1 0 0 1 .993.883L5 10V19a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h2zm9.646-5.425L14 3.93l.354-.354a2.5 2.5 0 1 1 3.535 3.536L14 11l-3.89-3.89a2.5 2.5 0 1 1 3.536-3.535z" fill="currentColor"/></svg>
@@ -318,6 +328,7 @@ const PacketView = () =>{
                                         
                                     </div>
                                 </Col>
+                                {/* Delivery Charges */}
                                 <Col sm="12" md="4" className="bg-light p-4">
                                     <h6 className="pb-3">You will recieve</h6>
                                     <div className="d-flex justify-content-between">

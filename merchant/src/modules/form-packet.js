@@ -300,6 +300,7 @@ const FormPacket = () =>{
                                         type="number"
                                         onChange={handleInput}
                                         value={packet_weight}
+                                        onWheel={(e) => e.target.blur()}
                                     >
                                     </Input>
 

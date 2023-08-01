@@ -19,7 +19,7 @@ export const verifyToken = (req, res, next) => {
 
 export const verifyAdmin = (req,res,next) => {
     verifyToken(req,res,next, () => {
-        if (req.user.role === "admin"){
+        if (req.user.role === "admin" || req.user.role === "super-admin"){
             next()
         } else {
             return next(createError(403, "You are not admin!"))
@@ -30,6 +30,16 @@ export const verifyAdmin = (req,res,next) => {
 export const verifyMerchant = async (req,res,next) => {
     verifyToken(req,res,next,() => {
         if (req.user.role === "merchant") {
+            next()
+        } else {
+            return next(createError(403, "You are not Verified!"))
+        }
+    })
+}
+
+export const verifyAgent = async (req,res,next) => {
+    verifyToken(req,res,next,() => {
+        if (req.user.role === "agent") {
             next()
         } else {
             return next(createError(403, "You are not Verified!"))

@@ -15,6 +15,7 @@ import {
     HANDLE_CHANGE,
     GET_PACKETS_BEGIN,
     GET_PACKETS_SUCCESS,
+    GET_MERCHANT_PACKETS_SUCCESS,
     GET_PACKET_BEGIN,
     GET_PACKET_SUCCESS,
     SET_EDIT_PACKET,
@@ -64,6 +65,11 @@ import {
     FILTER_PACKET_RETURNED,
     SET_MERCHANT_PROFILE,
     CHANGE_PASSWORD_SUCCESS,
+    DELETE_PACKET_BEGIN,
+    DELETE_PACKET_SUCCESS,
+    GET_ASSIGNED_DELIVERIES_BEGIN,
+    GET_ASSIGNED_DELIVERIES_SUCCESS,
+    CHANGE_PAGE,
 } from "./actions";
 
 const reducer = (state,action) => {
@@ -82,7 +88,7 @@ const reducer = (state,action) => {
             return{
                 ...state,
                 showAlert: false,
-                alerttype: "",
+                alertType: "",
                 alertText: "",
             }
     break;
@@ -207,7 +213,7 @@ const reducer = (state,action) => {
             return{
                 ...state,
                 isLoading: true,
-                showAlert: false,
+                allPackets: [],
             }
         break;
 
@@ -215,11 +221,20 @@ const reducer = (state,action) => {
             return{
                 ...state,
                 isLoading: false,
-                allPackets: action.payload.data,
+                allPackets: action.payload.packets,
+                totalPackets: action.payload.totalPackets,
+                num0fpages: action.payload.totalPages,
             }
         break;
 
         
+        case GET_MERCHANT_PACKETS_SUCCESS:
+            return{
+                ...state,
+                isLoading: false,
+                allPackets: action.payload.data,
+            }
+        break;
 
 
         case GET_CUSTOMERS_BEGIN:
@@ -305,6 +320,7 @@ const reducer = (state,action) => {
         case HANDLE_CHANGE:
             return{
                 ...state,
+                page: 1,
                 [action.payload.name]: action.payload.value ,
             }
         break;
@@ -345,6 +361,7 @@ const reducer = (state,action) => {
 
         case SET_EDIT_PACKET:
             const packet = state.allPackets.find((packet)=> packet._id === action.payload.id);
+            
             const {
                 _id, 
                 packet_trackingID, 
@@ -354,6 +371,7 @@ const reducer = (state,action) => {
                 packet_customerArea, 
                 packet_customerAddress, 
                 packet_merchantInvoice,
+                packet_merchant_id,
                 packet_merchant,
                 packet_merchant_phone,
                 packet_pcikup_area,
@@ -383,6 +401,7 @@ const reducer = (state,action) => {
                 packet_costPrice,
                 packet_weight,
                 packet_specialInstruction,
+                packet_merchant_id,
                 packet_merchant,
                 packet_merchant_phone,
                 packet_pcikup_area,
@@ -665,6 +684,7 @@ const reducer = (state,action) => {
         case ADD_USER_BEGIN:
             return{
                 ...state,
+                isEditing: false,
                 isLoading: true,
                 showAlert: false
             }
@@ -729,6 +749,7 @@ const reducer = (state,action) => {
         case EDIT_USER_BEGIN:
             return{
                 ...state,
+                isEditing: true,
                 isLoading: true,
                 showAlert: false
             }
@@ -737,6 +758,7 @@ const reducer = (state,action) => {
         case EDIT_USER_SUCCESS:
             return{
                 ...state,
+                isEditing: true,
                 isLoading: false,
                 showAlert: true,
                 alertType: "success",
@@ -905,6 +927,45 @@ const reducer = (state,action) => {
                 showAlert: true,
                 alertType: "success",
                 alertText: "Success! Password has been changed. You will be logged out",
+            }
+        break;
+
+
+        case DELETE_PACKET_BEGIN:
+            return{
+                ...state,
+                isLoading: true
+            }
+        break;
+
+        case DELETE_PACKET_SUCCESS:
+            return{
+                ...state,
+                showAlert: true,
+                alertType: "success",
+                alertText: action.payload.data,
+            }
+        break;
+
+        case GET_ASSIGNED_DELIVERIES_BEGIN:
+            return{
+                ...state,
+                isLoading: true,
+            }
+        break;
+
+        case GET_ASSIGNED_DELIVERIES_SUCCESS:
+            return{
+                ...state,
+                isLoading: false,
+                allPackets: action.payload.packets
+            }
+        break;
+
+        case CHANGE_PAGE:
+            return{
+                ...state,
+                page: action.payload.page
             }
         break;
             

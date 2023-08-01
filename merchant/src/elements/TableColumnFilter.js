@@ -50,7 +50,7 @@ export const TableColumnFilterPacketStatus = ({column}) => {
 
 export const TableColumnFilterPacketStatusOptions = () =>{
     const {selected, setSelected} = useState(null);
-    const { filter_packet_status,handleChange} = useAppContext()
+    const { filter_packet_status,handleChange, allPackets} = useAppContext()
     
     const handleSelect = (data) =>{
         handleChange({
@@ -59,13 +59,13 @@ export const TableColumnFilterPacketStatusOptions = () =>{
         })
     }
     useEffect(() => {
-        if(deliveryStatusOptions){
-            deliveryStatusOptions.forEach((item)=>{
-                if(item.value === filter_packet_status){
-                    setSelected(item);
-                }
-            })
-        }
+            if(deliveryStatusOptions){
+                deliveryStatusOptions.forEach((item)=>{
+                    if(item.value === filter_packet_status){
+                        setSelected(item);
+                    }
+                })
+            }
     },[]);
 
     return(

@@ -3,7 +3,7 @@ import { Col, Form, FormGroup, Label,InputGroup, InputGroupText,Input, Row, Butt
 import { booleanOptions, roleOptions } from '../assets/doc/options';
 import { IconPhone, IconUser } from '../assets/images';
 import { useAppContext } from '../context/appContext';
-import { Alert, InputSelect } from '../elements';
+import { Alert, InputSelect, Loading } from '../elements';
 import validator from "validator";
 
 const FormUserAdd = () => {
@@ -108,21 +108,21 @@ const FormUserAdd = () => {
 
 
     const handleClick = () =>{
-        if( !user_fullname,
-            !user_email,
-            !user_password,
-            !user_phone,
-            !user_designation,
-            !user_blood_group,
-            !user_employee_id,
-            !user_isActive,
-            !user_role,
-            !user_area,
-            !user_address,
-            !user_emergency_contact_name,
-            !user_emergency_contact_phone,
-            !user_emergency_contact_relation,
-            !user_emergency_contact_area,
+        if( !user_fullname ||
+            !user_email ||
+            !user_password ||
+            !user_phone ||
+            !user_designation ||
+            !user_blood_group ||
+            !user_employee_id ||
+            !user_isActive ||
+            !user_role ||
+            !user_area ||
+            !user_address ||
+            !user_emergency_contact_name ||
+            !user_emergency_contact_phone ||
+            !user_emergency_contact_relation ||
+            !user_emergency_contact_area ||
             !user_emergency_contact_address
         ){
             dispatch({type: "ERROR", payload:{msg: "Please fill all the details"}})
@@ -144,16 +144,17 @@ const FormUserAdd = () => {
             return
         }
 
+
         if(user_password.length < 6){
             dispatch({type:"ERROR", payload: {msg:"Password must be at least 6 character long"}});
             return
         }
 
-        adminAddUser();
-    }
-
-    const handleUpdate = () =>{
-        editUser();
+        if(isEditing){
+            editUser();
+        } else {
+            adminAddUser();
+        }
     }
 
   return (
@@ -552,12 +553,12 @@ const FormUserAdd = () => {
 
                     {/* Button */}
                     <div className="mt-4">
-                    {isEditing && user_fullname? 
-                        <Button   className="text-uppercase fw-medium" color="primary" block onClick={handleUpdate}>
+                    {isEditing ? 
+                        <Button  disabled={isLoading} className="text-uppercase fw-medium" color="primary" block onClick={handleClick}>
                             Update User Details
                         </Button>
                         : 
-                        <Button   className="text-uppercase fw-medium" color="primary" block onClick={handleClick}>
+                        <Button disabled={isLoading} className="text-uppercase fw-medium" color="primary" block onClick={handleClick}>
                             Add User
                         </Button>
                     }

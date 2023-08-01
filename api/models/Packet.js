@@ -4,16 +4,19 @@ const { Schema } = mongoose;
 const PacketSchema = new mongoose.Schema({
         merchantID:{
             type: String,
-            required: true
+            required: true,
+            index: true
         },
         trackingID:{
             type: String,
             required: true,
             unique: true,
+            index: true
         },
         customerID:{
             type:String,
-            required: true
+            required: true,
+            index: true
         },
         merchantInvoice:{
             type: String,
@@ -35,26 +38,81 @@ const PacketSchema = new mongoose.Schema({
             type: Number
         },
         pickup_man:{
-            type: String
+            type: String,
+            index: true
+        },
+        pickupManName:{
+            type: String,
         },
         delivery_man:{
-            type: String
+            type: String,
+            index: true
+        },
+        deliveryManName:{
+            type: String,
         },
         specialInstruction:{
             type: String
         },
         status:{
-            type: [String]
+            type: [String],
+            index: true
         },
         paymentStatus:{
             type: String
         },
         invoiceID:{
+            type: String,
+            index: true
+        },
+        currentStatus:{
+            type: String,
+            index: true
+        },
+        currentStatusCategory:{
             type: String
-        }
+        },
+        currentStatusMessage:{
+            type: String
+        },
+        currentStatusCreatedAt:{
+            type: Date
+        },
+        merchantName:{
+            type: String
+        },
+        merchantPhone:{
+            type: String
+        },
+        merchantArea:{
+            type: String
+        },
+        merchantAddress:{
+            type: String
+        },
+        merchantBaseCharge:{
+            type: Number
+        },
+        customerName:{
+            type: String
+        },
+        customerPhone:{
+            type: String
+        },
+        customerCity:{
+            type: String
+        },
+        customerArea:{
+            type: String
+        },
+        customerAddress:{
+            type: String
+        },
     },{
         timestamps: true
     }
 );
+
+PacketSchema.indexes();
 
 export default mongoose.model("Packets", PacketSchema)

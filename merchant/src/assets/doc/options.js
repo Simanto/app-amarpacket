@@ -10,10 +10,16 @@ export const deliveryStatusOptions = [
   { value: 'delivered', label: 'Delivered', category: 'success', message: 'packet has been delivered'},
   { value: 'on-hold-at-hub', label: 'On Hold at Hub', category: 'info', message: ''},
   { value: 'partial-return', label: 'Partial Return', category: 'success', message: ''},
-  { value: 'canceled', label: 'Canceled', category: 'danger', message: ''},
+  { value: 'pickup-canceled', label: 'Pickup Canceled', category: 'danger', message: 'Pickup request is canceled'},
+  { value: 'return', label: 'return', category: 'danger', message: 'Packet will be returned to merchant and currently at hub'},
   { value: 'assigned-for-return', label: 'Assigned for Return', category: 'danger', message: ''},
   { value: 'out-for-return', label: 'Out for Reuturn', category: 'danger', message: 'Our delivery man is on the way to return the packet'},
   { value: 'returned', label: 'Returned', category: 'danger', message: 'packet has been returned to merchant'},
+];
+
+export const agentDeliveryStatusOptions = [
+  { value: 'done', label: 'Delivered', category: 'success', message: 'packet has been delivered'},
+  { value: 'failed', label: 'Failed', category: 'success', message: ''}
 ];
 
 export const paymentStatus = [
