@@ -13,8 +13,9 @@ merchant/.pnp
 # testing
 /coverage
 
+
 # production
-# merchant/build
+merchant/build
 
 # misc
 .DS_Store
