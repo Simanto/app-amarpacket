@@ -169,3 +169,31 @@ export const updateStatus = async (req,res,next) =>{
         next(err)
     }
 }
+
+export const updateStatusFromAgent = async (req,res,next) => {
+    const requestedStatus = new Status({
+        category: 'success',
+        name: 'done',
+        message: 'Packet has been delivered',
+        packetID: req.params.id
+    })
+
+    try {
+        // Save packet status
+        const savedStatus = await requestedStatus.save();
+
+        await Packet.findByIdAndUpdate(req.params.id, {
+            currentStatus: savedStatus.name,
+            currentStatusCategory: savedStatus.category,
+            currentStatusMessage: savedStatus.message,
+            currentStatusCreatedAt: savedStatus.createdAt,
+            paymentStatus: "pending",
+            $push: {
+                status:savedStatus._id
+            },
+        });
+        res.status(200).send("Packet Delivered");
+    } catch (err) {
+        next(err)
+    }
+};
