@@ -12,7 +12,6 @@ import AgentLayout from "./AgentLayout.js";
 import {AgentDashboard, AgentPickup, AgentDeliveries, AgentProfile, DeliveryDetails} from "./Agent";
 import TestConnection from "./auth/TestConnection.js";
 import Error from "./Error.js";
-import { useAppContext } from "../context/appContext.js";
 import Logout from "./Logout.js";
 
 const PageRoutes = () => {
@@ -82,7 +81,9 @@ const PageRoutes = () => {
                   <Route path={"weekly"} element={<AdminPacketsWeekly />}></Route>
                 </Route>
 
-                <Route path={"payments"} element={<AdminPayments />}></Route>
+                <Route path={"payments"} >
+                  <Route path={"all"} element={<AdminPayments />}> </Route>
+                </Route>
                 <Route path={"payment/:id"} element={<PaymentsSingle />}></Route>
 
                 <Route path={"logout"} element={<Logout />}></Route>

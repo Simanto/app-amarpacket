@@ -19,7 +19,7 @@ const AdminPackets = () => {
 
     useEffect(() => {
         window.history.scrollRestoration = 'manual'
-      }, []);
+    }, []);
       
   return (
     <>

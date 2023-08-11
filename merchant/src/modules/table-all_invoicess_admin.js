@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Modal } from "reactstrap";
 import { useAppContext } from "../context/appContext";
 import { ElementTable,Loading } from "../elements";
-import { TableColumnFilter } from "../elements/TableColumnFilter";
+import { TableColumnFilter, TableColumnFilterPaymentStatus } from "../elements/TableColumnFilter";
 import FormInvoiceUpdate from "./form-invoice_update";
 
 const TableAdminAllInvoices= () =>{
@@ -79,7 +79,7 @@ const TableAdminAllInvoices= () =>{
             </>
           )
         },
-        Filter: TableColumnFilter,
+        Filter: TableColumnFilterPaymentStatus,
       },
       {
         Header: "Merchant",
@@ -121,7 +121,7 @@ const TableAdminAllInvoices= () =>{
       {/* Table */}
       <div className="table">
         {invoices ? 
-          <ElementTable columns={columns} initialState={initialState} data={invoices}   filterCmponents={["search"]} />
+          <ElementTable columns={columns} initialState={initialState} data={invoices}   filterCmponents={["search", "payment-status", "reset"]} />
           :
           <Loading />
         }

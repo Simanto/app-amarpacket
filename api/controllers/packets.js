@@ -358,6 +358,7 @@ export const adminAllPacket = async (req,res,next) => {
               {packet_trackingID: {$regex: search, $options: "i"}},
               {packet_customerPhone: {$regex: search, $options: "i"}},
               {packet_customerName: {$regex: search, $options: "i"}},
+              {packet_merchant: {$regex: search, $options: "i"}},
             ]
           }
         }
@@ -815,6 +816,7 @@ export const PacketStats = async (req,res,next) =>{
           },
           {$project:{
               packet_collectionAmount: "$collectionAmount",
+              packet_charge: "$delivery_charge",
               packet_status:{ "$arrayElemAt": ["$status.name", -1] },
               packet_payment_status: "$paymentStatus"
           }}
@@ -826,9 +828,14 @@ export const PacketStats = async (req,res,next) =>{
       $project:{
         _id: 1,
         total_collection_amount: {$sum:"$packets.packet_collectionAmount"},
+        total_charge: {$sum:"$packets.packet_charge"},
+        total_in_process_amount: {$subtract:[{$sum:"$packets.packet_collectionAmount"}, {$sum:"$packets.packet_charge"}]},
+        packets: "$packets"
       }
     },
     ]);
+
+    // console.log("payments_in_process", payments_in_process)
 
 
     const payments_due = await User.aggregate([
@@ -860,6 +867,7 @@ export const PacketStats = async (req,res,next) =>{
           },
           {$project:{
               packet_collectionAmount: "$collectionAmount",
+              packet_charge: "$delivery_charge",
               packet_status:{ "$arrayElemAt": ["$status.name", -1] },
               packet_payment_status: "$paymentStatus"
           }}
@@ -870,7 +878,7 @@ export const PacketStats = async (req,res,next) =>{
     {
       $project:{
         _id: 1,
-        total_collection_amount: {$sum:"$packets.packet_collectionAmount"},
+        total_due_amount: {$subtract:[{$sum:"$packets.packet_collectionAmount"}, {$sum:"$packets.packet_charge"}]},
       }
     },
     ]);
@@ -896,6 +904,7 @@ export const PacketStats = async (req,res,next) =>{
             },
             {$project:{
                 packet_collectionAmount: "$collectionAmount",
+                packet_charge: "$delivery_charge",
                 packet_status:{ "$arrayElemAt": ["$status.name", -1] },
                 packet_payment_status: "$paymentStatus"
             }}
@@ -917,13 +926,13 @@ export const PacketStats = async (req,res,next) =>{
     {$unwind: "$packets"},
     {$group:{
       _id: "$_id",
-      total: {$sum: '$packets.packet_collectionAmount'},
+      // total: {$sum: '$packets.packet_collectionAmount'},
+      total: {$subtract:[{$sum:"$packets.packet_collectionAmount"}, {$sum:"$packets.packet_charge"}]},
     }},
     {$project:{
-      total: "$total"
+      total_out_for_delivery_amount: "$total"
     }}
     ]);
-
 
     const invoice = await Invoice.aggregate([
       {$match:{merchantID: req.user.id, status:"paid"}},
@@ -972,8 +981,8 @@ export const PacketStats = async (req,res,next) =>{
       payments: {
         out_for_delivery: value,
         total_paid: payments_paid[0].total_collection_amount || 0,
-        in_process: payments_in_process[0].total_collection_amount || 0,
-        due: payments_due[0].total_collection_amount || 0,
+        in_process: payments_in_process[0].total_in_process_amount || 0,
+        due: payments_due[0].total_due_amount || 0,
       },
       invoices: invoice,
     }

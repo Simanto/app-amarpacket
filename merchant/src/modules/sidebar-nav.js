@@ -9,15 +9,42 @@ const SideBarNav = () =>{
     const [isMerchant, setIsMerchant] = useState(false)
     const [isSuperAdmin, setIsSuperAdmin] = useState(false)
 
-    const {user} = useAppContext()
+    const {user,token, page, limit, logOut} = useAppContext()
+
+    // const search = window.location.search;
+    // const params = new URLSearchParams(search);
+    // const pageFromUrl = params.get('page');
+    // const limitFromUrl = params.get('limit');
+
     useEffect(() => {
+        // console.log("pageFromUrl", pageFromUrl, "limitFromUrl:", limitFromUrl);
+        
+        // if(pageFromUrl !== page){
+        //     handleChange({
+        //         name: "page",
+        //         value: pageFromUrl
+        //     })
+        // }
+
+        // if(limitFromUrl !== limit){
+        //     handleChange({
+        //         name: "limit",
+        //         value: limitFromUrl
+        //     })
+        //     console.log("limit change", limit)
+        // }
+
+        if(!user && !token){
+            logOut()
+        }
+
         if(user.role === "merchant"){
             setIsMerchant(true)
         }
         if(user.role === "super-admin"){
             setIsSuperAdmin(true)
         }
-    }, [])
+    }, [page, limit])
     
     return(
         <Fragment>
@@ -104,7 +131,7 @@ const SideBarNav = () =>{
                     <NavItem>
                         <NavLink
                             className="nav-link"
-                            to="admin/packets/weekly"
+                            to="admin/packets/all"
                             >
                             <div className="nav-icon nav-icon_packets"></div>
                             <span className="nav-label">Packets</span>
@@ -114,7 +141,7 @@ const SideBarNav = () =>{
                     <NavItem>
                         <NavLink
                             className="nav-link"
-                            to="admin/payments"
+                            to={"admin/payments/all?page="+page+"&limit="+limit}
                             >
                             <div className="nav-icon nav-icon_payments"></div>
                             <span className="nav-label">Payments</span>
@@ -164,16 +191,6 @@ const SideBarNav = () =>{
                             >
                             <div className="nav-icon nav-icon_packets"></div>
                             <span className="nav-label">Packets</span>
-                        </NavLink>
-                    </NavItem>
-
-                    <NavItem>
-                        <NavLink
-                            className="nav-link"
-                            to="admin/payments"
-                            >
-                            <div className="nav-icon nav-icon_payments"></div>
-                            <span className="nav-label">Payments</span>
                         </NavLink>
                     </NavItem>
                         

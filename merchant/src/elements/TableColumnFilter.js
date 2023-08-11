@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { FormGroup, Input } from "reactstrap";
-import { deliveryStatusOptions } from '../assets/doc/options';
+import { deliveryStatusOptions, paymentStatus } from '../assets/doc/options';
 import { useAppContext } from '../context/appContext';
 import InputSelect from './InputSelect';
 
@@ -50,7 +50,7 @@ export const TableColumnFilterPacketStatus = ({column}) => {
 
 export const TableColumnFilterPacketStatusOptions = () =>{
     const {selected, setSelected} = useState(null);
-    const { filter_packet_status,handleChange, allPackets} = useAppContext()
+    const { filter_packet_status,handleChange} = useAppContext()
     
     const handleSelect = (data) =>{
         handleChange({
@@ -73,6 +73,55 @@ export const TableColumnFilterPacketStatusOptions = () =>{
     )
 }
 
+// Fileter: By Payment Status
+export const TableColumnFilterPaymentStatusOptions = () =>{
+    const {selected, setSelected} = useState(null);
+    const { filter_packet_status,handleChange} = useAppContext()
+    
+    const handleSelect = (data) =>{
+        handleChange({
+            name: "filter_payment_status",
+            value: data.value
+        })
+    }
+    useEffect(() => {
+            if(paymentStatus){
+                paymentStatus.forEach((item)=>{
+                    if(item.value === filter_packet_status){
+                        setSelected(item);
+                    }
+                })
+            }
+    },[]);
+
+    return(
+         <InputSelect options={paymentStatus} value={selected} defaultValue={selected} placeholder="by Status" handleChange={handleSelect} />
+    )
+}
+export const TableColumnFilterPaymentStatus = ({column}) => {
+    const {filterValue, setFilter} = column;
+    const {filter_payment_status, handleChange} = useAppContext()
+    
+    const handleInputChange = (e) =>{
+        const {name, value} = e.target;
+        handleChange({name, value})
+    }
+
+    useEffect(() => {
+        setFilter(filter_payment_status)
+    }, [filter_payment_status])
+    
+    return (
+        <Input
+            id="filter_payment_status"
+            name="filter_payment_status"
+            placeholder="Search"
+            type="text"
+            onChange={handleInputChange}
+            value={filter_payment_status}
+        />
+    )
+}
 
 // filter_packet_delivery_man:"",
 // filter_packet_merchant:"",
