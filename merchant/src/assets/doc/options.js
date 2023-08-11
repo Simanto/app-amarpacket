@@ -15,12 +15,12 @@ export const deliveryStatusOptions = [
   { value: 'assigned-for-return', label: 'Assigned for Return', category: 'danger', message: ''},
   { value: 'out-for-return', label: 'Out for Reuturn', category: 'danger', message: 'Our delivery man is on the way to return the packet'},
   { value: 'returned', label: 'Returned', category: 'danger', message: 'packet has been returned to merchant'},
-  { value: 'done', label: 'Delivered', category: 'success', message: 'packet has been delivered'},
+  { value: 'done', label: 'Done', category: 'success', message: 'packet has been delivered'},
   { value: 'failed', label: 'Failed', category: 'success', message: ''}
 ];
 
 export const agentDeliveryStatusOptions = [
-  { value: 'done', label: 'Delivered', category: 'success', message: 'packet has been delivered'},
+  { value: 'done', label: 'Done', category: 'success', message: 'packet has been delivered'},
   { value: 'failed', label: 'Failed', category: 'success', message: ''}
 ];
 
