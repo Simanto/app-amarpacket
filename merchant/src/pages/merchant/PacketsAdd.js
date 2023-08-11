@@ -22,7 +22,7 @@ const AddPacket = () =>{
         packet_merchant_phone,
         packet_pcikup_address,
         packet_delivery_charge,
-        packet_base_charge
+        merchant_base_charge
     } = useAppContext();
     
     useEffect(() => {
@@ -41,12 +41,13 @@ const AddPacket = () =>{
         let charge = 0;
 
         if(user.role === "admin" || user.role === "super-admin"){
-            charge =  parseInt(packet_base_charge);
+            charge =  parseInt(merchant_base_charge);
         } else {
             charge =  parseInt(data.base_charge);
         }
 
-        
+        console.log(charge, merchant_base_charge);
+
         let weightCharge = 10;
 
         if(!weight && weight < 1){
@@ -64,6 +65,7 @@ const AddPacket = () =>{
         calcdelivercharge = charge+weightCharge;
 
         setTotal(packet_collectionAmount - calcdelivercharge)
+
         if(
             calcdelivercharge
         ){
@@ -74,7 +76,7 @@ const AddPacket = () =>{
         }
         
 
-    }, [packet_collectionAmount,packet_weight, data, packet_base_charge, calcdelivercharge])
+    }, [packet_collectionAmount,packet_weight, data, merchant_base_charge, calcdelivercharge])
 
     return(
         <Container>

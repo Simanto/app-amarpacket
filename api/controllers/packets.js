@@ -926,11 +926,12 @@ export const PacketStats = async (req,res,next) =>{
     {$unwind: "$packets"},
     {$group:{
       _id: "$_id",
-      // total: {$sum: '$packets.packet_collectionAmount'},
-      total: {$subtract:[{$sum:"$packets.packet_collectionAmount"}, {$sum:"$packets.packet_charge"}]},
+      total_collection: {$sum: '$packets.packet_collectionAmount'},
+      total_charge:  {$sum: '$packets.packet_charge'},
     }},
     {$project:{
-      total_out_for_delivery_amount: "$total"
+      // total_out_for_delivery_amount: "$total"
+      total_out_for_delivery_amount: {$subtract: ["$total_collection", "$total_charge"]}
     }}
     ]);
 
@@ -979,7 +980,7 @@ export const PacketStats = async (req,res,next) =>{
         total_returned: deliveries[0].stats_deliveries_returned || 0,
       },
       payments: {
-        out_for_delivery: value,
+        out_for_delivery: payments_out_for_delivery[0].total_out_for_delivery_amount || 0,
         total_paid: payments_paid[0].total_collection_amount || 0,
         in_process: payments_in_process[0].total_in_process_amount || 0,
         due: payments_due[0].total_due_amount || 0,
