@@ -19,7 +19,6 @@ const TableAdminAllPackets = () =>{
     getAllPacketAdmin,
     allPackets,
     isLoading,
-    getAllAgent,
     user,
     deletePacket,
     search, 
@@ -229,6 +228,7 @@ const TableAdminAllPackets = () =>{
     ],
     []
     );
+    
     // Using useEffect to call the API once mounted and set the data
     useEffect(() => {
       getAllPacketAdmin();

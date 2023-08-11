@@ -18,6 +18,7 @@ const SharedLayout = () => {
         user,
         data,
         logOut,
+        token
     } = useAppContext();
 
     useEffect(() =>{
@@ -27,7 +28,13 @@ const SharedLayout = () => {
         if(user.role === "admin" || user.role === "super-admin" ){
             setIsAdmin(true)
         }
-    },[user]);
+
+        if(!user || !token){
+            logOut()
+        }
+
+
+    },[user, token]);
 
     const {isVerified,business_name,phone} = data;
 

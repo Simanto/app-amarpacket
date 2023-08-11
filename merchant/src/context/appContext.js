@@ -140,6 +140,7 @@ const initialState = {
     filter_packet_merchant:"",
     filter_start_date: "",
     filter_end_date: "",
+    filter_payment_status: "",
 
     // Invoices
     invoices:"",

@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { useTable, useGlobalFilter, useFilters, usePagination } from "react-table";
 import { Button, Col, Input, Row, Table } from "reactstrap";
 import TableFilter from "./TableFilter";
-import { DateRangeColumnFilter, TableColumnFilterPacketDeliveryOption, TableColumnFilterPacketPickupOption, TableColumnFilterPacketStatusOptions } from "./TableColumnFilter";
+import { DateRangeColumnFilter, TableColumnFilterPacketDeliveryOption, TableColumnFilterPacketPickupOption, TableColumnFilterPacketStatusOptions, TableColumnFilterPaymentStatusOptions } from "./TableColumnFilter";
 import SelectDateRange from "./select-date_range";
 import { useAppContext } from "../context/appContext";
 
@@ -62,6 +62,13 @@ const  ElementTable =({ initialState, columns, data, filterCmponents })=> {
                         :
                         null
                     }
+                    {filterCmponents.indexOf("payment-status") !== -1 ?
+                        <Col>
+                            <TableColumnFilterPaymentStatusOptions />
+                        </Col>
+                        :
+                        null
+                    }
                     {filterCmponents.indexOf("pickup_agent") !== -1 ?
                         <Col>
                             <TableColumnFilterPacketPickupOption />
@@ -77,6 +84,7 @@ const  ElementTable =({ initialState, columns, data, filterCmponents })=> {
                         null
                     }
                     {filterCmponents.indexOf("status") !== -1 ||
+                    filterCmponents.indexOf("reset") !== -1 ||
                     filterCmponents.indexOf("date-range") !== -1 
                     ?
                         <Col>
@@ -99,7 +107,7 @@ const  ElementTable =({ initialState, columns, data, filterCmponents })=> {
                                 })}>
                                     {column.render("Header")}
                                     {/* visually-hidden */}
-                                    <div className="visually-hidden d-none">
+                                    <div className="visually-hidden">
                                         {column.canFilter ? column.render("Filter") : null}
                                     </div>
                                 </th>
