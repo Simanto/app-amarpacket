@@ -1187,48 +1187,6 @@ export const packetReturned = async (req,res,next)=>{
 // *********************************
 export const packetAssignedforDeliveries = async(req,res,next)=>{
   try {
-    // console.log("agent id:",req.user.id)
-    // const packets = await User.aggregate([
-    //   {$match:{_id: new mongoose.Types.ObjectId(req.user.id)}},
-    //   {
-    //     $lookup:{
-    //       from: "packets",
-    //       let:{id: req.user.id},
-    //       pipeline:[
-    //         {$match:{$expr:{$eq:["$delivery_man", "$$id"]}}},
-    //         {$project:{
-    //           "_id": 0,
-    //           packetID: "$_id",
-    //           packet_trackingID: "$trackingID",
-    //           packet_createdAt: "$createdAt",
-    //           packet_customerName:{ "$arrayElemAt": ["$customer.name", 0] },
-    //           packet_customerPhone:{ "$arrayElemAt": ["$customer.phone", 0] },
-    //           packet_customerArea:{ "$arrayElemAt": ["$customer.area", 0] },
-    //           packet_customerAddress:{ "$arrayElemAt": ["$customer.address", 0] },
-    //           packet_status:{ "$arrayElemAt": ["$status.name", -1] },
-    //         }}
-    //       ],
-    //     as: "packets"
-    //   },
-    // },
-    // {
-    //   $project:{
-    //     _id: 1,
-    //     packets:{
-    //       "$filter":{
-    //         "input": "$packets",
-    //         "cond": { 
-    //           "$or": [ 
-    //             {"$eq": ["$$this.packet_status", "assigned-for-delivery"]},
-    //             {"$eq": ["$$this.packet_status", "out-for-delivery"]},
-    //         ]}
-    //       }
-    //     }
-    //   },
-    // },
-    // ]);
-
-
 
     const packets = await Packet.aggregate([
       {
