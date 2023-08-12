@@ -4,7 +4,7 @@ import { useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAppContext } from "../context/appContext.js";
 import { ElementTable,Loading,TableColumnFilter } from "../elements";
-import { dateBetweenFilterFn, DateRangeColumnFilter } from "../elements/TableColumnFilter.js";
+import { dateBetweenFilterFn, DateRangeColumnFilter, TableColumnFilterPacketStatus } from "../elements/TableColumnFilter.js";
 
 const AllPackets = () =>{
 
@@ -67,7 +67,7 @@ const AllPackets = () =>{
       {
         Header: "Status",
         accessor: "packet_status",
-        Filter: TableColumnFilter,
+        Filter: TableColumnFilterPacketStatus,
         width: 300,
         Cell: ({ row }) => (<span className={"text-uppercase status alert alert-"+row.values.packet_status_category}>{row.values.packet_status}</span>),
       },
@@ -134,7 +134,7 @@ const AllPackets = () =>{
           <Loading />
           :
           <>
-            <ElementTable columns={columns} initialState={initialState} data={allPackets}  filterCmponents={["search", "date-range"]} />
+            <ElementTable columns={columns} initialState={initialState} data={allPackets}  filterCmponents={["search", "date-range", "status"]} />
           </>
         }
       </div>

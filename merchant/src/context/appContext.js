@@ -609,23 +609,24 @@ const AppProvider = ({children}) => {
         dispatch({type:"GET_PACKETS_BEGIN"})
         
         try {
-            const {data} = await axiosFetch.get("/api/v1/packets/out-for-delivery");
-            const {packets} = data[0];
-            dispatch({type: "FILTER_PACKET_DELIVERY", payload: {packets}})
+            const res = await axiosFetch.get("/api/v1/packets/out-for-delivery");
+            const {data} = res;
+            dispatch({type: "FILTER_PACKET_DELIVERY", payload: {data}})
 
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
         }
+        
         setTimeout(() => {
             dispatch({type:"CLEAR_ALERT"})
-        }, 1000);
+        }, 3000);
     }
 
     const getPacketDelivered = async () =>{
         dispatch({type:"GET_PACKETS_BEGIN"})
         try {
-            const {data} = await axiosFetch.get("/api/v1/packets/delivered");
-            const {packets} = data[0];
+            const res = await axiosFetch.get("/api/v1/packets/delivered");
+            const packets = res.data;
             dispatch({type: "FILTER_PACKET_DELIVERED", payload: {packets}})
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
@@ -639,8 +640,8 @@ const AppProvider = ({children}) => {
     const getPacketReturned = async () =>{
         dispatch({type:"GET_PACKETS_BEGIN"})
         try {
-            const {data} = await axiosFetch.get("/api/v1/packets/returned");
-            const {packets} = data[0];
+            const res = await axiosFetch.get("/api/v1/packets/returned");
+            const packets = res.data;
             dispatch({type: "FILTER_PACKET_RETURNED", payload: {packets}})
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});

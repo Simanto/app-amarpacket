@@ -7,7 +7,7 @@ import { ElementTable,Loading,TableColumnFilter } from "../elements";
 
 const TableMerchantOutForDelivery = () =>{
 
-  const {getPacket,setEditPacket,packetsForDelivery, packetOutForDelivery} = useAppContext();
+  const {getPacket,packetsForDelivery,packetOutForDelivery} = useAppContext();
 
   const columns = useMemo(
     () => [
@@ -109,7 +109,6 @@ const TableMerchantOutForDelivery = () =>{
     );
   // Using useEffect to call the API once mounted and set the data
   useEffect(() => {
-
     packetOutForDelivery();
   }, []);
   

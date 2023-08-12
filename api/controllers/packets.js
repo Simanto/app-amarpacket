@@ -9,118 +9,9 @@ import Status from "../models/Status.js";
 import User from "../models/User.js";
 import { createError } from "../utils/error.js";
 
-// Create New Packet
-export const createPacket = async (req, res, next) => {
-
-    const packet = req.body;
-    const trackID = "ap" + crypto.randomBytes(4).toString('hex');
-    
-    console.log("create packet req:",packet);
-   
-    const newCustomer = new Customer({
-      name: packet.packet_customerName,
-      phone: packet.packet_customerPhone,
-      city: packet.packet_customerCity,
-      area: packet.packet_customerArea,
-      address: packet.packet_customerAddress,
-      merchantID: req.user.id,
-    });
-
-    const merchant = {
-      id: req.user.id,
-      business_name: req.user.business_name,
-      // phone: 
-    }
-
-    const newPacket = new Packet({
-      merchantID: req.user.id,
-      trackingID: trackID,
-      merchantInvoice: packet.packet_merchantInvoice,
-      collectionAmount: packet.packet_collectionAmount,
-      costPrice: packet.packet_costPrice,
-      weight: packet.packet_weight,
-      delivery_charge: packet.packet_delivery_charge,
-      specialInstruction:packet.packet_specialInstruction,
-      paymentStatus: "pending",
-      customerName: packet.packet_customerName,
-      customerPhone: packet.packet_customerPhone,
-      customerCity: packet.packet_customerCity,
-      customerArea: packet.packet_customerArea,
-      customerAddress: packet.packet_customerAddress,
-      currentStatus: "new",
-      currentStatusCategory: "info",
-      currentStatusMessage: "Pickup requested by merchant.",
-      merchantName: packet.merchant_business_name,
-      merchantPhone: packet.merchant_business_phone,
-      merchantArea: packet.merchant_pickup_area,
-      merchantBaseCharge: packet.merchant_base_charge
-    })
-
-    console.log("new packet:", newPacket);
-
-    // Add Status
-    const addStatus = new Status({
-      category: "info",
-      name: "new",
-      message: "Pickup requested by merchant."
-    })
-
-    try {
-      // Check Customer
-      const customer = await Customer.findOne({phone: packet.packet_customerPhone, merchantID: req.user.id})
-
-      if(!customer){
-        const savedCustomer = await newCustomer.save();
-        newPacket.customerID = savedCustomer._id;
-        newPacket.customerName = savedCustomer.name;
-        newPacket.customerPhone = savedCustomer.phone;
-        newPacket.customerArea = savedCustomer.area;
-        newPacket.customerAddress = savedCustomer.address;
-      } else if(
-        customer.name !== packet.packet_customerName ||
-        customer.city !== packet.packet_customerCity ||
-        customer.area !== packet.packet_customerArea ||
-        customer.address !== packet.packet_customerAddress
-      ){
-        const updateCustomer = await Customer.findOneAndUpdate(
-          {phone: packet.packet_customerPhone, merchantID: req.user.id},
-          {$set:{
-            name:packet.packet_customerName,
-            city:packet.packet_customerCity,
-            area:packet.packet_customerArea,
-            address:packet.packet_customerAddress
-          }}, 
-          {new: true}
-        )
-        newPacket.customerID = updateCustomer._id;
-      } else {
-        newPacket.customerID = customer._id;
-      }
-
-      const addedStatus = await addStatus.save();
-      const savedPacket = await newPacket.save();
-      
-      try {
-        await Packet.findByIdAndUpdate(savedPacket._id, {
-          $push: {
-            status:addedStatus._id
-          },
-        });
-
-        await Status.findByIdAndUpdate(addedStatus._id,{
-            packetID: savedPacket._id
-        })
-
-      } catch (err) {
-        next(err);
-      }
-
-      res.status(200).json("Packet has added!");
-
-    } catch (err) {
-      next(err);
-    }
-};
+// *********************************
+//           Global
+// *********************************
 
 // Update
 export const updatePacket =  async(req,res,next) =>{
@@ -200,6 +91,10 @@ export const updatePacket =  async(req,res,next) =>{
   }
 }
 
+// *********************************
+//              Admin
+// *********************************
+
 // Delete
 export const deletePacket = async(req,res,next) => {
   try {
@@ -220,49 +115,7 @@ export const deletePacket = async(req,res,next) => {
   }
 }
 
-// Get All Packets by merchant
-export const allPacket = async (req,res,next) => {
-  try {
-    const packets = await Packet.aggregate([
-      {$match:{merchantID: req.user.id}},
-      {$project:{
-        _id: 0,
-        packetID: "$_id",
-        packet_trackingID: "$trackingID",
-        packet_createdAt: "$createdAt",
-        packet_updatedAt: "$currentStatusCreatedAt",
-        packet_merchantInvoice: "$merchantInvoice",
-        packet_collectionAmount: "$collectionAmount",
-        packet_costPrice: "$costPrice",
-        packet_weight: "$weight",
-        packet_delivery_charge: "$delivery_charge",
-        packet_customerName: "$customerName",
-        packet_customerPhone: "$customerPhone",
-        packet_customerArea: "$customerArea",
-        packet_customerAddress: "$customerAddress",
-        packet_status_category: "$currentStatusCategory",
-        packet_status: "$currentStatus",
-        packet_status_all: "$status",
-        packet_paymentStatus: "$paymentStatus",
-        packet_invoiceID: "$invoiceID",
-        packet_merchant_id: "$merchantID",
-        packet_merchant: "$merchantName",
-        packet_merchant_phone: "$merchantPhone",
-        packet_merchant_address: "$merchantAddress",
-        packet_base_charge: "$merchantBaseCharge",
-        packet_pcikup_area: "$merchantArea",
-        packet_pickup_man: "$pickupManName",
-        packet_delivery_man: "$deliveryManName",
-      }}
-    ]).sort({packet_createdAt: -1});
-
-    res.status(200).json(packets)
-    
-  } catch (err) {
-    next(err)
-  }
-}
-
+// Get All Packet
 export const adminAllPacket = async (req,res,next) => {
   try {
     let {search,status,start_date,end_date,pickup_agent,delivery_agent,page,limit} = req.query;
@@ -390,6 +243,7 @@ export const adminAllPacket = async (req,res,next) => {
   }
 }
 
+// Get Last 2 Weeks Packets
 export const adminWeeklyPacket = async (req,res,next) => {
   try {
     let {search,status,start_date,end_date,pickup_agent,delivery_agent,page,limit} = req.query;
@@ -489,7 +343,6 @@ export const adminWeeklyPacket = async (req,res,next) => {
           packet_customerAddress:{ "$arrayElemAt": ["$customer.address", 0] },
           packet_status_category: { "$arrayElemAt": ["$status.category", -1] },
           packet_status: { "$arrayElemAt": ["$status.name", -1] },
-          // packet_status_all: "$status",
           packet_paymentStatus: "$paymentStatus",
           packet_invoiceID: "$invoiceID" || null,
           packet_base_charge: {"$arrayElemAt": ["$merchant.profile.base_charge", 0]},
@@ -588,6 +441,166 @@ export const adminWeeklyPacket = async (req,res,next) => {
   }
 }
 
+// *********************************
+//           Merchant
+// *********************************
+
+// Create New Packet
+export const createPacket = async (req, res, next) => {
+
+  const packet = req.body;
+  const trackID = "ap" + crypto.randomBytes(4).toString('hex');
+  
+  console.log("create packet req:",packet);
+ 
+  const newCustomer = new Customer({
+    name: packet.packet_customerName,
+    phone: packet.packet_customerPhone,
+    city: packet.packet_customerCity,
+    area: packet.packet_customerArea,
+    address: packet.packet_customerAddress,
+    merchantID: req.user.id,
+  });
+
+  const merchant = {
+    id: req.user.id,
+    business_name: req.user.business_name,
+    // phone: 
+  }
+
+  const newPacket = new Packet({
+    merchantID: req.user.id,
+    trackingID: trackID,
+    merchantInvoice: packet.packet_merchantInvoice,
+    collectionAmount: packet.packet_collectionAmount,
+    costPrice: packet.packet_costPrice,
+    weight: packet.packet_weight,
+    delivery_charge: packet.packet_delivery_charge,
+    specialInstruction:packet.packet_specialInstruction,
+    paymentStatus: "pending",
+    customerName: packet.packet_customerName,
+    customerPhone: packet.packet_customerPhone,
+    customerCity: packet.packet_customerCity,
+    customerArea: packet.packet_customerArea,
+    customerAddress: packet.packet_customerAddress,
+    currentStatus: "new",
+    currentStatusCategory: "info",
+    currentStatusMessage: "Pickup requested by merchant.",
+    merchantName: packet.merchant_business_name,
+    merchantPhone: packet.merchant_business_phone,
+    merchantArea: packet.merchant_pickup_area,
+    merchantBaseCharge: packet.merchant_base_charge
+  })
+
+  console.log("new packet:", newPacket);
+
+  // Add Status
+  const addStatus = new Status({
+    category: "info",
+    name: "new",
+    message: "Pickup requested by merchant."
+  })
+
+  try {
+    // Check Customer
+    const customer = await Customer.findOne({phone: packet.packet_customerPhone, merchantID: req.user.id})
+
+    if(!customer){
+      const savedCustomer = await newCustomer.save();
+      newPacket.customerID = savedCustomer._id;
+      newPacket.customerName = savedCustomer.name;
+      newPacket.customerPhone = savedCustomer.phone;
+      newPacket.customerArea = savedCustomer.area;
+      newPacket.customerAddress = savedCustomer.address;
+    } else if(
+      customer.name !== packet.packet_customerName ||
+      customer.city !== packet.packet_customerCity ||
+      customer.area !== packet.packet_customerArea ||
+      customer.address !== packet.packet_customerAddress
+    ){
+      const updateCustomer = await Customer.findOneAndUpdate(
+        {phone: packet.packet_customerPhone, merchantID: req.user.id},
+        {$set:{
+          name:packet.packet_customerName,
+          city:packet.packet_customerCity,
+          area:packet.packet_customerArea,
+          address:packet.packet_customerAddress
+        }}, 
+        {new: true}
+      )
+      newPacket.customerID = updateCustomer._id;
+    } else {
+      newPacket.customerID = customer._id;
+    }
+
+    const addedStatus = await addStatus.save();
+    const savedPacket = await newPacket.save();
+    
+    try {
+      await Packet.findByIdAndUpdate(savedPacket._id, {
+        $push: {
+          status:addedStatus._id
+        },
+      });
+
+      await Status.findByIdAndUpdate(addedStatus._id,{
+          packetID: savedPacket._id
+      })
+
+    } catch (err) {
+      next(err);
+    }
+
+    res.status(200).json("Packet has added!");
+
+  } catch (err) {
+    next(err);
+  }
+}
+
+// Get All Packets by merchant
+export const allPacket = async (req,res,next) => {
+  try {
+    const packets = await Packet.aggregate([
+      {$match:{merchantID: req.user.id}},
+      {$project:{
+        _id: 0,
+        packetID: "$_id",
+        packet_trackingID: "$trackingID",
+        packet_createdAt: "$createdAt",
+        packet_updatedAt: "$currentStatusCreatedAt",
+        packet_merchantInvoice: "$merchantInvoice",
+        packet_collectionAmount: "$collectionAmount",
+        packet_costPrice: "$costPrice",
+        packet_weight: "$weight",
+        packet_delivery_charge: "$delivery_charge",
+        packet_customerName: "$customerName",
+        packet_customerPhone: "$customerPhone",
+        packet_customerArea: "$customerArea",
+        packet_customerAddress: "$customerAddress",
+        packet_status_category: "$currentStatusCategory",
+        packet_status: "$currentStatus",
+        packet_status_all: "$status",
+        packet_paymentStatus: "$paymentStatus",
+        packet_invoiceID: "$invoiceID",
+        packet_merchant_id: "$merchantID",
+        packet_merchant: "$merchantName",
+        packet_merchant_phone: "$merchantPhone",
+        packet_merchant_address: "$merchantAddress",
+        packet_base_charge: "$merchantBaseCharge",
+        packet_pcikup_area: "$merchantArea",
+        packet_pickup_man: "$pickupManName",
+        packet_delivery_man: "$deliveryManName",
+      }}
+    ]).sort({packet_createdAt: -1});
+
+    res.status(200).json(packets)
+    
+  } catch (err) {
+    next(err)
+  }
+}
+
 // Get Single Packet by Merchant
 export const GetPacket = async (req,res,next) =>{
   try {
@@ -649,7 +662,6 @@ export const GetPacket = async (req,res,next) =>{
     next(err)
   }
 }
-
 
 // Dashboard Satats
 export const PacketStats = async (req,res,next) =>{
@@ -967,67 +979,74 @@ export const PacketStats = async (req,res,next) =>{
 // Packets Out for Delivery packets
 export const packetOutforDelivery = async (req,res,next)=>{
   try {
-    const packetOutforDelivery = await User.aggregate([
-      {$match:{_id: new mongoose.Types.ObjectId(req.user.id)}},
+    const packetOutforDelivery = await Packet.aggregate([
       {
-        $lookup:{
-          from: "packets",
-          let:{mid: req.user.id},
-          pipeline:[
-            {$match:{$expr:{$eq:["$merchantID", "$$mid"]}}},
-            {
-              $lookup:{
-                from: "customers",
-                let:{cid:"$customerID"},
-                pipeline:[
-                  {$match:{$expr:{$eq:[{$toString:"$_id"}, "$$cid"]}}},
-                ],
-                as: "customer"
-              },
-            },
-            {
-
-                $lookup:{
-                  from: "status logs",
-                  let:{sid:"$status"},
-                  pipeline:[
-                    {$match:{$expr:{$in:[{$toString:"$_id"}, "$$sid"]}}},
-                  ],
-                  as:"status"
-                }
-            },
-            {$project:{
-              packetID: "$_id",
-              packet_trackingID: "$trackingID",
-              packet_createdAt: "$createdAt",
-              packet_merchantInvoice: "$merchantInvoice",
-              packet_collectionAmount: "$collectionAmount",
-              packet_costPrice: "$costPrice" || 0,
-              packet_weight: "$weight",
-              packet_delivery_charge: "$delivery_charge",
-              packet_customerName:{ "$arrayElemAt": ["$customer.name", 0] },
-              packet_customerPhone:{ "$arrayElemAt": ["$customer.phone", 0] },
-              packet_customerArea:{ "$arrayElemAt": ["$customer.area", 0] },
-              packet_customerAddress:{ "$arrayElemAt": ["$customer.address", 0] },
-              packet_status_category: { "$arrayElemAt": ["$status.category", -1] },
-              packet_status:{ "$arrayElemAt": ["$status.name", -1] },
-              packet_paymentStatus: "$paymentStatus",
-            }}
-          ],
-        as: "packets"
-      },
-    },
-    {
-      $project:{
-        _id: 1,
-        packets:{
-          "$filter":{
-            "input": "$packets",
-            "cond": { "$eq": [ "$$this.packet_status", "out-for-delivery" ] }
-          }
+        $match: {
+            $expr: {
+                $and: [
+                    {
+                        $eq: [
+                            "$merchantID",
+                            req.user.id
+                        ]
+                    },
+                    {
+                        $or: [
+                          {
+                            $eq:[
+                              "$currentStatus",
+                              "out-for-delivery"
+                            ]
+                          },
+                          {
+                            $eq:[
+                              "$currentStatus",
+                              "done"
+                            ]
+                          },
+                          {
+                            $eq:[
+                              "$currentStatus",
+                              "failed"
+                            ]
+                          }
+                        ]
+                    }
+                ]
+            }
         }
       },
-    },
+      {
+        $project:{
+          _id: 0,
+          packetID: "$_id",
+          packet_trackingID: "$trackingID",
+          packet_createdAt: "$createdAt",
+          packet_updatedAt: "$currentStatusCreatedAt",
+          packet_merchantInvoice: "$merchantInvoice",
+          packet_collectionAmount: "$collectionAmount",
+          packet_costPrice: "$costPrice",
+          packet_weight: "$weight",
+          packet_delivery_charge: "$delivery_charge",
+          packet_customerName: "$customerName",
+          packet_customerPhone: "$customerPhone",
+          packet_customerArea: "$customerArea",
+          packet_customerAddress: "$customerAddress",
+          packet_status_category: "$currentStatusCategory",
+          packet_status: "$currentStatus",
+          packet_status_all: "$status",
+          packet_paymentStatus: "$paymentStatus",
+          packet_invoiceID: "$invoiceID",
+          packet_merchant_id: "$merchantID",
+          packet_merchant: "$merchantName",
+          packet_merchant_phone: "$merchantPhone",
+          packet_merchant_address: "$merchantAddress",
+          packet_base_charge: "$merchantBaseCharge",
+          packet_pcikup_area: "$merchantArea",
+          packet_pickup_man: "$pickupManName",
+          packet_delivery_man: "$deliveryManName",
+        }
+      }
     ]);
 
     res.status(200).json(packetOutforDelivery)
@@ -1037,71 +1056,61 @@ export const packetOutforDelivery = async (req,res,next)=>{
   }
 }
 
-
 // Packets Delivered packets
 export const packetDelivered = async (req,res,next)=>{
   try {
-    const packetDelivered = await User.aggregate([
-      {$match:{_id: new mongoose.Types.ObjectId(req.user.id)}},
+    const packetDelivered = await Packet.aggregate([
       {
-        $lookup:{
-          from: "packets",
-          let:{mid: req.user.id},
-          pipeline:[
-            {$match:{$expr:{$eq:["$merchantID", "$$mid"]}}},
-            {
-              $lookup:{
-                from: "customers",
-                let:{cid:"$customerID"},
-                pipeline:[
-                  {$match:{$expr:{$eq:[{$toString:"$_id"}, "$$cid"]}}},
-                ],
-                as: "customer"
-              },
-            },
-            {
-
-                $lookup:{
-                  from: "status logs",
-                  let:{sid:"$status"},
-                  pipeline:[
-                    {$match:{$expr:{$in:[{$toString:"$_id"}, "$$sid"]}}},
-                  ],
-                  as:"status"
-                }
-            },
-            {$project:{
-              packetID: "$_id",
-              packet_trackingID: "$trackingID",
-              packet_createdAt: "$createdAt",
-              packet_merchantInvoice: "$merchantInvoice",
-              packet_collectionAmount: "$collectionAmount",
-              packet_costPrice: "$costPrice" || 0,
-              packet_weight: "$weight",
-              packet_delivery_charge: "$delivery_charge",
-              packet_customerName:{ "$arrayElemAt": ["$customer.name", 0] },
-              packet_customerPhone:{ "$arrayElemAt": ["$customer.phone", 0] },
-              packet_customerArea:{ "$arrayElemAt": ["$customer.area", 0] },
-              packet_customerAddress:{ "$arrayElemAt": ["$customer.address", 0] },
-              packet_status_category: { "$arrayElemAt": ["$status.category", -1] },
-              packet_status:{ "$arrayElemAt": ["$status.name", -1] },
-              packet_paymentStatus: "$paymentStatus",
-            }}
-          ],
-        as: "packets"
-      },
-    },
-    {
-      $project:{
-        _id: 1,
-        packets:{
-          "$filter":{
-            "input": "$packets",
-            "cond": { "$eq": [ "$$this.packet_status", "delivered" ] }
+        $match: {
+          $expr: {
+            $and: [
+                {
+                    $eq: [
+                        "$merchantID",
+                        req.user.id
+                    ]
+                },
+                {
+                  $eq:[
+                    "$currentStatus",
+                    "delivered"
+                  ]
+                },
+            ]
           }
         }
       },
-    },
+      {
+        $project:{
+          _id: 0,
+          packetID: "$_id",
+          packet_trackingID: "$trackingID",
+          packet_createdAt: "$createdAt",
+          packet_updatedAt: "$currentStatusCreatedAt",
+          packet_merchantInvoice: "$merchantInvoice",
+          packet_collectionAmount: "$collectionAmount",
+          packet_costPrice: "$costPrice",
+          packet_weight: "$weight",
+          packet_delivery_charge: "$delivery_charge",
+          packet_customerName: "$customerName",
+          packet_customerPhone: "$customerPhone",
+          packet_customerArea: "$customerArea",
+          packet_customerAddress: "$customerAddress",
+          packet_status_category: "$currentStatusCategory",
+          packet_status: "$currentStatus",
+          packet_status_all: "$status",
+          packet_paymentStatus: "$paymentStatus",
+          packet_invoiceID: "$invoiceID",
+          packet_merchant_id: "$merchantID",
+          packet_merchant: "$merchantName",
+          packet_merchant_phone: "$merchantPhone",
+          packet_merchant_address: "$merchantAddress",
+          packet_base_charge: "$merchantBaseCharge",
+          packet_pcikup_area: "$merchantArea",
+          packet_pickup_man: "$pickupManName",
+          packet_delivery_man: "$deliveryManName",
+        }
+      }
     ]);
 
     res.status(200).json(packetDelivered)
@@ -1114,66 +1123,80 @@ export const packetDelivered = async (req,res,next)=>{
 // Packets Delivered packets
 export const packetReturned = async (req,res,next)=>{
   try {
-    const packetReturned = await User.aggregate([
-      {$match:{_id: new mongoose.Types.ObjectId(req.user.id)}},
+    const packetReturned = await Packet.aggregate([
       {
-        $lookup:{
-          from: "packets",
-          let:{mid: req.user.id},
-          pipeline:[
-            {$match:{$expr:{$eq:["$merchantID", "$$mid"]}}},
-            {
-              $lookup:{
-                from: "customers",
-                let:{cid:"$customerID"},
-                pipeline:[
-                  {$match:{$expr:{$eq:[{$toString:"$_id"}, "$$cid"]}}},
-                ],
-                as: "customer"
-              },
-            },
-            {
-                $lookup:{
-                  from: "status logs",
-                  let:{sid:"$status"},
-                  pipeline:[
-                    {$match:{$expr:{$in:[{$toString:"$_id"}, "$$sid"]}}},
-                  ],
-                  as:"status"
-                }
-            },
-            {$project:{
-              packetID: "$_id",
-              packet_trackingID: "$trackingID",
-              packet_createdAt: "$createdAt",
-              packet_merchantInvoice: "$merchantInvoice",
-              packet_collectionAmount: "$collectionAmount",
-              packet_costPrice: "$costPrice" || 0,
-              packet_weight: "$weight",
-              packet_delivery_charge: "$delivery_charge",
-              packet_customerName:{ "$arrayElemAt": ["$customer.name", 0] },
-              packet_customerPhone:{ "$arrayElemAt": ["$customer.phone", 0] },
-              packet_customerArea:{ "$arrayElemAt": ["$customer.area", 0] },
-              packet_customerAddress:{ "$arrayElemAt": ["$customer.address", 0] },
-              packet_status_category: { "$arrayElemAt": ["$status.category", -1] },
-              packet_status:{ "$arrayElemAt": ["$status.name", -1] },
-              packet_paymentStatus: "$paymentStatus",
-            }}
-          ],
-        as: "packets"
-      },
-    },
-    {
-      $project:{
-        _id: 1,
-        packets:{
-          "$filter":{
-            "input": "$packets",
-            "cond": { "$eq": [ "$$this.packet_status", "returned" ] }
-          }
+        $match: {
+            $expr: {
+                $and: [
+                    {
+                        $eq: [
+                            "$merchantID",
+                            req.user.id
+                        ]
+                    },
+                    {
+                        $or: [
+                          {
+                            $eq:[
+                              "$currentStatus",
+                              "returned"
+                            ]
+                          },
+                          {
+                            $eq:[
+                              "$currentStatus",
+                              "return"
+                            ]
+                          },
+                          {
+                            $eq:[
+                              "$currentStatus",
+                              "assigned-for-return"
+                            ]
+                          },
+                          {
+                            $eq:[
+                              "$currentStatus",
+                              "out-for-return"
+                            ]
+                          }
+                        ]
+                    }
+                ]
+            }
         }
       },
-    },
+      {
+        $project:{
+          _id: 0,
+          packetID: "$_id",
+          packet_trackingID: "$trackingID",
+          packet_createdAt: "$createdAt",
+          packet_updatedAt: "$currentStatusCreatedAt",
+          packet_merchantInvoice: "$merchantInvoice",
+          packet_collectionAmount: "$collectionAmount",
+          packet_costPrice: "$costPrice",
+          packet_weight: "$weight",
+          packet_delivery_charge: "$delivery_charge",
+          packet_customerName: "$customerName",
+          packet_customerPhone: "$customerPhone",
+          packet_customerArea: "$customerArea",
+          packet_customerAddress: "$customerAddress",
+          packet_status_category: "$currentStatusCategory",
+          packet_status: "$currentStatus",
+          packet_status_all: "$status",
+          packet_paymentStatus: "$paymentStatus",
+          packet_invoiceID: "$invoiceID",
+          packet_merchant_id: "$merchantID",
+          packet_merchant: "$merchantName",
+          packet_merchant_phone: "$merchantPhone",
+          packet_merchant_address: "$merchantAddress",
+          packet_base_charge: "$merchantBaseCharge",
+          packet_pcikup_area: "$merchantArea",
+          packet_pickup_man: "$pickupManName",
+          packet_delivery_man: "$deliveryManName",
+        }
+      }
     ]);
 
     res.status(200).json(packetReturned)

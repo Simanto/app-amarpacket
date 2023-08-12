@@ -339,7 +339,7 @@ const reducer = (state,action) => {
             return{
                 ...state,
                 isLoading: false,
-                packetsForDelivery: action.payload.packets,
+                packetsForDelivery: action.payload.data,
             }
         break;
 
