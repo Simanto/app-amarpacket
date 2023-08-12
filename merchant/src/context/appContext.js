@@ -375,6 +375,7 @@ const AppProvider = ({children}) => {
             merchant_business_phone,
             merchant_pickup_area,
             merchant_pickup_address,
+            merchant_base_charge,
         } = state
 
         try {
@@ -394,13 +395,11 @@ const AppProvider = ({children}) => {
                 merchant_business_phone,
                 merchant_pickup_area,
                 merchant_pickup_address,
+                merchant_base_charge,
             });
 
             dispatch({type:"ADD_PACKET_SUCCESS"});
-            
-            setTimeout(() => {
-                dispatch({type: "CLEAR_PACKET_VALUES"});
-            }, 3000);
+            dispatch({type: "CLEAR_PACKET_VALUES"});
 
         } catch (err) {
             dispatch({type:"ERROR", payload: {msg:err.response.data.message}});
