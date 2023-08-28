@@ -1391,3 +1391,22 @@ export const mergeLastStatusIntoPacket = async(req,res,next)=>{
     next(err)
   }
 }
+
+// *********************************
+//   Packet By Area
+// *********************************
+export const statPacketByArea = async(req,res,next)=>{
+  try {
+    const packetByArea = await Packet.aggregate([
+      {$group:{
+        _id: "$customerArea",
+        count: { $count: {} }
+      }}
+    ]);
+
+    res.status(200).json(packetByArea)
+
+  } catch (err) {
+    next(err)
+  }
+}
