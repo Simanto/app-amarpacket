@@ -1,5 +1,5 @@
 import express from "express";
-import { allPacket, createPacket, GetPacket, updatePacket, adminAllPacket, PacketStats, packetOutforDelivery, packetDelivered, packetReturned, deletePacket, mergeLastStatusIntoPacket, adminWeeklyPacket } from "../controllers/packets.js";
+import { allPacket, createPacket, GetPacket, updatePacket, adminAllPacket, PacketStats, packetOutforDelivery, packetDelivered, packetReturned, deletePacket, mergeLastStatusIntoPacket, adminWeeklyPacket, statPacketByArea } from "../controllers/packets.js";
 
 const router = express.Router();
 
@@ -24,6 +24,10 @@ router.get("/returned", packetReturned);
 router.get("/packets/all", adminAllPacket);
 router.get("/packets/weekly", adminWeeklyPacket);
 router.get("/packets/merge-status", mergeLastStatusIntoPacket);
+
+// Stat
+router.get("/packets/byarea", statPacketByArea);
+
 
 // Get Single Packet
 router.get("/:packetid", GetPacket)
